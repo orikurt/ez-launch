@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.content.pm.PackageManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
@@ -35,15 +36,16 @@ public class MainActivity extends Activity {
 	private void updateTaskList() {
 		/* Grab the Systems IActivityManager. */
 
+		PackageManager pm = this.getPackageManager();
+
 		int numberOfTasks = 6;
 		ActivityManager m = (ActivityManager)this.getSystemService(ACTIVITY_SERVICE);
 		//Get some number of running tasks and grab the first one.  getRunningTasks returns newest to oldest
 		RunningTaskInfo task = m.getRunningTasks(numberOfTasks).get(0);
-		StringBuilder sb = new StringBuilder();
-	
-		
+		StringBuilder sb = new StringBuilder(); 
+		//ActivityManager.RecentTaskInfo.
 		for (RecentTaskInfo item : m.getRecentTasks(numberOfTasks, 0)) {
-			sb.append("application"+item.id+"' and the PID is '" + "\n");
+			sb.append("application"+item.id+"' and the PID is '"+ item.origActivity+ "  | "  + " | "  + "\n");
 		}
 		sb.append("\n\n\n--------\n\n\n");
 		for (RunningTaskInfo item : m.getRunningTasks(numberOfTasks)) {
