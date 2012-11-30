@@ -1,7 +1,11 @@
 package sadna.ez_launch;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.os.Bundle;
 import android.os.DeadObjectException;
@@ -14,6 +18,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -21,7 +26,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		updateTaskList();
+		//updateTaskList();
+		bla();
 	}
 
 	@Override
@@ -85,4 +91,44 @@ public class MainActivity extends Activity {
 		//    			android.R.layout.simple_list_item_1_small, listEntries));
 	}
 
+
+	private void bla()
+	{
+		try
+		{
+			Process mLogcatProc = null;
+			BufferedReader reader = null;
+			mLogcatProc = Runtime.getRuntime().exec("logcat -d");
+
+			reader = new BufferedReader(new InputStreamReader(mLogcatProc.getInputStream()));
+
+			String line;
+			final StringBuilder log = new StringBuilder();
+			String separator = System.getProperty("line.separator"); 
+
+			while ((line = reader.readLine()) != null)
+			{
+				if (line.contains("ActivityManager") && line.contains("LAUNCHER"))
+				{
+					Pattern pattern = Pattern.compile("(pkg|cmp)=(.*?)/");
+					Matcher matcher = pattern.matcher(line);
+					if (matcher.find())
+					{
+						log.append(matcher.group(2));
+						log.append(separator);
+					}
+				}
+			}
+
+			final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
+			textViewToChange.setMovementMethod(new ScrollingMovementMethod());
+			textViewToChange.setText(log.toString());
+
+
+		}
+		catch (Exception e) 
+		{
+			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+		}
+	}
 }
