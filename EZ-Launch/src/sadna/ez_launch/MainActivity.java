@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 		StringBuilder sb = new StringBuilder(); 
 		//ActivityManager.RecentTaskInfo.
 		for (RecentTaskInfo item : m.getRecentTasks(numberOfTasks, 0)) {
-			sb.append("application"+item.id+"' and the PID is '"+ item.origActivity+ "  | "  + " | "  + "\n");
+			sb.append("application"+item.id+"' and the PID is '"+ item.origActivity+ "  | " + item.description + " | "  + "\n");
 		}
 		sb.append("\n\n\n--------\n\n\n");
 		for (RunningTaskInfo item : m.getRunningTasks(numberOfTasks)) {
