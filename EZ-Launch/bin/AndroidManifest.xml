@@ -24,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="Screen2"
+            android:label="@string/screen2Title">
+        </activity>
 
         <!-- START OF WIDGET RECIEVER -->
         <receiver

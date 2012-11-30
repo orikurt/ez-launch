@@ -13,10 +13,18 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +35,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		//updateTaskList();
-		bla();
+		GetInstalledApplicationsList();
 	}
 
 	@Override
@@ -51,7 +59,7 @@ public class MainActivity extends Activity {
 		StringBuilder sb = new StringBuilder(); 
 		//ActivityManager.RecentTaskInfo.
 		for (RecentTaskInfo item : m.getRecentTasks(numberOfTasks, 0)) {
-			sb.append("application"+item.id+"' and the PID is '"+ item.origActivity+ "  | " + item.description + " | "  + "\n");
+			sb.append("application"+item.id+"' and the PID is '"+ item.origActivity+ "  | "  + "\n");
 		}
 		sb.append("\n\n\n--------\n\n\n");
 		for (RunningTaskInfo item : m.getRunningTasks(numberOfTasks)) {
@@ -64,31 +72,7 @@ public class MainActivity extends Activity {
 		textViewToChange.setMovementMethod(new ScrollingMovementMethod());
 		textViewToChange.setText(sb.toString());
 
-		//
-
-
-		//    	IActivityManager myActivityManager = ActivityManagerNative.getDefault();
-		//    	/* Will hold all the task"".toString()"" entries */
-		//    	ArrayList<String> listEntries = new ArrayList<String>();
-		//    	try {
-		//    		int showLimit = 1;
-		//    		/* Get all Tasks available (with limit set). */
-		//    		List<IActivityManager.TaskInfo> allTasks = myActivityManager
-		//    				.getTasks(showLimit, 0, null);
-		//    		int i = 1;
-		//    		/* Loop through all tasks returned. */
-		//    		for (IActivityManager.TaskInfo aTask : allTasks) {
-		//    			listEntries
-		//    			.add("" + (i++) + ": "
-		//    					+ aTask.baseActivity.getClassName() + " ID="
-		//    					+ aTask.id);
-		//    		}
-		//    	} catch (DeadObjectException e) {
-		//    		Log.e("TaskManager", e.getMessage(), e);
-		//    	}
-		//    	/* Display out listEntries */
-		//    	setListAdapter(new ArrayAdapter<String>(this,
-		//    			android.R.layout.simple_list_item_1_small, listEntries));
+	
 	}
 
 
@@ -130,5 +114,44 @@ public class MainActivity extends Activity {
 		{
 			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
 		}
+	}
+
+
+	private void GetInstalledApplicationsList()
+	{
+		
+		
+		Context context = getApplicationContext();
+		
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities( mainIntent, 0);
+		final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
+		
+		StringBuilder sb = new StringBuilder();
+		List<Drawable> mList= new ArrayList<Drawable>();
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+			mList.add((resolveInfo.activityInfo.loadIcon(getPackageManager())));
+		}
+		
+		
+		setContentView(R.layout.secondscreen);
+
+	    GridView gridview = (GridView) findViewById(R.id.gridview);
+	    gridview.setAdapter(new ImageAdapter(this,mList));
+
+	    gridview.setOnItemClickListener(new OnItemClickListener() {
+	    	@Override
+	    	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+	            Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+	        }
+
+			
+	    });
+	    
+	    
+		
+		textViewToChange.setMovementMethod(new ScrollingMovementMethod());
+		textViewToChange.setText(sb.toString());
 	}
 }
