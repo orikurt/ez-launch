@@ -19,4 +19,32 @@ public class MainActivity extends Activity {
         return true;
     }
     
+
+//    @SuppressWarnings("unchecked")
+//    private void updateTaskList() {
+//    	/* Grab the Systems IActivityManager. */
+//    	IActivityManager myActivityManager = ActivityManagerNative.getDefault();
+//    	/* Will hold all the task"".toString()"" entries */
+//    	ArrayList<String> listEntries = new ArrayList<String>();
+//    	try {
+//    		int showLimit = 1;
+//    		/* Get all Tasks available (with limit set). */
+//    		List<IActivityManager.TaskInfo> allTasks = myActivityManager
+//    				.getTasks(showLimit, 0, null);
+//    		int i = 1;
+//    		/* Loop through all tasks returned. */
+//    		for (IActivityManager.TaskInfo aTask : allTasks) {
+//    			listEntries
+//    			.add("" + (i++) + ": "
+//    					+ aTask.baseActivity.getClassName() + " ID="
+//    					+ aTask.id);
+//    		}
+//    	} catch (DeadObjectException e) {
+//    		Log.e("TaskManager", e.getMessage(), e);
+//    	}
+//    	/* Display out listEntries */
+//    	setListAdapter(new ArrayAdapter<String>(this,
+//    			android.R.layout.simple_list_item_1_small, listEntries));
+//    }
+
 }
