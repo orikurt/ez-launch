@@ -116,6 +116,22 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	public boolean GetRunningActivityManager() {
+		ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		List<RecentTaskInfo> procInfos = actvityManager.getRecentTasks(50, ActivityManager.RECENT_WITH_EXCLUDED);
+
+		final StringBuilder procsID = new StringBuilder();
+		String separator = System.getProperty("line.separator"); 
+		
+		for (RecentTaskInfo info : procInfos) {
+			procsID.append(info.id);
+			procsID.append(separator);
+		}
+		final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
+		textViewToChange.setMovementMethod(new ScrollingMovementMethod());
+		textViewToChange.setText(procsID.toString());
+		return true;
+	}
 
 	private void GetInstalledApplicationsList()
 	{
