@@ -7,21 +7,23 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
-    private List<Drawable> mList;
+    private List<Shortcut> mList;
     //private List<Integer> mList;
-    public ImageAdapter(Context c,List<Drawable> l) {
+    public ImageAdapter(Context c,List<Shortcut> mList2) {
         mContext = c;
-        mList = l;
+        mList = mList2;
     }
 
     public int getCount() {
@@ -38,18 +40,37 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
+        
+    	View v = convertView;
+    	ImageView imageView;
+    	TextView textView;
+        if (v == null) {  // if it's not recycled, initialize some attributes
+
+        	LayoutInflater inflater = (LayoutInflater)mContext.getSystemService
+        		      (Context.LAYOUT_INFLATER_SERVICE);
+        	
+        	//LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
+            v = inflater.inflate(R.layout.grid_item, null,true);// View.inflate(mContext, position, parent);// View.inflate(R.layout.grid_item, null);
+            
+            //imageView = new ImageView(mContext);
+            imageView = (ImageView) v.findViewById(R.id.grid_item_image);
             imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
+            
+            textView = (TextView) v.findViewById(R.id.app_label);
+            
+            
+            
         } else {
-            imageView = (ImageView) convertView;
+        	imageView = (ImageView) v.findViewById(R.id.grid_item_image);
+        	textView = (TextView) v.findViewById(R.id.app_label);
         }
+        
 
-        imageView.setImageDrawable(mList.get(position));
-        return imageView;
+        imageView.setImageDrawable(mList.get(position).getIcon());
+        textView.setText(mList.get(position).getLabel());
+        return v;
     }
 
     // references to our images

@@ -87,12 +87,16 @@ public class MainActivity extends Activity {
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities( mainIntent, 0);
-		final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
 		
-		StringBuilder sb = new StringBuilder();
-		List<Drawable> mList= new ArrayList<Drawable>();
+		
+		
+		List<Shortcut> mList= new ArrayList<Shortcut>();
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-			mList.add((resolveInfo.activityInfo.loadIcon(getPackageManager())));
+			
+			Shortcut a = new Shortcut((resolveInfo.activityInfo.loadIcon(getPackageManager())),
+					resolveInfo.activityInfo.packageName);
+			mList.add(a);
+			
 		}
 		
 		
@@ -112,7 +116,5 @@ public class MainActivity extends Activity {
 	    
 	    
 		
-		textViewToChange.setMovementMethod(new ScrollingMovementMethod());
-		textViewToChange.setText(sb.toString());
 	}
 }
