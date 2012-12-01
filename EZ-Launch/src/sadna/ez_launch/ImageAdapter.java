@@ -13,17 +13,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-
+    private LayoutInflater li;
     private List<Shortcut> mList;
     //private List<Integer> mList;
-    public ImageAdapter(Context c,List<Shortcut> mList2) {
+    public ImageAdapter(Context c,List<Shortcut> mList2, LayoutInflater li) {
         mContext = c;
         mList = mList2;
+        this.li = li;
     }
 
     public int getCount() {
@@ -46,14 +48,14 @@ public class ImageAdapter extends BaseAdapter {
     	TextView textView;
         if (v == null) {  // if it's not recycled, initialize some attributes
 
-        	LayoutInflater inflater = (LayoutInflater)mContext.getSystemService
-        		      (Context.LAYOUT_INFLATER_SERVICE);
+//        	LayoutInflater inflater = (LayoutInflater)mContext.getSystemService
+//        		      (Context.LAYOUT_INFLATER_SERVICE);
         	
         	//LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
-            v = inflater.inflate(R.layout.grid_item, null,true);// View.inflate(mContext, position, parent);// View.inflate(R.layout.grid_item, null);
+            v = (LinearLayout)li.inflate(R.layout.grid_item, null,true);// View.inflate(mContext, position, parent);// View.inflate(R.layout.grid_item, null);
             
             //imageView = new ImageView(mContext);
-            imageView = (ImageView) v.findViewById(R.id.grid_item_image);
+            imageView = (ImageView)v.findViewById(R.id.grid_item_image);
             imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);

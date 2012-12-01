@@ -19,6 +19,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -88,7 +89,7 @@ public class MainActivity extends Activity {
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities( mainIntent, 0);
 		
-		
+		LayoutInflater li = getLayoutInflater();
 		
 		List<Shortcut> mList= new ArrayList<Shortcut>();
 		for (ResolveInfo resolveInfo : pkgAppsList) {
@@ -103,7 +104,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.secondscreen);
 
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
-	    gridview.setAdapter(new ImageAdapter(this,mList));
+	    gridview.setAdapter(new ImageAdapter(this,mList,li));
 
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	    	@Override

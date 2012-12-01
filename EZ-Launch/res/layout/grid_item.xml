@@ -5,10 +5,10 @@
        android:layout_height="wrap_content"
     android:orientation="vertical" >
     
-    <imageview android:id="@+id/grid_item_image"
+    <ImageView android:id="@+id/grid_item_image"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content">
-       </imageview>
+       </ImageView>
 
     <TextView
         android:id="@+id/app_label"
