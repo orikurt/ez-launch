@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -73,49 +74,58 @@ public class MainActivity extends Activity {
 		textViewToChange.setMovementMethod(new ScrollingMovementMethod());
 		textViewToChange.setText(sb.toString());
 
-	
+
 	}
 
 
-	
+
 
 	private void GetInstalledApplicationsList()
 	{
-		
-		
+
+
 		Context context = getApplicationContext();
-		
+
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities( mainIntent, 0);
-		
+
 		LayoutInflater li = getLayoutInflater();
-		
-		List<Shortcut> mList= new ArrayList<Shortcut>();
+
+		final List<Shortcut> mList= new ArrayList<Shortcut>();
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-			
+
 			Shortcut a = new Shortcut((resolveInfo.activityInfo.loadIcon(getPackageManager())),
 					resolveInfo.activityInfo.packageName);
 			mList.add(a);
-			
+
 		}
-		
-		
+
+
 		setContentView(R.layout.secondscreen);
 
-	    GridView gridview = (GridView) findViewById(R.id.gridview);
-	    gridview.setAdapter(new ImageAdapter(this,mList,li));
+		GridView gridview = (GridView) findViewById(R.id.gridview);
+		gridview.setAdapter(new ImageAdapter(this,mList,li));
 
-	    gridview.setOnItemClickListener(new OnItemClickListener() {
-	    	@Override
-	    	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-	        }
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-			
-	    });
-	    
-	    
-		
+				
+				String ToLaunch = mList.get(position).getLabel();
+				//Intent intent = new Intent(Intent.ACTION_MAIN);
+				Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(ToLaunch);
+				startActivity(LaunchIntent);
+				//intent.setComponent(new ComponentName("com.android.calculator2", "com.android.calculator2.Calculator"));
+
+				//startActivity(intent);
+				//Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+			}
+
+
+		});
+
+
+
 	}
 }
