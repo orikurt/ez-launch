@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
 		// Start startService
 		startService(new Intent(this, StatisticsService.class));
-
+		
 		// Register to StatisticsService.UPDATE_INTENT;
 		if (statisticsUpdateReceiver == null) statisticsUpdateReceiver = new StatisticsUpdateReceiver();
 		registerReceiver(statisticsUpdateReceiver, new IntentFilter(StatisticsService.UPDATE_INTENT));
@@ -49,27 +49,18 @@ public class MainActivity extends Activity {
 				}
 				while (statisticsService == null);
 
-
-				// Deploy on screen all running apps Shortcuts
+				// Deploy on screen all running applications Shortcuts
 				LayoutInflater li = getLayoutInflater();
 				setContentView(R.layout.secondscreen);
-
 				GridView gridview = (GridView) findViewById(R.id.gridview);
 				gridview.setAdapter(new ImageAdapter(getApplicationContext(), statisticsService.mList, li));
-
 				gridview.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-
 						String ToLaunch = statisticsService.mList.get(position).getLabel();
-						//Intent intent = new Intent(Intent.ACTION_MAIN);
 						Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(ToLaunch);
 						startActivity(LaunchIntent);
-						//intent.setComponent(new ComponentName("com.android.calculator2", "com.android.calculator2.Calculator"));
-
-						//startActivity(intent);
-						//Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
 					}
 				});
 			}

@@ -6,12 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import sadna.ez_launch.MainActivity.StatisticsUpdateReceiver;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -26,6 +33,7 @@ public class StatisticsService extends Service{
 
 	ArrayList<Shortcut> mList;
 	public static StatisticsService sInstance;
+	SystemIntentsReceiver systemIntentsReceiver;
 	
 	private int MAX_TASKS = 10;
 	public static String UPDATE_INTENT = "sadna.ez_launch.UPDATE_INTENT";
@@ -45,8 +53,11 @@ public class StatisticsService extends Service{
 		sInstance = this;
 		
 		initData();
-		GetInstalledApplicationsList();
-		sendStatistics();
+		
+		// Register to StatisticsService.UPDATE_INTENT;
+		if (systemIntentsReceiver == null)
+			systemIntentsReceiver = new SystemIntentsReceiver();
+		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 	}
 
 	@Override
@@ -89,6 +100,26 @@ public class StatisticsService extends Service{
 //		return logs;
 //	}
 
+	private void GetRecentTasks() {
+	ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+	// get the info from the currently running task
+	List< RecentTaskInfo > tasksInfo = actvityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
+	PackageManager pk = getPackageManager();
+
+	for (RecentTaskInfo taskInfo : tasksInfo) {
+		Shortcut a;
+		try {
+			a = new Shortcut(pk.getApplicationIcon(taskInfo.origActivity.getPackageName()),
+					taskInfo.origActivity.getPackageName());
+			mList.add(a);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+	
 	private void GetInstalledApplicationsList()
 	{
 		Context context = getApplicationContext();
@@ -104,46 +135,16 @@ public class StatisticsService extends Service{
 			mList.add(a);
 		}
 	}
-
-//	private void bla()
-//	{
-//		try
-//		{
-//			Process mLogcatProc = null;
-//			BufferedReader reader = null;
-//			mLogcatProc = Runtime.getRuntime().exec("logcat -d");
-//
-//			reader = new BufferedReader(new InputStreamReader(mLogcatProc.getInputStream()));
-//
-//			String line;
-//			final StringBuilder log = new StringBuilder();
-//			String separator = System.getProperty("line.separator"); 
-//
-//			while ((line = reader.readLine()) != null)
-//			{
-//				if (line.contains("ActivityManager") && line.contains("LAUNCHER"))
-//				{
-//					Pattern pattern = Pattern.compile("(pkg|cmp)=(.*?)/");
-//					Matcher matcher = pattern.matcher(line);
-//					if (matcher.find())
-//					{
-//						log.append(matcher.group(2));
-//						log.append(separator);
-//					}
-//				}
-//			}
-//
-//			/*final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
-//   textViewToChange.setMovementMethod(new ScrollingMovementMethod());
-//   textViewToChange.setText(log.toString());*/
-//
-//
-//		}
-//		catch (Exception e) 
-//		{
-//			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-//		}
-//	}
-
-
+	
+	public class SystemIntentsReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+				//GetInstalledApplicationsList();
+				GetRecentTasks();
+				sendStatistics();
+			}
+		}
+	}
 }
