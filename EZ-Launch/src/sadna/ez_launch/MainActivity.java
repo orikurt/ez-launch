@@ -76,62 +76,7 @@ public class MainActivity extends Activity {
 	}
 
 
-	private void bla()
-	{
-		try
-		{
-			Process mLogcatProc = null;
-			BufferedReader reader = null;
-			mLogcatProc = Runtime.getRuntime().exec("logcat -d");
-
-			reader = new BufferedReader(new InputStreamReader(mLogcatProc.getInputStream()));
-
-			String line;
-			final StringBuilder log = new StringBuilder();
-			String separator = System.getProperty("line.separator"); 
-
-			while ((line = reader.readLine()) != null)
-			{
-				if (line.contains("ActivityManager") && line.contains("LAUNCHER"))
-				{
-					Pattern pattern = Pattern.compile("(pkg|cmp)=(.*?)/");
-					Matcher matcher = pattern.matcher(line);
-					if (matcher.find())
-					{
-						log.append(matcher.group(2));
-						log.append(separator);
-					}
-				}
-			}
-
-			final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
-			textViewToChange.setMovementMethod(new ScrollingMovementMethod());
-			textViewToChange.setText(log.toString());
-
-
-		}
-		catch (Exception e) 
-		{
-			Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-		}
-	}
-
-	public boolean GetRunningActivityManager() {
-		ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-		List<RecentTaskInfo> procInfos = actvityManager.getRecentTasks(50, ActivityManager.RECENT_WITH_EXCLUDED);
-
-		final StringBuilder procsID = new StringBuilder();
-		String separator = System.getProperty("line.separator"); 
-		
-		for (RecentTaskInfo info : procInfos) {
-			procsID.append(info.id);
-			procsID.append(separator);
-		}
-		final TextView textViewToChange = (TextView) findViewById(R.id.textView1);
-		textViewToChange.setMovementMethod(new ScrollingMovementMethod());
-		textViewToChange.setText(procsID.toString());
-		return true;
-	}
+	
 
 	private void GetInstalledApplicationsList()
 	{
