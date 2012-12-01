@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <application
@@ -30,7 +30,7 @@
             android:label="@string/screen2Title" >
         </activity>
 
-        <!-- START OF WIDGET RECIEVER -->
+        <!-- START OF WIDGET RECIEVER 
         <receiver
             android:name="EZLaunch"
             android:icon="@drawable/ic_launcher"
@@ -42,6 +42,15 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/watch_widget_provider" />
+        </receiver>-->
+        <receiver android:name="EZLaunchAppWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ezlaunch_appwidget_info" />
         </receiver>
 
         <!-- END OF WIDGET RECIEVER -->
@@ -49,7 +58,6 @@
         <service
             android:name=".StatisticsService"
             android:enabled="true" />
-        
     </application>
 
 </manifest>

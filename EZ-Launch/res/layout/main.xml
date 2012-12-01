@@ -11,6 +11,7 @@
         android:layout_height="fill_parent"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="@android:color/black"
+        android:textSize="8pt"
         android:text="17:12:34 PM"
-        android:textSize="8pt" />
+         />
 </LinearLayout>
