@@ -43,6 +43,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/watch_widget_provider" />
         </receiver>
+
         <!-- END OF WIDGET RECIEVER -->
 
         <service

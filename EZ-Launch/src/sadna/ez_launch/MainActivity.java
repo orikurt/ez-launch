@@ -1,44 +1,43 @@
 package sadna.ez_launch;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import android.os.Bundle;
-import android.os.DeadObjectException;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		//updateTaskList();
-		GetInstalledApplicationsList();
-	}
+	 StatisticsService statisticsService;
+	 StatisticsUpdateReceiver statisticsUpdateReceiver;
+	 
+	 @Override
+	 protected void onCreate(Bundle savedInstanceState) {
+	  super.onCreate(savedInstanceState);
+	  setContentView(R.layout.activity_main);
+	  //updateTaskList();
+	  GetInstalledApplicationsList();
+	  
+	  if (statisticsUpdateReceiver == null) statisticsUpdateReceiver = new StatisticsUpdateReceiver();
+	  registerReceiver(statisticsUpdateReceiver, new IntentFilter(StatisticsService.UPDATE_INTENT));
+	  startService(new Intent(this, StatisticsService.class));
+	 }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
