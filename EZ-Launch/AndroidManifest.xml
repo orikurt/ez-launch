@@ -5,7 +5,8 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.GET_TASKS" />
-	<uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="17" />
@@ -24,8 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Screen2"
-            android:label="@string/screen2Title">
+        <activity
+            android:name="Screen2"
+            android:label="@string/screen2Title" >
         </activity>
 
         <!-- START OF WIDGET RECIEVER -->
@@ -42,6 +44,11 @@
                 android:resource="@xml/watch_widget_provider" />
         </receiver>
         <!-- END OF WIDGET RECIEVER -->
+
+        <service
+            android:name=".StatisticsService"
+            android:enabled="true" />
+        
     </application>
 
 </manifest>
