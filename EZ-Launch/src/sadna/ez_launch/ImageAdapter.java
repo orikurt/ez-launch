@@ -53,12 +53,12 @@ public class ImageAdapter extends BaseAdapter {
         	
         	//LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
             v = (LinearLayout)li.inflate(R.layout.grid_item, null,true);// View.inflate(mContext, position, parent);// View.inflate(R.layout.grid_item, null);
-            
+            v.setLayoutParams(new GridView.LayoutParams(85, 85));
             //imageView = new ImageView(mContext);
             imageView = (ImageView)v.findViewById(R.id.grid_item_image);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            //imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            //imageView.setPadding(8, 8, 8, 8);
             
             textView = (TextView) v.findViewById(R.id.app_label);
             
