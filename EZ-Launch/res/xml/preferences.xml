@@ -22,13 +22,13 @@
 	  		android:summary="@string/black"
 	  		android:title="@string/background" />
 	  		
-  	  <com.boombuler.widgets.contacts.DialogSeekBarPreference
+  	  <sadna.ez_launch.DialogSeekBarPreference
   	  		android:key="CoulumnCount-%d"
   	  		android:title="@string/columncount"
   	  		android:defaultValue="1" 
   	  		android:summary="1"/>
 
-	  <com.boombuler.widgets.contacts.DialogSeekBarPreference
+	  <sadna.ez_launch.DialogSeekBarPreference
 	  		android:key="BackgroundAlpha-%d"
 	  		android:title="@string/background_alpha"
 	  		android:defaultValue="255"

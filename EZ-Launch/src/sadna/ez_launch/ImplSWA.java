@@ -22,7 +22,7 @@ public class ImplSWA implements WidgetImplementation {
 	private ShortcutWidget mWidget;
 	
 	// Tag for logging
-	private static final String TAG = "boombuler.ContactWidget.ImplSWA";
+	private static final String TAG = "sadna.ez_launch.ImplSWA";
 
 
 	@Override

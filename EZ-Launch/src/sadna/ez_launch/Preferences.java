@@ -11,18 +11,6 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_1_2;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_1_3;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_1_4;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_2_2;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_2_3;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_2_4;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_3_2;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_3_3;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_3_4;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_4_2;
-//import com.boombuler.widgets.contacts.sizes.ContactWidget_4_3;
-
 import sadna.ez_launch.widgets.contacts.sizes.ShortcutWidget_4_4;
 
 public class Preferences {
@@ -145,18 +133,6 @@ public class Preferences {
     public static int[] getAllWidgetIds(Context context) {
     	AppWidgetManager awm = AppWidgetManager.getInstance(context);
     	List<int[]> result = new ArrayList<int[]>();
-
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_1_2.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_1_3.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_1_4.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_2_2.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_2_3.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_2_4.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_3_2.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_3_3.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_3_4.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_4_2.class)));
-//    	result.add(awm.getAppWidgetIds(new ComponentName(context, ContactWidget_4_3.class)));
     	result.add(awm.getAppWidgetIds(new ComponentName(context, ShortcutWidget_4_4.class)));
 
     	int i = 0;

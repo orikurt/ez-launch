@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class AdressFilter {
 
-	private static final String TAG = "boombuler.AdressFilter";
+	private static final String TAG = "sadna.ez_launch.AdressFilter";
 
 	private String fFilter;
 	private String[] fParams;

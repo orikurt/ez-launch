@@ -30,7 +30,7 @@ public abstract class ShortcutWidget extends AppWidgetProvider {
 	
 	
 	// Tag for logging
-		private static final String TAG = "boombuler.ContactWidget";
+		private static final String TAG = "sadna.ez_launch.ShortcutWidget";
 
 		private WidgetImplementation mImpl;
 			
