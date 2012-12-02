@@ -25,6 +25,7 @@ import android.widget.RemoteViewsService;
 public class EZLaunchWidgetService extends RemoteViewsService {
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent) {
+		Log.d("sadna.EZLaunchWidgetService", "EZLaunchRemoteViewsFactory created");
 		return new EZLaunchRemoteViewsFactory(this.getApplicationContext(), intent);
 	}
 }

@@ -37,7 +37,7 @@ public class ImplHC implements WidgetImplementation {
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	public void onUpdate(Context context, int appWidgetId) {
-		Log.d(TAG, "onUpdate called!");
+		Log.d(TAG, "onUpdate called! with appWidgetId = " + appWidgetId);
 		// Here we setup the intent which points to the StackViewService which will
 		// provide the views for this collection.
 		Intent intent = new Intent(context, EZLaunchWidgetService.class);
@@ -47,7 +47,7 @@ public class ImplHC implements WidgetImplementation {
 		// When intents are compared, the extras are ignored, so we need to embed the extras
 		// into the data so that the extras will not be ignored.
 		intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-
+		Log.d(TAG, "Set Sata to the intent");
 		final int mainlayout;
 		boolean layoutICS = false;
 		if (Preferences.getBGImage(context, appWidgetId) == Preferences.BG_ICS) {
@@ -67,8 +67,10 @@ public class ImplHC implements WidgetImplementation {
 
 		RemoteViews rv = new RemoteViews(context.getPackageName(), mainlayout);
 
+		Log.d(TAG, "Set remote view");
 
 		String text = Preferences.getDisplayLabel(context, appWidgetId);
+		Log.d(TAG, "text = " + text);
 
 		boolean withHeader = text != "";
 		if (!layoutICS) {
@@ -112,6 +114,7 @@ public class ImplHC implements WidgetImplementation {
 
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, rv);
+		Log.d(TAG, "Every thing is set");
 	}
 
 
