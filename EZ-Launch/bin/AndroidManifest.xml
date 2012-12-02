@@ -9,9 +9,11 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 	<uses-permission android:name="android.permission.CALL_PHONE"/>
 
-    <uses-sdk
+    <!-- <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="17" />
+     -->
+     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="12" />
 
     <application
         android:allowBackup="true"
