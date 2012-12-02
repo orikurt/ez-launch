@@ -18,6 +18,6 @@
 	android:minWidth="264dip"
 	android:minHeight="284dip"
 	android:initialLayout="@layout/main"
-	android:configure="com.boombuler.widgets.contacts.ConfigurationActivity"
+	android:configure="sadna.ez_launch.ConfigurationActivity"
 	android:updatePeriodMillis="86400000"
 	android:resizeMode="horizontal|vertical"/>
