@@ -21,6 +21,8 @@ import android.os.IBinder;
 public class StatisticsService extends Service{
 
 	ArrayList<Shortcut> mList;
+	List<Scoring> scoringList;
+
 	public static StatisticsService sInstance;
 	SystemIntentsReceiver systemIntentsReceiver;
 	PackageManager pk;
@@ -40,8 +42,6 @@ public class StatisticsService extends Service{
 	@Override
 	public void onCreate() {
 		//code to execute when the service is first created
-		sInstance = this;
-
 		initData();
 
 		// Register to StatisticsService.UPDATE_INTENT;
@@ -63,12 +63,24 @@ public class StatisticsService extends Service{
 	}
 
 	public void initData() {
-		mList= new ArrayList<Shortcut>();
-		pk=getPackageManager();
+		sInstance = this;
+		mList = new ArrayList<Shortcut>();
+		scoringList	= new ArrayList<Scoring>();
+		pk = getPackageManager();
+		GetInstalledApplicationsList();
 	}
 
 	public void sendStatistics() {		
 		Intent i = new Intent(UPDATE_INTENT);
+		Collections.sort(scoringList, new ScoringComp());
+		mList.clear();
+		for (Scoring s : scoringList) {
+
+			Shortcut a = new Shortcut((s.info.activityInfo.loadIcon(getPackageManager())),
+					s.info.activityInfo.packageName);
+			if (mList.size() < 16)
+				mList.add(a);
+		}
 		sendBroadcast(i);
 	}
 
@@ -94,11 +106,17 @@ public class StatisticsService extends Service{
 		List< RecentTaskInfo > tasksInfo = actvityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
 
 		for (RecentTaskInfo taskInfo : tasksInfo) {
-			Shortcut a;
 			ResolveInfo resolveInfo = pk.resolveActivity(taskInfo.baseIntent, PackageManager.MATCH_DEFAULT_ONLY);
 			String packageName = resolveInfo.activityInfo.packageName;
-			a = new Shortcut(resolveInfo.activityInfo.loadIcon(getPackageManager()), packageName);
-			mList.add(a);
+			float i = tasksInfo.size();
+			for (Scoring scoring :scoringList) {
+				String scoringPackageName =  scoring.info.activityInfo.packageName;
+				if (packageName.equals(scoringPackageName)) {
+					scoring.score += (i/tasksInfo.size());
+					i--;
+					break;
+				}
+			}
 		}
 	}
 
@@ -112,27 +130,9 @@ public class StatisticsService extends Service{
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		List<ResolveInfo> pkgAppsList = pk.queryIntentActivities( mainIntent, 0);
 
-		List<Scoring> scoringList = new ArrayList<Scoring>();
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-			if (resolveInfo.loadLabel(pk).toString().equalsIgnoreCase("calculator")){
-				scoringList.add(new Scoring(200, resolveInfo));
-			}
-			else if (resolveInfo.loadLabel(pk).toString().equalsIgnoreCase("gallery")){
-				scoringList.add(new Scoring(300, resolveInfo));
-			}
-			else {
-				scoringList.add(new Scoring(0, resolveInfo));
-			}
-		}
-
-		Collections.sort(scoringList, new ScoringComp());
-
-		for (Scoring s : scoringList) {
-
-			Shortcut a = new Shortcut((s.info.activityInfo.loadIcon(getPackageManager())),
-					s.info.activityInfo.packageName);
-			if (mList.size() < 16)
-				mList.add(a);
+			//if (resolveInfo.loadLabel(pk).toString().equalsIgnoreCase("calculator")){
+			scoringList.add(new Scoring(0, resolveInfo));
 		}
 	}
 
@@ -163,7 +163,7 @@ public class StatisticsService extends Service{
 	}
 
 	public class Scoring{
-		int score;
+		float score;
 		ResolveInfo info;
 
 		public Scoring(int s, ResolveInfo i){
