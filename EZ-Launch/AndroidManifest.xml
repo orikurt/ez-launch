@@ -47,7 +47,7 @@
 		
 		<activity android:name=".ConfigurationActivity">
 			<intent-filter>
-				<action android:name="com.boombuler.widgets.contacts.PREFS" />
+				<action android:name="sadna.ez_launch.PREFS" />
 			</intent-filter>
 		</activity>
 		
