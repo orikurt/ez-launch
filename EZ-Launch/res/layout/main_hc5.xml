@@ -32,22 +32,33 @@
 	        android:textColorHighlight="#fff"
 	        />        
     
-		<LinearLayout
-       		android:id="@+id/widget_content"
-	        android:layout_width="fill_parent" 
-	        android:layout_height="fill_parent"
-	        android:layout_marginTop="12dip"
-	        android:layout_marginBottom="12dip"
-	        android:layout_marginRight="12dip"
-	        android:layout_marginLeft="12dip"
-			android:orientation="vertical"
-	        >
-	        <TextView android:text="Loading..." 
-	                  android:layout_width="fill_parent"
-	                  android:id="@+id/loading"
-	                  android:gravity="center_vertical|center_horizontal" 
-	        android:layout_height="fill_parent"/>
-		</LinearLayout>
+			<GridView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="12dip"
+                android:layout_marginBottom="12dip"
+                android:layout_marginRight="12dip"
+                android:layout_marginLeft="12dip"
+				android:cacheColorHint="#00000000"
+				android:scrollbarStyle="outsideOverlay"
+				android:scrollbars="vertical"
+				android:scrollingCache="true"
+				android:alwaysDrawnWithCache="true"
+				android:persistentDrawingCache="scrolling"
+				android:divider="@drawable/divider_horizontal_bright"
+				android:fadingEdge="none"
+				
+				android:id="@+id/my_gridview"
+				
+				android:horizontalSpacing="5dip"
+				android:verticalSpacing="10dip"
+				android:numColumns="5"
+				
+				android:addStatesFromChildren="false"
+				android:choiceMode="singleChoice" 
+				android:duplicateParentState="true"
+				>
+			</GridView>
 		
 	</LinearLayout>
 	

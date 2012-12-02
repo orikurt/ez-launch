@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.secondscreen);
 
 		// Start startService
 		startService(new Intent(this, StatisticsService.class));
