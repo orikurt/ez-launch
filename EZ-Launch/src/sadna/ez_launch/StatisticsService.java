@@ -104,15 +104,16 @@ public class StatisticsService extends Service{
 		ActivityManager actvityManager = (ActivityManager) this.getBaseContext().getSystemService(ACTIVITY_SERVICE);
 
 		List< RecentTaskInfo > tasksInfo = actvityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
-
+		
+		float i = tasksInfo.size();
 		for (RecentTaskInfo taskInfo : tasksInfo) {
 			ResolveInfo resolveInfo = pk.resolveActivity(taskInfo.baseIntent, PackageManager.MATCH_DEFAULT_ONLY);
 			String packageName = resolveInfo.activityInfo.packageName;
-			float i = tasksInfo.size();
+			
 			for (Scoring scoring :scoringList) {
 				String scoringPackageName =  scoring.info.activityInfo.packageName;
 				if (packageName.equals(scoringPackageName)) {
-					scoring.score += (i/tasksInfo.size());
+					scoring.score += i;
 					i--;
 					break;
 				}
