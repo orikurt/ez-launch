@@ -1,6 +1,7 @@
 package sadna.ez_launch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.PendingIntent;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,14 +24,17 @@ public class EZLaunchWidgetProvider extends AppWidgetProvider {
 	public void onUpdate( Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds )
 	{
 		
+		Log.i("ExampleWidget",  "Updating widgets " + Arrays.asList(appWidgetIds));
 		 // update each of the app widgets with the remote adapter
-	    for (int i = 0; i < appWidgetIds.length; ++i) {
+		final int N = appWidgetIds.length;
+	    for (int i = 0; i < N; ++i) {
 	        
+	    	int appWidgetId = appWidgetIds[i];
 	        // Set up the intent that starts the StackViewService, which will
 	        // provide the views for this collection.
 	        Intent intent = new Intent(context, EZLaunchWidgetService.class);
 	        // Add the app widget ID to the intent extras.
-	        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+	        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 	        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 	        // Instantiate the RemoteViews object for the App Widget layout.
 	        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.ezlaunch_app_widget_layout);
@@ -49,7 +54,7 @@ public class EZLaunchWidgetProvider extends AppWidgetProvider {
 	        // Do additional processing specific to this app widget...
 	        //
 	        
-	        appWidgetManager.updateAppWidget(appWidgetIds[i], rv);   
+	        appWidgetManager.updateAppWidget(appWidgetId, rv);   
 	    }
 	    super.onUpdate(context, appWidgetManager, appWidgetIds);
 		

@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
 	<uses-permission android:name="android.permission.CALL_PHONE"/>
   <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
     <!--   
      <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="12" />
@@ -39,7 +39,8 @@
 		
 		<activity android:name=".ConfigurationActivity">
 			<intent-filter>
-				<action android:name="sadna.ez_launch.PREFS" />
+				<action android:name="sadna.ez_launch.PREFS.main" />
+				<catagoty android:name="sadna.ez_launch.PREFS.launcher" />
 			</intent-filter>
 		</activity>
 		
