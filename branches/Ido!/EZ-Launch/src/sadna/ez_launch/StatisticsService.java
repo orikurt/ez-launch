@@ -76,8 +76,9 @@ public class StatisticsService extends Service{
 		mList.clear();
 		for (Scoring s : scoringList) {
 
+			String name= s.info.loadLabel(getPackageManager()).toString();
 			Shortcut a = new Shortcut((s.info.activityInfo.loadIcon(getPackageManager())),
-					s.info.activityInfo.packageName);
+					s.info.activityInfo.packageName,name);
 			if (mList.size() < 16)
 				mList.add(a);
 		}
@@ -92,7 +93,7 @@ public class StatisticsService extends Service{
 		Shortcut a;
 		try {
 			a = new Shortcut(pk.getApplicationIcon(tasksInfo.get(0).baseActivity.getPackageName()),
-					tasksInfo.get(0).baseActivity.getPackageName());
+					tasksInfo.get(0).baseActivity.getPackageName(),"No Name");
 			mList.add(a);
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
