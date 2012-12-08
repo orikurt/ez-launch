@@ -32,6 +32,8 @@ import android.widget.AdapterView.OnItemClickListener;
 public class StatisticsService extends Service{
 
 	ArrayList<Shortcut> mList;
+	List<Score> scoreList;
+	
 	public static StatisticsService sInstance;
 	SystemIntentsReceiver systemIntentsReceiver;
 	
@@ -73,6 +75,7 @@ public class StatisticsService extends Service{
 
 	public void initData() {
 		mList= new ArrayList<Shortcut>();
+		scoreList = new ArrayList<Score>();
 	}
 
 	public void sendStatistics() {		
