@@ -6,13 +6,13 @@ import android.graphics.drawable.Drawable;
 public class Shortcut {
 	public Drawable Icon;
 	public String label;
-	public Bitmap Photo;
 	public String URI;
 	
-	public Shortcut(Drawable icon,String label)
+	public Shortcut(Drawable icon,String label, String uri)
 	{
-		setIcon(icon);
-		setLabel(label);
+		this.Icon = icon;
+		this.label = label;
+		this.URI = uri;
 	}
 
 	public Shortcut() {
