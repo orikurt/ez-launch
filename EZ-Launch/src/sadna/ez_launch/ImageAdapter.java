@@ -71,7 +71,7 @@ public class ImageAdapter extends BaseAdapter {
         
 
         imageView.setImageDrawable(mList.get(position).getIcon());
-        textView.setText(mList.get(position).getLabel());
+        textView.setText(mList.get(position).getName());
         return v;
     }
 
