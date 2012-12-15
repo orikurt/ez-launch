@@ -4,13 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 public class Shortcut {
-	public Drawable Icon;
+	public Bitmap Photo;
 	public String label;
 	public String URI;
 	
-	public Shortcut(Drawable icon,String label, String uri)
+	public Shortcut(Bitmap icon,String label, String uri)
 	{
-		this.Icon = icon;
+		this.Photo = icon;
 		this.label = label;
 		this.URI = uri;
 	}
@@ -19,12 +19,16 @@ public class Shortcut {
 		// TODO Auto-generated constructor stub
 	}
 
-	Drawable getIcon() {
-		return Icon;
+	public Shortcut(Drawable applicationIcon, String packageName, Object uri2) {
+		// TODO Auto-generated constructor stub
 	}
 
-	void setIcon(Drawable icon) {
-		Icon = icon;
+	Bitmap getPhoto() {
+		return Photo;
+	}
+
+	void setIcon(Bitmap icon) {
+		Photo = icon;
 	}
 
 	String getLabel() {
