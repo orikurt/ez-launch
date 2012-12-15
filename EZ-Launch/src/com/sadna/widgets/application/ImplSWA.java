@@ -18,9 +18,10 @@ package com.sadna.widgets.application;
 
 
 
-import mobi.intuitit.android.content.LauncherIntent;
-import mobi.intuitit.android.widget.BoundRemoteViews;
-import mobi.intuitit.android.widget.SimpleRemoteViews;
+import com.sadna.android.content.LauncherIntent;
+import com.sadna.android.widget.BoundRemoteViews;
+import com.sadna.android.widget.SimpleRemoteViews;
+
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
