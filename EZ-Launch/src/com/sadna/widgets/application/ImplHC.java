@@ -17,7 +17,7 @@
 package com.sadna.widgets.application;
 
 
-import mobi.intuitit.android.content.LauncherIntent;
+import com.sadna.android.content.LauncherIntent;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
