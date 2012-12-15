@@ -1,13 +1,8 @@
 package sadna.ez_launch;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import sadna.ez_launch.MainActivity.StatisticsUpdateReceiver;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -21,31 +16,25 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class StatisticsService extends Service{
 
-	ArrayList<Shortcut> mList;
+	ArrayList<Shortcut> shortcutList;
 	List<Score> scoreList;
-	
+
 	public static StatisticsService sInstance;
 	SystemIntentsReceiver systemIntentsReceiver;
-	
+	PackageManager packageManager;
+	ActivityManager activityManager;
+
 	private int MAX_TASKS = 10;
 	public static String UPDATE_INTENT = "sadna.ez_launch.UPDATE_INTENT";
 
 	public static StatisticsService getInstance() {
 		return sInstance;
 	}
-	
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -55,10 +44,12 @@ public class StatisticsService extends Service{
 	public void onCreate() {
 		//code to execute when the service is first created
 		sInstance = this;
-		
+		packageManager = getPackageManager();
+		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
 		initData();
-		
-		// Register to StatisticsService.UPDATE_INTENT;
+
+		// Register to ACTION_SCREEN_OFF;
 		if (systemIntentsReceiver == null)
 			systemIntentsReceiver = new SystemIntentsReceiver();
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
@@ -76,79 +67,108 @@ public class StatisticsService extends Service{
 	}
 
 	public void initData() {
-		mList= new ArrayList<Shortcut>();
+
+		shortcutList = new ArrayList<Shortcut>();
+
 		scoreList = new ArrayList<Score>();
+		initScoreList();
 	}
 
-	public void sendStatistics() {		
-		Intent i = new Intent(UPDATE_INTENT);
-		sendBroadcast(i);
-	}
-
-//	private StringBuilder GetRunningActivityManager() {
-//		ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-//
-//		// get the info from the currently running task
-//		List< RunningTaskInfo > tasksInfo = actvityManager.getRunningTasks(MAX_TASKS);
-//
-//		final StringBuilder logs = new StringBuilder();
-//		String separator = System.getProperty("line.separator"); 
-//
-//		for (RunningTaskInfo taskInfo : tasksInfo) {
-//
-//			ComponentName componentInfo = taskInfo.baseActivity;
-//			componentInfo.getPackageName();
-//
-//			logs.append(componentInfo);
-//			logs.append(separator);
-//		}
-//		return logs;
-//	}
-
-	private void GetRecentTasks() {
-	ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-
-	// get the info from the currently running task
-	List< RecentTaskInfo > tasksInfo = actvityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
-	PackageManager pk = getPackageManager();
-
-	for (RecentTaskInfo taskInfo : tasksInfo) {
-		Shortcut a;
-		try {
-			a = new Shortcut(pk.getApplicationIcon(taskInfo.origActivity.getPackageName()),
-					taskInfo.origActivity.getPackageName());
-			mList.add(a);
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-}
-	
-	private void GetInstalledApplicationsList()
-	{
+	private void initScoreList() {
 		Context context = getApplicationContext();
 
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities( mainIntent, 0);
-		
-		for (ResolveInfo resolveInfo : pkgAppsList) {
 
-			Shortcut a = new Shortcut((resolveInfo.activityInfo.loadIcon(getPackageManager())),
-					resolveInfo.activityInfo.packageName);
-			mList.add(a);
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+			Score score = new Score(resolveInfo.activityInfo.packageName, 0);
+			scoreList.add(score);
+		}
+	}
+
+	public void notifyWidget() {
+
+		// Prepare shortcut list
+		shortcutList.clear();
+		Collections.sort(scoreList);
+		for (Score score : scoreList) {
+			try {
+				ApplicationInfo appInfo = packageManager.getApplicationInfo(score.name, PackageManager.GET_META_DATA);
+				Shortcut shortcut = new Shortcut(appInfo.loadIcon(packageManager), score.name, null);
+				shortcutList.add(shortcut);
+			}
+			catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		// Send intent
+		Intent i = new Intent(UPDATE_INTENT);
+		sendBroadcast(i);
+	}
+
+	private void updateWithRunningTasks() {
+		ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+
+		// get the info from the currently running task
+		List< RunningTaskInfo > tasksInfo = actvityManager.getRunningTasks(MAX_TASKS);
+
+		for (RunningTaskInfo taskInfo : tasksInfo) {
+
+			ComponentName componentInfo = taskInfo.baseActivity;
+			componentInfo.getPackageName();
+		}
+		normalizeScores();
+	}
+
+	private void updateWithRecentTasks() {
+		// get the info from the currently running task
+		List<RecentTaskInfo> tasksInfo = activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
+		int i = scoreList.size() - tasksInfo.size();
+		for (RecentTaskInfo taskInfo : tasksInfo) {
+			Score score = findScore(taskInfo.origActivity.getPackageName());
+			if (score == null)
+				continue;
+			
+			score.adjustScore(i);
+			i--;
+		}
+		
+		normalizeScores();
+	}
+
+	private Score findScore(String name) {
+		for (Score score : scoreList) {
+			if (name.compareTo(score.getName()) == 0) {
+				return score;
+			}
+		}
+		return null;
+	}
+
+	private void normalizeScores() {
+		
+		// Calculate sum-of-squares
+		float sumOfSqaures = 0;
+		for (Score score : scoreList) {
+			sumOfSqaures += (score.getScore() * score.getScore());
+		}
+		
+		// Divide each score in sumOfSqaures
+		for (Score score : scoreList) {
+			score.setScore(score.getScore() / sumOfSqaures);
 		}
 	}
 	
 	public class SystemIntentsReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			
+
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-				//GetInstalledApplicationsList();
-				GetRecentTasks();
-				sendStatistics();
+				updateWithRecentTasks();
+				notifyWidget();
 			}
 		}
 	}
