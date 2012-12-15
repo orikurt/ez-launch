@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ Copyright (C) 2010 Florian Sundermann
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<resources>
+    <!-- German -->
+    <string name="app_name">Kontakt Widget</string>
+    <string name="widget1x2">Kontakt Widget 1x2</string>
+    <string name="widget1x3">Kontakt Widget 1x3</string>    
+    <string name="widget1x4">Kontakt Widget 1x4</string>
+    <string name="widget2x2">Kontakt Widget 2x2</string>
+    <string name="widget2x3">Kontakt Widget 2x3</string>
+    <string name="widget2x4">Kontakt Widget 2x4</string>
+    <string name="widget3x2">Kontakt Widget 3x2</string>
+    <string name="widget3x3">Kontakt Widget 3x3</string>
+    <string name="widget3x4">Kontakt Widget 3x4</string>
+    <string name="widget4x2">Kontakt Widget 4x2</string>
+    <string name="widget4x3">Kontakt Widget 4x3</string>
+    <string name="widget4x4">Kontakt Widget 4x4</string>
+    
+    <string name="namekind">Namen anzeigen</string>
+    <string name="givenname">Vornamen</string>
+    <string name="familyname">Nachnamen</string>
+    <string name="displayname">Anzeigenamen</string>    
+    <string name="alias">Alias</string>
+
+    <string name="loading">Bitte prüfen Sie ob ihr launcher scrollable widgets unterstützt (ADW Launcher/Launcher Pro) UND ob scrollable widget aktiviert sind.</string>
+    <string name="save">Speichern</string>
+    <string name="select_contact_group">Kontakt Gruppe</string>
+    <string name="allcontacts">Alle Kontakte *</string>
+    <string name="starred">Favoriten *</string>
+    <string name="displayLabel">Widget Bezeichnung</string>
+    <string name="black">Schwarz</string>
+    <string name="white">Weiß</string>
+    <string name="transparent">Transparent</string>
+    <string name="ics_style">Ice Cream Sandwich</string>
+    <string name="background">Stil</string>
+    <string name="showName">Kontaktnamen anzeigen</string>
+    <string name="pref_grp_data">Daten</string>
+    <string name="pref_grp_layout">Ansicht</string>
+    <string name="pref_grp_general">Allgemein</string>
+    <string name="help">Hilfe</string>
+    <string name="help_summary">Das Widget funktioniert nicht?</string>
+    <string name="okbtn">Ok</string>
+    <string name="helptext">Wenn Sie Probleme haben weil das Widget nur \"lade...\" anzeigt, 
+stellen Sie sicher, dass Sie einen Launcher haben, welcher \"Scrollable Widgets\" unterstützt und das Sie
+die neuste Version dieses Launchers haben!\n\n
+Einige Launcher haben eine Einstellung für \"Scrollable Widgets\". Stellen Sie sicher, dass diese Einstellungen aktiviert sind\n\n 
+Wenn Sie immer noch Probleme haben, können Sie auch den Entwickler kontaktieren (boombuler@googlemail.com)</string>
+	<string name="about">Info</string>
+	<string name="abouttext">Ich möchte folgenden Leuten für ihre Hilfe an diesem Projekt danken:\n\n
+Grafik:\n
+* Danny Hensel\n
+* Ian Grams\n\n
+Übersetzungen:\n
+* \"EAGINsoftware\"\n\n
+Coding:\n
+* ChrBas</string>
+	<string name="columncount">Spalten</string>
+	<string name="background_alpha">Hintergrundtransparenz</string>
+	<string name="launcher_too_old">Ihr Launcher ist zu alt, bitte aktualisieren sie den Launcher!</string>
+	<string name="needs_froyo">Dieses Feature ist nur auf Android 2.2 und höher verfügbar</string>
+	
+	<string name="behavior">Verhalten</string>
+	<string name="quickcontactbar">QuickContactBar anzeigen</string>
+	<string name="directdial">Anrufen</string>
+	<string name="showcontact">Kontakt anzeigen</string>
+	<string name="onclick">Aktion</string>
+	<string name="sendsms">SMS senden</string>
+	
+	<string name="textalign">Position des Names</string>
+	<string name="align_center">Zentriert (unter dem Foto)</string>
+	<string name="align_left">Links vom Foto</string>
+	<string name="align_right">Rechts vom Foto</string>
+</resources>
