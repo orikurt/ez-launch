@@ -16,19 +16,8 @@
  -->
 <resources>
     <!-- English -->
-    <string name="app_name">Contact Widget</string>    
-    <string name="widget1x2">Contact Widget 1x2</string>
-	<string name="widget1x3">Contact Widget 1x3</string>    
-	<string name="widget1x4">Contact Widget 1x4</string>
-    <string name="widget2x2">Contact Widget 2x2</string>
-    <string name="widget2x3">Contact Widget 2x3</string>
-    <string name="widget2x4">Contact Widget 2x4</string>
-    <string name="widget3x2">Contact Widget 3x2</string>
-    <string name="widget3x3">Contact Widget 3x3</string>
-    <string name="widget3x4">Contact Widget 3x4</string>
-    <string name="widget4x2">Contact Widget 4x2</string>
-    <string name="widget4x3">Contact Widget 4x3</string>
-    <string name="widget4x4">Contact Widget 4x4</string>
+    <string name="app_name">EZ Launch</string>
+    <string name="widget4x4">EZ Launch Widget</string>
     
     <string name="namekind">Name to display</string>
     <string name="givenname">given name</string>
