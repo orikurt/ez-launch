@@ -28,7 +28,7 @@ public class Snapshot implements List<IWidgetItemInfo>{
 		return null;
 	}
 	
-	private void normalizeScores() {
+	public void normalizeScores() {
 		
 		// Calculate root of sum-of-squares
 		double rootSumOfSqaures = 0;
