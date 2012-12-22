@@ -15,6 +15,6 @@ public interface IWidgetItemInfo {
 	
 	public double getScore();
 	
-	public void setScore();
+	public void setScore(double newScore);
 }
 
