@@ -28,6 +28,21 @@ public class Snapshot implements List<IWidgetItemInfo>{
 		return null;
 	}
 	
+	private void normalizeScores() {
+		
+		// Calculate root of sum-of-squares
+		double rootSumOfSqaures = 0;
+		for (IWidgetItemInfo itemInfo : collection) {
+			rootSumOfSqaures += (itemInfo.getScore() * itemInfo.getScore());
+		}
+		rootSumOfSqaures = Math.sqrt(rootSumOfSqaures);
+		
+		// Divide each score in root of sum-of-squares
+		for (IWidgetItemInfo itemInfo : collection) {
+			itemInfo.setScore(itemInfo.getScore() / rootSumOfSqaures);
+		}
+	}
+	
 	@Override
 	public boolean add(IWidgetItemInfo object) {
 		return collection.add(object);
