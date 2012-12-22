@@ -19,6 +19,15 @@ public class Snapshot implements List<IWidgetItemInfo>{
 		return snapInfo;
 	}
 	
+	public IWidgetItemInfo getItemByName (String name){
+		for (IWidgetItemInfo itemInfo : collection) {
+			if (name.equals(itemInfo.getPackageName())) {
+				return itemInfo;
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public boolean add(IWidgetItemInfo object) {
 		return collection.add(object);
