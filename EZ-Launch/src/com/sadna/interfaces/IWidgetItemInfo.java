@@ -12,5 +12,9 @@ public interface IWidgetItemInfo {
 	public String getLabel();
 	
 	public Intent getLaunchIntent();
+	
+	public double getScore();
+	
+	public void setScore();
 }
 
