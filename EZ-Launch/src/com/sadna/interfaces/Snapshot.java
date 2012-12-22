@@ -10,6 +10,10 @@ public abstract class Snapshot implements List<IWidgetItemInfo>{
 	private ISnapshotInfo snapInfo;
 	private List<IWidgetItemInfo> collection;
 	
+	public Snapshot(ISnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
+		snapInfo = snapshotInfo;
+		collection = lst;
+	}
 	
 	public ISnapshotInfo getSnapshot(){
 		return snapInfo;
