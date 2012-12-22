@@ -9,5 +9,8 @@ public interface IDataManager {
 	
 	public List<Snapshot> loadAllSnapshots();
 	public Snapshot loadSnapshot(String snapName);
+	
+	public boolean setSelectedSnapshot(Snapshot snap);
+	public boolean getSelectedSnapshot();
 
 }
