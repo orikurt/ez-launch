@@ -3,7 +3,7 @@ package com.sadna.interfaces;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
-public interface IApplicationInfo {
+public interface IWidgetItemInfo {
 	
 	public Drawable getImage();
 	
@@ -11,6 +11,6 @@ public interface IApplicationInfo {
 	
 	public String getLabel();
 	
-	public Intent getLaunchInten();
+	public Intent getLaunchIntent();
 }
 
