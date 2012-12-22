@@ -2,7 +2,7 @@ package com.sadna.interfaces;
 
 import java.util.Date;
 
-public interface ISnapshot {
+public interface ISnapshotInfo {
 	public String getSnapshotName();
 	public Date getLastEdited();
 
