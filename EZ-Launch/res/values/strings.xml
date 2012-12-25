@@ -74,4 +74,10 @@ Coding:\n
 	<string name="align_center">Center (below the picture)</string>
 	<string name="align_left">Left of the picture</string>
 	<string name="align_right">Right of the picture</string>
+	
+	<!-- SERVICE STRINGS -->
+	<string name="statistics_service_created">EZ-Launch Created</string>
+	<string name="statistics_service_started">EZ-Launch Started</string>
+	<string name="statistics_service_stopped">EZ-Launch Stopped</string>
+	
 </resources>
