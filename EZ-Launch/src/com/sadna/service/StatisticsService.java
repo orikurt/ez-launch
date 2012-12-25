@@ -27,7 +27,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class StatisticsService extends Service{
-	String TAG = "StatisticsService";	
+	String LOG_TAG = "StatisticsService";	
 	
 	Snapshot currSnapshot;
 	IDataManager dataManager;
@@ -47,10 +47,23 @@ public class StatisticsService extends Service{
 
 	@Override
 	public void onCreate() {
-		
 		// Notify the user about Creating.
         Toast.makeText(this, R.string.statistics_service_created, Toast.LENGTH_SHORT).show();
-		Log.d(TAG, "Created");
+		Log.d(LOG_TAG, "Created");
+	}
+
+	@Override
+	public void onDestroy() {
+        // Notify the user about destroying.
+        Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
+        Log.d(LOG_TAG, "Destroyed");
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+        // Notify the user about Starting.
+        Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
+        Log.d(LOG_TAG, "Started");
         
 		// Initialize all private fields
 		initFields();
@@ -59,21 +72,8 @@ public class StatisticsService extends Service{
 		/*if (systemIntentsReceiver == null)
 			systemIntentsReceiver = new SystemIntentsReceiver();
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));*/
-	}
-
-	@Override
-	
-	public void onDestroy() {
-        // Notify the user about destroying.
-        Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Destroyed");
-	}
-
-	@Override
-	public void onStart(Intent intent, int startId) {
-        // Notify the user about Starting.
-        Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Started");
+        
+        return START_STICKY;
 	}
 
 	public void initFields() {
@@ -140,7 +140,7 @@ public class StatisticsService extends Service{
 	}
 
 	public void notifyWidget() {
-		// Send intent
+		// Send update intent
 		Intent updateIntent = new Intent(UPDATE_INTENT);
 		sendBroadcast(updateIntent);
 	}
