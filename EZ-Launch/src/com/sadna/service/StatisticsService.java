@@ -7,6 +7,7 @@ import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.interfaces.Snapshot;
+import com.sadna.widgets.application.R;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -23,6 +24,7 @@ import android.content.pm.ResolveInfo;
 
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 public class StatisticsService extends Service{
 	String TAG = "StatisticsService";	
@@ -45,8 +47,11 @@ public class StatisticsService extends Service{
 
 	@Override
 	public void onCreate() {
-		Log.d(TAG, "Created");
 		
+		// Notify the user about Creating.
+        Toast.makeText(this, R.string.statistics_service_created, Toast.LENGTH_SHORT).show();
+		Log.d(TAG, "Created");
+        
 		// Initialize all private fields
 		initFields();
 
@@ -59,12 +64,16 @@ public class StatisticsService extends Service{
 	@Override
 	
 	public void onDestroy() {
-		//code to execute when the service is shutting down
+        // Notify the user about destroying.
+        Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Destroyed");
 	}
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-		//code to execute when the service is starting up
+        // Notify the user about Starting.
+        Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Started");
 	}
 
 	public void initFields() {
