@@ -22,12 +22,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import android.os.IBinder;
+import android.util.Log;
 
 public class StatisticsService extends Service{
-
+	String TAG = "StatisticsService";	
+	
 	Snapshot currSnapshot;
 	IDataManager dataManager;
-
+	
 	SystemIntentsReceiver systemIntentsReceiver;
 	
 	PackageManager packageManager;
@@ -43,16 +45,19 @@ public class StatisticsService extends Service{
 
 	@Override
 	public void onCreate() {
-		//code to execute when the service is first created
+		Log.d(TAG, "Created");
+		
+		// Initialize all private fields
 		initFields();
 
 		// Register to ACTION_SCREEN_OFF;
-		if (systemIntentsReceiver == null)
+		/*if (systemIntentsReceiver == null)
 			systemIntentsReceiver = new SystemIntentsReceiver();
-		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));*/
 	}
 
 	@Override
+	
 	public void onDestroy() {
 		//code to execute when the service is shutting down
 	}
