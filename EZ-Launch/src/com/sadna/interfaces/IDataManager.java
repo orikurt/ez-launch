@@ -2,6 +2,8 @@ package com.sadna.interfaces;
 
 import java.util.List;
 
+import com.android.data.Snapshot;
+
 public interface IDataManager {
 	
 	public boolean saveAllSnapshots(List<Snapshot> lst);

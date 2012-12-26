@@ -3,10 +3,10 @@ package com.sadna.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.data.Snapshot;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
-import com.sadna.interfaces.Snapshot;
 import com.sadna.widgets.application.R;
 
 import android.app.ActivityManager;

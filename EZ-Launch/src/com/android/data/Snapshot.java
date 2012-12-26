@@ -1,9 +1,12 @@
-package com.sadna.interfaces;
+package com.android.data;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import com.sadna.interfaces.ISnapshotInfo;
+import com.sadna.interfaces.IWidgetItemInfo;
 
 public class Snapshot implements List<IWidgetItemInfo>{
 
