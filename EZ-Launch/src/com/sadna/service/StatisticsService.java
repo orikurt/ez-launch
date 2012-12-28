@@ -91,6 +91,10 @@ public class StatisticsService extends Service{
 
 	public void initFields() {
 
+
+		dataManager = new DataManager(this.getApplicationContext());
+		
+		
 		//dataManager = new DataManager(null, LOG_TAG, null, MAX_TASKS);
 		if (dataManager == null) {
 			//Error
@@ -98,6 +102,7 @@ public class StatisticsService extends Service{
 		lastUnlock = new Date();
 		Date current = new Date();
 		ISnapshotInfo snapshotInfo = new SnapshotInfo("temp", current);
+
 		currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		if (currSnapshot == null) {
 			//Error
