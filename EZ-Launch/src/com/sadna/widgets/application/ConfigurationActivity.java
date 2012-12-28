@@ -6,8 +6,8 @@ import org.xmlpull.v1.XmlPullParser;
 
 
 import com.sadna.interfaces.IDataManager;
-import com.sadna.interfaces.Snapshot;
-import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
+import com.android.data.Snapshot;
+//import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
 
 
 import android.app.AlertDialog;
