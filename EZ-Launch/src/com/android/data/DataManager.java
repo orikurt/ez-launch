@@ -127,7 +127,10 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore())});
 		
 
-		getWritableDatabase().execSQL(insertWidgetQuery);
+		
+		SQLiteDatabase db = getWritableDatabase(); // 
+		db.execSQL(insertWidgetQuery);
+		db.close();
 
 		return true;
 	}
@@ -152,6 +155,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public List<Snapshot> loadAllSnapshots() {
+		SQLiteDatabase db = getReadableDatabase();
+		//db.inse
 		// TODO Auto-generated method stub
 		return null;
 	}
