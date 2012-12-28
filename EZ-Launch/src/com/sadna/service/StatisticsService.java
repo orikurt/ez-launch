@@ -91,7 +91,6 @@ public class StatisticsService extends Service{
 
 	public void initFields() {
 
-
 		dataManager = new DataManager(this.getApplicationContext());
 		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 		packageManager = getPackageManager();
@@ -134,10 +133,8 @@ public class StatisticsService extends Service{
 	}
 
 	private void updateWithRunningTasks() {
-		ActivityManager actvityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-
 		// get the info from the currently running task
-		List< RunningTaskInfo > tasksInfo = actvityManager.getRunningTasks(MAX_TASKS);
+		List< RunningTaskInfo > tasksInfo = activityManager.getRunningTasks(MAX_TASKS);
 
 		for (RunningTaskInfo taskInfo : tasksInfo) {
 
