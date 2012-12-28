@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.sadna.interfaces.IDataManager;
+import com.sadna.interfaces.IWidgetItemInfo;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
@@ -21,7 +22,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	// Snapshot info table columns
 	private static final String KEY_SNAPSHOT_NAME = "snapshotName";
-	private static final String KEY_SNAPSHOT_LASR_DATE = "lastEdited";
+	private static final String COLUMN_SNAPSHOT_LAST_DATE = "lastEdited";
 
 
 	// Widget info table name
@@ -41,22 +42,16 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String KEY_SNAPSHOT_REF = "snapshotNameREF";
 
 
-
-
-
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
 	}
 
-
-
-
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_SNAPSHOT_INFO_TABLE = "CREATE TABLE IF NOT EXISTS" + TABLE_SNAPSHOT_INFO + "("
 				+ KEY_SNAPSHOT_NAME + " TEXT PRIMARY KEY," + 
-				KEY_SNAPSHOT_LASR_DATE + " TEXT DEFAULT CURRENT_TIMESTAMP " + ")";
+				COLUMN_SNAPSHOT_LAST_DATE + " TEXT DEFAULT CURRENT_TIMESTAMP " + ")";
 		db.execSQL(CREATE_SNAPSHOT_INFO_TABLE);
 		
 		String CREATE_WIDGET_INFO_TABLE = "CREATE TABLE IF NOT EXISTS" + TABLE_WIDGET_INFO + "("
@@ -72,6 +67,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				+ "FOREIGN KEY(" + KEY_WIDGET_REF + ") REFERENCES " + TABLE_WIDGET_INFO + "(" + KEY_WIDGET_NAME +") ON UPDATE CASCADE ON UPDATE CASCADE,"
 				+ "FOREIGN KEY(" + KEY_SNAPSHOT_REF + ") REFERENCES " + TABLE_SNAPSHOT_INFO + "(" + KEY_SNAPSHOT_NAME +") ON UPDATE CASCADE ON UPDATE CASCADE" +")";
 		db.execSQL(CREATE_WIDGET_TO_SNAPSHOT_TABLE);
+		
 	}
 
 
@@ -89,17 +85,70 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public boolean saveAllSnapshots(List<Snapshot> lst) {
-		// TODO Auto-generated method stub
-		return false;
+		// I know this is not ideal but it will have to do for now - the list size shouldn't exceed 6
+		for (Snapshot snapshot : lst) {
+			saveSnapshot(snapshot);
+		}
+		return true;
 	}
 
 
 	@Override
 	public boolean saveSnapshot(Snapshot snap) {
-		// TODO Auto-generated method stub
-		return false;
+		for (IWidgetItemInfo iWidgetItemInfo : snap) {
+			saveWidgetInfo(iWidgetItemInfo);
+		}
+		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
+				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
+				new String[] {snap.getSnapshot().getSnapshotName(), snap.getSnapshot().getLastEdited().toString()});
+		
+		getWritableDatabase().execSQL(insertSnapShotQuery);
+		
+		// Update relations - the current Implementation is not perfect as it sends many queries to the DB instead of 1 query
+		for (IWidgetItemInfo widg : snap) {
+			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
+					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
+					new String[]{widg.getPackageName(),snap.getSnapshot().getSnapshotName()});
+			getWritableDatabase().execSQL(insertSnapToWidgetQuery);
+		}
+		
+		/*
+		INSERT OR REPLACE INTO Employee (id,role,name) 
+		  VALUES (  1, 
+		            'code monkey',
+		            (select name from Employee where id = 1)
+		          );*/
+		return true;
 	}
+	
+	private boolean saveWidgetInfo(IWidgetItemInfo widg){
+		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
+				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE}, 
+				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore())});
+		
 
+		getWritableDatabase().execSQL(insertWidgetQuery);
+
+		return true;
+	}
+//field 
+	private String getInsertOrReplaceQuery(String table,String fields[], String values[]){
+		StringBuilder res = new StringBuilder();
+		res.append("INSERT OR REPLACE INTO ");
+		res.append(table);
+		res.append("( ");
+		for (int i = 0; i < fields.length - 1; i++) {
+			res.append(fields[i] + ",");	
+		}
+		res.append(fields[fields.length - 1]);
+		res.append(") VALUES( ");
+		for (int i = 0; i < values.length - 1; i++) {
+			res.append(values[i] + ",");	
+		}
+		res.append(values[values.length-1]);
+		res.append(");");
+		return res.toString();
+	}
 
 	@Override
 	public List<Snapshot> loadAllSnapshots() {
