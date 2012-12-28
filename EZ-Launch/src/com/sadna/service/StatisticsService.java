@@ -1,6 +1,7 @@
 package com.sadna.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.android.data.DataManager;
@@ -22,15 +23,18 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
 public class StatisticsService extends Service{
-	String LOG_TAG = "StatisticsService";	
+	String LOG_TAG = "StatisticsService";
 	
 	Snapshot currSnapshot;
 	IDataManager dataManager;
@@ -39,6 +43,9 @@ public class StatisticsService extends Service{
 	
 	PackageManager packageManager;
 	ActivityManager activityManager;
+	
+	// Intent related globals
+	private Date lastUnlock;
 
 	private int MAX_TASKS = 10;
 	public static String UPDATE_INTENT = "com.sadna.intents.UPDATE_INTENT";
@@ -72,21 +79,25 @@ public class StatisticsService extends Service{
 		initFields();
 
 		// Register to ACTION_SCREEN_OFF;
-		/*if (systemIntentsReceiver == null)
+		if (systemIntentsReceiver == null)
 			systemIntentsReceiver = new SystemIntentsReceiver();
-		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));*/
+		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
         
         return START_STICKY;
 	}
 
 	public void initFields() {
 
-		dataManager = new DataManager(null, LOG_TAG, null, MAX_TASKS);
+		//dataManager = new DataManager(null, LOG_TAG, null, MAX_TASKS);
 		if (dataManager == null) {
 			//Error
 		}
-		
-		ISnapshotInfo snapshotInfo = new SnapshotInfo();
+		lastUnlock = new Date();
+		Date current = new Date();
+		ISnapshotInfo snapshotInfo = new SnapshotInfo("temp", current);
 		currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		if (currSnapshot == null) {
 			//Error
@@ -106,8 +117,12 @@ public class StatisticsService extends Service{
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-			//TODO: fill itemInfo parameters
-			IWidgetItemInfo itemInfo = new WidgetItemInfo();
+
+			Drawable itemIcon = resolveInfo.loadIcon(packageManager);
+			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
+			String itemPkgName = resolveInfo.resolvePackageName;
+			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemIcon, itemPkgName, itemIntent, itemLabel);
 			result.add(itemInfo);
 		}
 		
@@ -139,7 +154,7 @@ public class StatisticsService extends Service{
 				continue;
 			
 			itemInfo.setScore(itemInfo.getScore()+i);
-			i--;
+			i/=10;
 		}
 		
 		currSnapshot.normalizeScores();
@@ -154,9 +169,39 @@ public class StatisticsService extends Service{
 	public class SystemIntentsReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			PackageManager pm = getPackageManager();
 
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+				lastUnlock = new Date();
+			}
+			
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-				updateWithRecentTasks();
+				Date now = new Date();
+				if ((now.getTime() - lastUnlock.getTime()) > 10000){
+					updateWithRecentTasks();
+					notifyWidget();
+				}
+			}
+			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
+				int pkgId = Integer.parseInt(Intent.EXTRA_UID);
+				String name = pm.getNameForUid(pkgId);
+				ApplicationInfo info;
+				Drawable image;
+				try {
+					image = pm.getApplicationIcon(name);
+					info = pm.getApplicationInfo(name, PackageManager.GET_META_DATA);
+				} catch (NameNotFoundException e) {
+					// TODO Auto-generated catch block
+					// e.printStackTrace();
+					return;
+				}
+				
+				String label = pm.getApplicationLabel(info).toString();
+				Intent launchIntent = pm.getLaunchIntentForPackage(name);
+				IWidgetItemInfo newItem = new WidgetItemInfo(image, name, launchIntent, label);
+				currSnapshot.add(newItem);
+			}
+			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
 				notifyWidget();
 			}
 		}
