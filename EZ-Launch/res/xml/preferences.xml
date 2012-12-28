@@ -39,9 +39,6 @@
 		    android:positiveButtonText="OK"/>
 		 -->
 		           
-  		<Preference 
-  		    android:title="@string/save" 
-  		    android:key="SAVE"/>
 		
 		<Preference 
 		    android:title="@string/about" 
