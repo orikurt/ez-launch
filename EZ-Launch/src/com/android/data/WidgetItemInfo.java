@@ -16,6 +16,14 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	
 	
 	
+	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,
+			String label) {
+		this.image = image;
+		this.packageName = name;
+		this.launchIntent = launchIntent;
+		this.label = label;
+		this.score = 0;
+	}
 	@Override
 	public Drawable getImage() {
 		return image;
