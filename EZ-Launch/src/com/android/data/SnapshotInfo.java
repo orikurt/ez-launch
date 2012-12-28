@@ -8,6 +8,10 @@ public class SnapshotInfo implements ISnapshotInfo{
 	private String snapshotName;
 	private Date lastEdited;
 	
+	public SnapshotInfo(String name, Date lastEdit) {
+		this.snapshotName = name;
+		this.lastEdited = lastEdit;
+	}
 	@Override
 	public String getSnapshotName() {
 		return snapshotName;
