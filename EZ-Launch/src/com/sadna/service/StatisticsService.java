@@ -93,6 +93,7 @@ public class StatisticsService extends Service{
 
 
 		dataManager = new DataManager(this.getApplicationContext());
+		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 		packageManager = getPackageManager();
 		lastUnlock = new Date();
 		
@@ -108,9 +109,6 @@ public class StatisticsService extends Service{
 		if (currSnapshot == null) {
 			//Error
 		}
-		
-		
-		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 	}
 
 	private List<IWidgetItemInfo> getInstalledAppsInfo() {
