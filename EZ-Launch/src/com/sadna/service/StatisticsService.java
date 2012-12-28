@@ -93,13 +93,14 @@ public class StatisticsService extends Service{
 
 
 		dataManager = new DataManager(this.getApplicationContext());
-		
+		packageManager = getPackageManager();
+		lastUnlock = new Date();
 		
 		//dataManager = new DataManager(null, LOG_TAG, null, MAX_TASKS);
 		if (dataManager == null) {
 			//Error
 		}
-		lastUnlock = new Date();
+		
 		Date current = new Date();
 		ISnapshotInfo snapshotInfo = new SnapshotInfo("temp", current);
 
@@ -108,7 +109,7 @@ public class StatisticsService extends Service{
 			//Error
 		}
 		
-		packageManager = getPackageManager();
+		
 		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 	}
 
