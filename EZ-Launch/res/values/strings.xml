@@ -26,7 +26,7 @@
     <string name="alias">nickname</string>
     
     <string name="loading">Please check your if launcher supports scrolling (ADW Launcher/Launcher Pro) AND if scrolling is enabled.</string>
-    <string name="save">Save</string>
+    <string name="save">Save &amp; Start</string>
     <string name="select_contact_group">Contact group</string>
     <string name="allcontacts">All Contacts *</string>
     <string name="starred">Favorites *</string>
@@ -41,13 +41,9 @@
     <string name="pref_grp_layout">Layout</string>
     <string name="pref_grp_general">General</string>
     <string name="help">Help</string>
-    <string name="help_summary">Widget does not work?</string>
+    <string name="help_summary">Troubleshoot Widget</string>
     <string name="okbtn">Ok</string>
-<string name="helptext">If you have any problems with this widget
-make sure you have a launcher that supports scrollable widgets
-and that you are using the latest update of that launcher!\n\n
-Some launchers have options to disable scrollable widgets (make sure scrollable widgets are enabled)\n\n
-If there are still problems feel free to contact the developer! (boombuler@googlemail.com)</string>
+<string name="helptext">Nobody is going to help you. Figure it out yourself.</string>
 	<string name="about">About</string>
 	<string name="abouttext">I want to thank the following people for their contribution on this project:\n\n
 Graphics:\n
@@ -75,9 +71,13 @@ Coding:\n
 	<string name="align_left">Left of the picture</string>
 	<string name="align_right">Right of the picture</string>
 	
+	<string name="picksnap">Pick from saved home screens</string>
+	<string name="loadSnapshot">Load SnapShot</string>
+	
 	<!-- SERVICE STRINGS -->
 	<string name="statistics_service_created">EZ-Launch Created</string>
 	<string name="statistics_service_started">EZ-Launch Started</string>
 	<string name="statistics_service_stopped">EZ-Launch Stopped</string>
+	<string name="button_text">Save</string>
 	
 </resources>

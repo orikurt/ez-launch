@@ -40,12 +40,17 @@ public class Preferences {
     public static final int CLICK_DIAL = 1;
     public static final int CLICK_SHWCONTACT = 2;
     public static final int CLICK_SMS = 3;
+    
+    public static final String HELP = "help-%d";
 
     public static final String BGIMAGE = "BGImage-%d";
     public static final int BG_BLACK = 0;
     public static final int BG_WHITE = 1;
     public static final int BG_TRANS = 2;
     public static final int BG_ICS   = 3;
+    
+    public static final String LOAD_SNAPSHOT = "LoadSnap-%d";
+    
 
     public static final int ALIGN_LEFT = 1;
     public static final int ALIGN_CENTER = 0;
