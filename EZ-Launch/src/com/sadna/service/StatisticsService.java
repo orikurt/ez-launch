@@ -3,7 +3,10 @@ package com.sadna.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.android.data.DataManager;
 import com.android.data.Snapshot;
+import com.android.data.SnapshotInfo;
+import com.android.data.WidgetItemInfo;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
@@ -78,9 +81,12 @@ public class StatisticsService extends Service{
 
 	public void initFields() {
 
-		/*dataManager = new DataManager();*/
+		dataManager = new DataManager(null, LOG_TAG, null, MAX_TASKS);
+		if (dataManager == null) {
+			//Error
+		}
 		
-		ISnapshotInfo snapshotInfo = null /*TODO: new  SnapshotInfo()*/;
+		ISnapshotInfo snapshotInfo = new SnapshotInfo();
 		currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		if (currSnapshot == null) {
 			//Error
@@ -101,7 +107,7 @@ public class StatisticsService extends Service{
 
 		for (ResolveInfo resolveInfo : pkgAppsList) {
 			//TODO: fill itemInfo parameters
-			IWidgetItemInfo itemInfo/* = new WidgetItemInfo()*/ = null;
+			IWidgetItemInfo itemInfo = new WidgetItemInfo();
 			result.add(itemInfo);
 		}
 		
