@@ -2,7 +2,9 @@ package com.sadna.interfaces;
 
 import java.util.Date;
 
-public interface ISnapshotInfo {
+import android.os.Parcelable;
+
+public interface ISnapshotInfo extends Parcelable{
 	public String getSnapshotName();
 	public Date getLastEdited();
 	public String getLastEditedFormated();

@@ -2,8 +2,9 @@ package com.sadna.interfaces;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 
-public interface IWidgetItemInfo {
+public interface IWidgetItemInfo extends Parcelable{
 	
 	public Drawable getImage();
 	public void setImage(Drawable image);
