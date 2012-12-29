@@ -14,5 +14,6 @@ public interface IDataManager {
 	
 	public boolean setSelectedSnapshot(Snapshot snap);
 	public Snapshot getSelectedSnapshot();
+	public List<Snapshot> loadSnapshots(List<String> snapshotsNameList);
 
 }
