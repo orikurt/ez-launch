@@ -51,6 +51,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
+			return;
 		}
 		Log.d(TAG, "recieved onUpdate");
 
