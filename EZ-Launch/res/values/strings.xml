@@ -24,6 +24,7 @@
     <string name="familyname">family name</string>
     <string name="displayname">display name</string>
     <string name="alias">nickname</string>
+    <string-array name="empty_array"/>
     
     <string name="loading">Please check your if launcher supports scrolling (ADW Launcher/Launcher Pro) AND if scrolling is enabled.</string>
     <string name="save">Save &amp; Start</string>
@@ -45,14 +46,7 @@
     <string name="okbtn">Ok</string>
 <string name="helptext">Nobody is going to help you. Figure it out yourself.</string>
 	<string name="about">About</string>
-	<string name="abouttext">I want to thank the following people for their contribution on this project:\n\n
-Graphics:\n
-* Danny Hensel\n
-* Ian Grams\n\n
-Translations:\n
-* \"EAGINsoftware\"\n\n
-Coding:\n
-* ChrBas</string>
+	<string name="abouttext">EZ-Launch is an application that provides a better, nicer and safer arrangement for your homescreen. \n\nFor any questions or feedback please contact our development team at noamrab@gmail.com</string>
 	<string name="columncount">Columns</string>
 	<string name="background_alpha">Background alpha</string>
 	<string name="launcher_too_old">Sorry, your launcher is to old, please update it!</string>
@@ -79,5 +73,8 @@ Coding:\n
 	<string name="statistics_service_started">EZ-Launch Started</string>
 	<string name="statistics_service_stopped">EZ-Launch Stopped</string>
 	<string name="button_text">Save</string>
+	<string name="fixAppsOnScreen">Fixed Apps</string>
+	<string name="pickApps">Pick apps to persist to home screen</string>
+	<string name="selectApps">Select Apps</string>
 	
 </resources>
