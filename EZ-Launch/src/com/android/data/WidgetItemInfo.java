@@ -2,23 +2,23 @@ package com.android.data;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
 
 import com.sadna.interfaces.IWidgetItemInfo;
 
 public class WidgetItemInfo implements IWidgetItemInfo{
 
-	
 	private Drawable image;
 	private String packageName;
 	private String label;
 	private Intent launchIntent;
 	private double score;
-	
-	
+
+
 	public WidgetItemInfo(String name,String label,double score) {
 		this(null,name,null,label,score);
 	}
-	
+
 	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,String label) {
 		this(image,name,launchIntent,label,0);
 	}
@@ -69,12 +69,21 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	public void setScore(double score) {
 		this.score = score;
 	}
-	
-	
-	
 
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	
-	
-	
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		/*dest.writeParcelable(image, flags);*/
+		dest.writeString(packageName);
+		dest.writeString(label);
+		dest.writeParcelable(launchIntent, flags);
+		dest.writeDouble(score);
+
+	}	
+
 }

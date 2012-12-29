@@ -1,28 +1,34 @@
 package com.android.data;
 
+import java.lang.reflect.Array;
+import java.lang.Object;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
 
-public class Snapshot implements List<IWidgetItemInfo>{
+public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 
-	private ISnapshotInfo snapInfo;
+	private SnapshotInfo snapInfo;
 	private List<IWidgetItemInfo> collection;
 	
-	public Snapshot(ISnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
+	public Snapshot(SnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
 		snapInfo = snapshotInfo;
 		collection = lst;
 	}
 	
-	public ISnapshotInfo getSnapshot(){
+	public ISnapshotInfo getSnapshotInfo() {
 		return snapInfo;
 	}
 	
-	public IWidgetItemInfo getItemByName (String name){
+	public IWidgetItemInfo getItemByName (String name) {
 		for (IWidgetItemInfo itemInfo : collection) {
 			if (name.equals(itemInfo.getPackageName())) {
 				return itemInfo;
@@ -32,7 +38,6 @@ public class Snapshot implements List<IWidgetItemInfo>{
 	}
 	
 	public void normalizeScores() {
-		
 		// Calculate root of sum-of-squares
 		double rootSumOfSqaures = 0;
 		for (IWidgetItemInfo itemInfo : collection) {
@@ -160,6 +165,17 @@ public class Snapshot implements List<IWidgetItemInfo>{
 	public <T> T[] toArray(T[] array) {
 		return collection.toArray(array);
 	}
-	
 
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		dest.writeParcelable(snapInfo, 0);
+		dest.writeParcelableArray((IWidgetItemInfo[]) collection.toArray(), 0);
+	}
 }
