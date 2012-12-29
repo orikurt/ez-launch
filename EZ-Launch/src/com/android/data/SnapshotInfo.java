@@ -6,16 +6,21 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.sadna.interfaces.ISnapshotInfo;
 
 public class SnapshotInfo implements ISnapshotInfo {
 	private String snapshotName;
 	private Date lastEdited;
-	
+
 	public SnapshotInfo(String name, Date lastEdit) {
 		this.snapshotName = name;
 		this.lastEdited = lastEdit;
+	}
+	public SnapshotInfo(Parcel in) {
+		snapshotName = in.readString();
+		lastEdited = (Date) in.readSerializable();
 	}
 	@Override
 	public String getSnapshotName() {
@@ -48,6 +53,18 @@ public class SnapshotInfo implements ISnapshotInfo {
 			return false;
 		}
 	}
+	
+	public static final Parcelable.Creator<SnapshotInfo> CREATOR
+	= new Parcelable.Creator<SnapshotInfo>() {
+		public SnapshotInfo createFromParcel(Parcel in) {
+			return new SnapshotInfo(in);
+		}
+
+		public SnapshotInfo[] newArray(int size) {
+			return new SnapshotInfo[size];
+		}
+	};
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub

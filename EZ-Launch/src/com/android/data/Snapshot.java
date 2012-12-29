@@ -1,6 +1,8 @@
 package com.android.data;
 
 import java.lang.Object;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -16,16 +18,22 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 
 	private ISnapshotInfo snapInfo;
 	private List<IWidgetItemInfo> collection;
-	
+
 	public Snapshot(ISnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
 		snapInfo = snapshotInfo;
 		collection = lst;
 	}
-	
+
+	public Snapshot(Parcel in) {
+		snapInfo = in.readParcelable(SnapshotInfo.class.getClassLoader());
+		in.readList(collection, IWidgetItemInfo.class.getClassLoader());
+
+	}
+
 	public ISnapshotInfo getSnapshotInfo() {
 		return snapInfo;
 	}
-	
+
 	public IWidgetItemInfo getItemByName (String name) {
 		for (IWidgetItemInfo itemInfo : collection) {
 			if (name.equals(itemInfo.getPackageName())) {
@@ -34,7 +42,7 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 		}
 		return null;
 	}
-	
+
 	public void normalizeScores() {
 		// Calculate root of sum-of-squares
 		double rootSumOfSqaures = 0;
@@ -42,13 +50,13 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 			rootSumOfSqaures += (itemInfo.getScore() * itemInfo.getScore());
 		}
 		rootSumOfSqaures = Math.sqrt(rootSumOfSqaures);
-		
+
 		// Divide each score in root of sum-of-squares
 		for (IWidgetItemInfo itemInfo : collection) {
 			itemInfo.setScore(itemInfo.getScore() / rootSumOfSqaures);
 		}
 	}
-	
+
 	@Override
 	public boolean add(IWidgetItemInfo object) {
 		return collection.add(object);
@@ -163,7 +171,18 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 	public <T> T[] toArray(T[] array) {
 		return collection.toArray(array);
 	}
+	
+	public static final Parcelable.Creator<Snapshot> CREATOR
+	= new Parcelable.Creator<Snapshot>() {
+		public Snapshot createFromParcel(Parcel in) {
+			return new Snapshot(in);
+		}
 
+		public Snapshot[] newArray(int size) {
+			return new Snapshot[size];
+		}
+	};
+	
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
@@ -172,8 +191,7 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
 		dest.writeParcelable(snapInfo, 0);
-		dest.writeParcelableArray((IWidgetItemInfo[]) collection.toArray(), 0);
+		dest.writeList(collection);
 	}
 }

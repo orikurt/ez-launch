@@ -3,6 +3,7 @@ package com.android.data;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.sadna.interfaces.IWidgetItemInfo;
 
@@ -29,6 +30,13 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		this.label = label;
 		this.score = score;
 	}
+	public WidgetItemInfo(Parcel in) {
+		packageName = in.readString();
+		label = in.readString();
+		launchIntent = in.readParcelable(Intent.class.getClassLoader());
+		score = in.readDouble();
+	}
+
 	@Override
 	public Drawable getImage() {
 		return image;
@@ -69,7 +77,17 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	public void setScore(double score) {
 		this.score = score;
 	}
+	
+	public static final Parcelable.Creator<WidgetItemInfo> CREATOR
+	= new Parcelable.Creator<WidgetItemInfo>() {
+		public WidgetItemInfo createFromParcel(Parcel in) {
+			return new WidgetItemInfo(in);
+		}
 
+		public WidgetItemInfo[] newArray(int size) {
+			return new WidgetItemInfo[size];
+		}
+	};
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
