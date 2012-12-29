@@ -128,7 +128,7 @@ public class StatisticsService extends Service{
 
 			Drawable itemIcon = resolveInfo.loadIcon(packageManager);
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
-			String itemPkgName = resolveInfo.resolvePackageName;
+			String itemPkgName = resolveInfo.activityInfo.packageName;
 			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
 			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemIcon, itemPkgName, itemIntent, itemLabel);
 			result.add(itemInfo);
@@ -155,7 +155,7 @@ public class StatisticsService extends Service{
 		double i = currSnapshot.size() - tasksInfo.size();
 
 		for (RecentTaskInfo taskInfo : tasksInfo) {
-			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(taskInfo.origActivity.getPackageName());
+			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(taskInfo.origActivity.getPackageName().toString());
 			if (itemInfo == null)
 				continue;
 
