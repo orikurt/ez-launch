@@ -17,7 +17,9 @@
 package com.sadna.widgets.application;
 
 
+import com.android.data.Snapshot;
 import com.sadna.android.content.LauncherIntent;
+import com.sadna.service.StatisticsService;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -35,6 +37,7 @@ import android.text.TextUtils;
 public class ImplHC implements ContactWidget.WidgetImplementation {
 	public static final String TAG = "boombuler.ImplHC";
 	private ContactWidget mWidget;
+	private Snapshot snap;
 	
 	public static final String EXTRA_DEFAULT_WIDTH = "EXTRA_DEFAULT_WIDTH";
 
@@ -51,6 +54,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
         Intent intent = new Intent(context, ContactWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		intent.putExtra(EXTRA_DEFAULT_WIDTH, mWidget.getWidth());
+		intent.putExtra(StatisticsService.NEW_SNAPSHOT, snap);
 		
 		// When intents are compared, the extras are ignored, so we need to embed the extras
 		// into the data so that the extras will not be ignored.
@@ -111,6 +115,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, rv);
+		appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.my_gridview);
 	}
 	
 	public boolean onReceive(Context context, Intent intent) {
@@ -121,6 +126,9 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 			
 			mWidget.onClick(context, appWidgetId, intent.getSourceBounds(), uri);
 			return true;
+		}
+		if (TextUtils.equals(action, AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
+			snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
 		}
 		return false;
 	}

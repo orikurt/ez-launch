@@ -3,6 +3,7 @@ package com.sadna.widgets.application;
 import com.android.data.Snapshot;
 import com.sadna.android.content.LauncherIntent;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.service.StatisticsService;
 
 
 
@@ -37,6 +38,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
+        mData = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
         //mDefWidth = intent.getIntExtra(ImplHC.EXTRA_DEFAULT_WIDTH, 1);
     }
     @Override
@@ -136,7 +138,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
     @Override 
     public void onDataSetChanged() {
 		Log.d(TAG, "Start Query!");
-		onDestroy();
+		
+		//onDestroy();
 		
 		/*
 		Uri dataUri = DataProvider.CONTENT_URI_MESSAGES.buildUpon().appendEncodedPath(Integer.toString(mAppWidgetId)).build();
