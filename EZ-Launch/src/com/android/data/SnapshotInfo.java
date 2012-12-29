@@ -6,11 +6,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.sadna.interfaces.ISnapshotInfo;
 
-public class SnapshotInfo implements ISnapshotInfo, Parcelable{
+public class SnapshotInfo implements ISnapshotInfo {
 	private String snapshotName;
 	private Date lastEdited;
 	
