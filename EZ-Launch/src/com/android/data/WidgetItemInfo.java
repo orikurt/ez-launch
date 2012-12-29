@@ -15,14 +15,19 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	private double score;
 	
 	
+	public WidgetItemInfo(String name,String label,double score) {
+		this(null,name,null,label,score);
+	}
 	
-	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,
-			String label) {
+	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,String label) {
+		this(image,name,launchIntent,label,0);
+	}
+	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,String label,double score) {
 		this.image = image;
 		this.packageName = name;
 		this.launchIntent = launchIntent;
 		this.label = label;
-		this.score = 0;
+		this.score = score;
 	}
 	@Override
 	public Drawable getImage() {
