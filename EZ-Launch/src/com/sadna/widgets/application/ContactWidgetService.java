@@ -39,10 +39,12 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
                 AppWidgetManager.INVALID_APPWIDGET_ID);
         //mDefWidth = intent.getIntExtra(ImplHC.EXTRA_DEFAULT_WIDTH, 1);
     }
-
-    public void onCreate() {    	
+    @Override
+    public void onCreate() {    
+    	
     }
 
+    @Override
     public void onDestroy() {/*
 		if (mData != null) {
 			for (ContactData data : mData) {
@@ -64,6 +66,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		return mData.size();
     }
 
+    
+    @Override
     public RemoteViews getViewAt(int position) {
 		Log.d(TAG, "get item at position: "+ position);
         // position will always range from 0 to getCount() - 1.
