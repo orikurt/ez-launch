@@ -6,12 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -20,6 +20,10 @@ import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
+
+	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
+
+	private static final String BAD_SNAPSHOT = "Bad_SnapshotXXXERROR";
 
 	public static final String DATE_FORMAT = "YYYY-MM-DD HH:MM:SS";
 
@@ -54,12 +58,17 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String KEY_WIDGET_REF = "packageNameREF";
 	private static final String KEY_SNAPSHOT_REF = "snapshotNameREF";
 	
-	//Date Formater
+	// Shared Preferences
+	private SharedPreferences sharedPreferences;
+	private static final String SELECTED_SNAPSHOT = "SelectedSnapshot";
+
+	private Snapshot selectedSnapshot = null;
+
 	
-
-
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+		this.sharedPreferences = context.getSharedPreferences(APPLICATION_SHARED_PREFRENCES, Context.MODE_PRIVATE);
 
 	}
 
@@ -278,15 +287,25 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public boolean setSelectedSnapshot(Snapshot snap) {
-		// TODO Auto-generated method stub
-		return false;
+		selectedSnapshot = snap;
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString(SELECTED_SNAPSHOT, snap.getSnapshotInfo().getSnapshotName());
+		editor.commit();
+		return true;
 	}
 
 
 	@Override
 	public Snapshot getSelectedSnapshot() {
-		// TODO Auto-generated method stub
-		return null;
+		if (selectedSnapshot != null) {
+			return selectedSnapshot;
+		}
+		String selected = sharedPreferences.getString(SELECTED_SNAPSHOT,BAD_SNAPSHOT);
+		if (selected.toString().equals(BAD_SNAPSHOT)) {
+			return null;
+		} else {
+			return loadSnapshot(selected);
+		}		
 	}
 
 
