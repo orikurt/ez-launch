@@ -36,7 +36,6 @@ import android.widget.Toast;
 
 public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
-
 	Snapshot currSnapshot;
 	IDataManager dataManager;
 
@@ -47,7 +46,8 @@ public class StatisticsService extends Service{
 
 	// Intent related globals
 	private Date lastUnlock;
-
+	private int widgetID;
+	
 	private int MAX_TASKS = 10;
 	public static String UPDATE_INTENT = "com.sadna.intents.UPDATE_INTENT";
 
@@ -166,8 +166,12 @@ public class StatisticsService extends Service{
 	}
 
 	public void notifyWidget() {
+		Log.d(LOG_TAG, "notifyWidget");
+
 		// Send update intent
 		Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+		int[] ids = new int[] { widgetID };
+		updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 		updateWidget.putExtra("newSnapshot", currSnapshot);
 		sendBroadcast(updateWidget);
 	}
