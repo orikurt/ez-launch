@@ -10,6 +10,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 
 import com.sadna.interfaces.IDataManager;
+import com.android.data.DataManager;
 import com.android.data.Snapshot;
 //import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
 
@@ -166,7 +167,7 @@ public class ConfigurationActivity extends PreferenceActivity {
 		
 		//Here you put the names of the screenshots
 		
-		/*		
+				DM = new DataManager(this);
 				SnapShots = DM.loadAllSnapshots();
 				int SnapShotsLength = SnapShots.size();
 				
@@ -175,13 +176,13 @@ public class ConfigurationActivity extends PreferenceActivity {
 				CharSequence[] Values= new CharSequence[SnapShotsLength];
 				
 				for (int i = 0; i < SnapShotsLength; i++) {
-					Values[i] = SnapShots.get(i).getSnapshot().getSnapshotName();
-					Titles[i] = Values[i];
+					Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+					Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
 				}
 				
-		*/
-		CharSequence[] Titles = new CharSequence[] {"1", "2", "3"};
-		CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
+		
+		//CharSequence[] Titles = new CharSequence[] {"1", "2", "3"};
+		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
 		
 		loadSnapshot.setEntries(Titles);
 		loadSnapshot.setEntryValues(Values);
