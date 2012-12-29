@@ -1,8 +1,6 @@
 package com.android.data;
 
-import java.lang.reflect.Array;
 import java.lang.Object;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -16,10 +14,10 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 
-	private SnapshotInfo snapInfo;
+	private ISnapshotInfo snapInfo;
 	private List<IWidgetItemInfo> collection;
 	
-	public Snapshot(SnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
+	public Snapshot(ISnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
 		snapInfo = snapshotInfo;
 		collection = lst;
 	}
