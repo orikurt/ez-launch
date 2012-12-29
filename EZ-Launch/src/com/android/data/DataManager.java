@@ -59,7 +59,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String KEY_SNAPSHOT_REF = "snapshotNameREF";
 	
 	// Shared Preferences
-	private SharedPreferences sharedPreferences;
+	private static SharedPreferences sharedPreferences;
 	private static final String SELECTED_SNAPSHOT = "SelectedSnapshot";
 
 	private static Snapshot selectedSnapshot = null;
@@ -68,7 +68,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
-		this.sharedPreferences = context.getSharedPreferences(APPLICATION_SHARED_PREFRENCES, Context.MODE_PRIVATE);
+		sharedPreferences = context.getSharedPreferences(APPLICATION_SHARED_PREFRENCES, Context.MODE_PRIVATE);
 
 	}
 
