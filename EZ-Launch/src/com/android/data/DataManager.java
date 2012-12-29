@@ -267,7 +267,12 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			WHERE packageName = packageNameREF AND snapshotName = snapshotNameREF AND snapshotName = 'Snapshot 0';
 		 ***/
 		// TODO Auto-generated method stub
-		return null;
+		
+		String loadQuery = getBaseSelectWithJoin() + " AND " + KEY_SNAPSHOT_NAME + " = " + snapName + ";";
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.rawQuery(loadQuery, null);
+		List<Snapshot> retval = extractSnapshotFormDB(c);
+		return (retval != null) ? retval.get(0) : null;
 	}
 
 
