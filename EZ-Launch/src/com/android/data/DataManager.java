@@ -277,7 +277,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		 ***/
 		// TODO Auto-generated method stub
 		
-		String loadQuery = getBaseSelectWithJoin() + " AND " + KEY_SNAPSHOT_NAME + " = " + snapName + ";";
+		String loadQuery = getBaseSelectWithJoin() + " AND " + KEY_SNAPSHOT_NAME + " = " + "\"" + snapName + "\"" + ";";
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor c = db.rawQuery(loadQuery, null);
 		List<Snapshot> retval = extractSnapshotFormDB(c);
