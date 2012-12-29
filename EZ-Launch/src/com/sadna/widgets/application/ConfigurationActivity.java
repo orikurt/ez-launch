@@ -1,6 +1,8 @@
 package com.sadna.widgets.application;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -10,8 +12,12 @@ import org.xmlpull.v1.XmlPullParser;
 
 
 import com.sadna.interfaces.IDataManager;
+import com.sadna.interfaces.ISnapshotInfo;
+import com.sadna.interfaces.IWidgetItemInfo;
 import com.android.data.DataManager;
 import com.android.data.Snapshot;
+import com.android.data.SnapshotInfo;
+import com.android.data.WidgetItemInfo;
 //import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
 
 
@@ -24,6 +30,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.DialogPreference;
@@ -41,15 +48,15 @@ import android.widget.Button;
 import android.widget.ListView;
 
 public class ConfigurationActivity extends PreferenceActivity {
-	
+
 	private List<Snapshot> SnapShots;
 	public IDataManager DM;
-	
-    private ListPreference loadSnapshot; 
+
+	private ListPreference loadSnapshot; 
 	private MultiSelectListPreference FixPreference;
-    private Preference HelpPref;
-    private Preference AboutPref; 
-    private int widgetID;
+	private Preference HelpPref;
+	private Preference AboutPref; 
+	private int widgetID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,49 +65,77 @@ public class ConfigurationActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 		ListView v = getListView();
 		Button but = new Button(this);
-        but.setText("Start");
-        but.setOnClickListener(new OnClickListener() {
+		but.setText("Start");
+		but.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
 				Intent resultIntent = new Intent();
-                resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
-                setResult(RESULT_OK, resultIntent);
-				
+				resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+				setResult(RESULT_OK, resultIntent);
+
 				Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 				int[] ids = new int[] { widgetID };
-                updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-                sendBroadcast(updateWidget);
-				
-                finish();
+				updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+
+				// Generate very first snapshot
+				Date currDate = new Date();
+				ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
+				Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+
+				updateWidget.putExtra("newSnapshot", currSnapshot);
+				sendBroadcast(updateWidget);
+
+				finish();
 			}
 		});
 		v.addFooterView(but);
-        
+
 
 		// Get the starting Intent
-				Intent launchIntent = getIntent();
-				Bundle extras = launchIntent.getExtras();
-		        if (extras != null) {
-		            widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-		        }
-		        else
-		        {
-		        	finish();
-		        }
-		
+		Intent launchIntent = getIntent();
+		Bundle extras = launchIntent.getExtras();
+		if (extras != null) {
+			widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+		}
+		else
+		{
+			finish();
+		}
+
 		prepareLoadScreenshotPref();
 		prepareHelpBtn();
 		prepareAboutBtn();
 		prepareFixPref();
 	}
 
+	private List<IWidgetItemInfo> getInstalledAppsInfo() {
+		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
+
+		Context context = getApplicationContext();
+
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
+		PackageManager packageManager = getPackageManager();
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+
+			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
+			String itemPkgName = resolveInfo.resolvePackageName;
+			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemIntent, itemLabel);
+			result.add(itemInfo);
+		}
+
+		return result;
+	}
+
 	@SuppressLint("NewApi")
 	private void prepareFixPref() {
-		
+
 		FixPreference = (MultiSelectListPreference)findPreference(Preferences.FIX);
 		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
-//		Context c = getApplicationContext();
-		
-		
+		//		Context c = getApplicationContext();
+
+
 		PackageManager pm = getPackageManager();
 		List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		int i = 0;
@@ -113,13 +148,13 @@ public class ConfigurationActivity extends PreferenceActivity {
 			Values[i] = Appnames[i];
 			i++;
 		}
-		
+
 		//CharSequence[] Appnames = new CharSequence[] {"1", "2", "3"};
 		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
 		FixPreference.setDefaultValue(Values);
 		FixPreference.setEntries(Appnames);
 		FixPreference.setEntryValues(Values);
-		
+
 		/*
 		FixPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 	        public boolean onPreferenceChange(Preference preference, Object o) {
@@ -157,36 +192,36 @@ public class ConfigurationActivity extends PreferenceActivity {
 	        }
 	    });
 
-		*/
+		 */
 	}
 
 	private void prepareLoadScreenshotPref() {
 		// TODO Auto-generated method stub
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
-		
+
 		//Here you put the names of the screenshots
-		
-				DM = new DataManager(this);
-				SnapShots = DM.loadAllSnapshots();
-				int SnapShotsLength = SnapShots.size();
-				
-				//Create the snapshot value arrays and fill them with data
-				CharSequence[] Titles= new CharSequence[SnapShotsLength];
-				CharSequence[] Values= new CharSequence[SnapShotsLength];
-				
-				for (int i = 0; i < SnapShotsLength; i++) {
-					Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-					Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-				}
-				
-		
+
+		DM = new DataManager(this);
+		SnapShots = DM.loadAllSnapshots();
+		int SnapShotsLength = SnapShots.size();
+
+		//Create the snapshot value arrays and fill them with data
+		CharSequence[] Titles= new CharSequence[SnapShotsLength];
+		CharSequence[] Values= new CharSequence[SnapShotsLength];
+
+		for (int i = 0; i < SnapShotsLength; i++) {
+			Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+			Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+		}
+
+
 		//CharSequence[] Titles = new CharSequence[] {"1", "2", "3"};
 		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
-		
+
 		loadSnapshot.setEntries(Titles);
 		loadSnapshot.setEntryValues(Values);
-		
+
 	}
 
 
@@ -197,55 +232,55 @@ public class ConfigurationActivity extends PreferenceActivity {
 		AboutPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this, true));
 	}
 
-	
+
 	private void prepareHelpBtn() {
-				
+
 		HelpPref = findPreference(Preferences.HELP);
 		HelpPref.setKey(String.format(Preferences.HELP, widgetID));
-		
+
 		HelpPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this));
-				
+
 	}
-	
+
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
-		
+
 		private final Context fContext;
 		private Boolean fAbout = false;
-		
+
 		public HelpPreferenceClickListener(Context context) 
 		{
 			fContext = context;
-			
-	        /*
+
+			/*
 	        setDialogLayoutResource(R.layout.numberpicker_dialog);
 	        setDialogIcon(null);
-	        */
-	    }
+			 */
+		}
 
 		public HelpPreferenceClickListener(Context context, Boolean about) 
 		{
 			fContext = context;
 			fAbout  = about;
-	        /*
+			/*
 	        setDialogLayoutResource(R.layout.numberpicker_dialog);
 	        setDialogIcon(null);
-	        */
-	    }
-		
+			 */
+		}
+
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
 			AlertDialog alertDialog;
 			alertDialog = new AlertDialog.Builder(fContext).create();
 			if (!fAbout)
 			{
-			alertDialog.setTitle(fContext.getString(R.string.help));
-			alertDialog.setMessage(fContext.getString(R.string.helptext));
+				alertDialog.setTitle(fContext.getString(R.string.help));
+				alertDialog.setMessage(fContext.getString(R.string.helptext));
 			}
 			else
 			{
 				alertDialog.setTitle(fContext.getString(R.string.about));
 				alertDialog.setMessage(fContext.getString(R.string.abouttext));
-					
+
 			}
 			alertDialog.setButton(fContext.getString(R.string.okbtn), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
@@ -256,11 +291,11 @@ public class ConfigurationActivity extends PreferenceActivity {
 			return false;
 		}
 	}
-		
-		
-		
-		//HelpPreference.setOnPreferenceClickListener(new HelpButtonClick(this, true));
-	}
-	
 
-	
+
+
+	//HelpPreference.setOnPreferenceClickListener(new HelpButtonClick(this, true));
+}
+
+
+
