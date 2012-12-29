@@ -140,17 +140,7 @@ public class DataProvider extends ContentProvider {
 	}
 
 
-	private static byte[] getImage(Drawable icon)
-	{
-		Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
-		Canvas canvas = new Canvas(bmp); 
-		icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-		icon.draw(canvas);
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] byteArray = stream.toByteArray();
-		return byteArray;
-	}
+
 	
 	private static List<ResolveInfo> GetInstalledApplicationsList()
 	{
@@ -167,7 +157,17 @@ public class DataProvider extends ContentProvider {
 			mList.add(a);
 		}*/
 	}
-	
+	private static byte[] getImage(Drawable icon)
+	{
+		Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmp); 
+		icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		icon.draw(canvas);
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] byteArray = stream.toByteArray();
+		return byteArray;
+	}
 	public static ExtMatrixCursor loadNewData(ContentProvider mcp, String[] projection, long GroupId, int NameKind, int clickActn) {
 		ExtMatrixCursor ret = new ExtMatrixCursor(projection);
 
@@ -186,6 +186,7 @@ public class DataProvider extends ContentProvider {
 			}
 			Object[] values = { res.labelRes, getImage(icon), name,res.activityInfo.packageName };
 			ret.addRow(values);
+			//return null;
 		}
 /*
 		Uri uri = ContactsContract.Contacts.CONTENT_URI;
