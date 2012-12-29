@@ -116,7 +116,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
 				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
-				new String[] {snap.getSnapshot().getSnapshotName(), snap.getSnapshot().getLastEditedFormated()});
+				new String[] {snap.getSnapshotInfo().getSnapshotName(),snap.getSnapshotInfo().getLastEditedFormated()});
 
 		db.execSQL(insertSnapShotQuery);
 
@@ -124,7 +124,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		for (IWidgetItemInfo widg : snap) {
 			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
 					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
-					new String[]{widg.getPackageName(),snap.getSnapshot().getSnapshotName()});
+					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
 			db.execSQL(insertSnapToWidgetQuery);
 		}
 
