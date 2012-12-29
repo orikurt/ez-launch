@@ -16,6 +16,7 @@ import com.sadna.widgets.application.R;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.appwidget.AppWidgetManager;
 import android.app.Service;
 
 import android.content.BroadcastReceiver;
@@ -35,15 +36,15 @@ import android.widget.Toast;
 
 public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
-	
+
 	Snapshot currSnapshot;
 	IDataManager dataManager;
-	
+
 	SystemIntentsReceiver systemIntentsReceiver;
-	
+
 	PackageManager packageManager;
 	ActivityManager activityManager;
-	
+
 	// Intent related globals
 	private Date lastUnlock;
 
@@ -58,23 +59,23 @@ public class StatisticsService extends Service{
 	@Override
 	public void onCreate() {
 		// Notify the user about Creating.
-        Toast.makeText(this, R.string.statistics_service_created, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, R.string.statistics_service_created, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Created");
 	}
 
 	@Override
 	public void onDestroy() {
-        // Notify the user about destroying.
-        Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
-        Log.d(LOG_TAG, "Destroyed");
+		// Notify the user about destroying.
+		Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
+		Log.d(LOG_TAG, "Destroyed");
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-        // Notify the user about Starting.
-        Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
-        Log.d(LOG_TAG, "Started");
-        
+		// Notify the user about Starting.
+		Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
+		Log.d(LOG_TAG, "Started");
+
 		// Initialize all private fields
 		initFields();
 
@@ -85,34 +86,38 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
-        
-        return START_STICKY;
+
+		return START_STICKY;
 	}
 
 	public void initFields() {
 
 		dataManager = new DataManager(this.getApplicationContext());
-		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-		packageManager = getPackageManager();
-		lastUnlock = new Date();
-		
-		//dataManager = new DataManager(null, LOG_TAG, null, MAX_TASKS);
 		if (dataManager == null) {
 			//Error
 		}
-		
-		Date current = new Date();
-		ISnapshotInfo snapshotInfo = new SnapshotInfo("temp", current);
+		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		packageManager = getPackageManager();
+		lastUnlock = new Date();
 
-		currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-		if (currSnapshot == null) {
-			//Error
+		// Get current snapshot
+		if (dataManager.getSelectedSnapshot() == null) {
+			// DB is empty - Generate first snapshot
+			Date currDate = new Date();
+			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
+			currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+			dataManager.saveSnapshot(currSnapshot);
+			dataManager.setSelectedSnapshot(currSnapshot);
+		}
+		else {
+			// DB isn't empty
+			currSnapshot = dataManager.getSelectedSnapshot();
 		}
 	}
 
 	private List<IWidgetItemInfo> getInstalledAppsInfo() {
 		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
-		
+
 		Context context = getApplicationContext();
 
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -128,7 +133,7 @@ public class StatisticsService extends Service{
 			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemIcon, itemPkgName, itemIntent, itemLabel);
 			result.add(itemInfo);
 		}
-		
+
 		return result;
 	}
 
@@ -148,25 +153,26 @@ public class StatisticsService extends Service{
 		// get the info from the currently running task
 		List<RecentTaskInfo> tasksInfo = activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
 		double i = currSnapshot.size() - tasksInfo.size();
-		
+
 		for (RecentTaskInfo taskInfo : tasksInfo) {
 			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(taskInfo.origActivity.getPackageName());
 			if (itemInfo == null)
 				continue;
-			
+
 			itemInfo.setScore(itemInfo.getScore()+i);
 			i/=10;
 		}
-		
+
 		currSnapshot.normalizeScores();
 	}
 
 	public void notifyWidget() {
 		// Send update intent
-		Intent updateIntent = new Intent(UPDATE_INTENT);
-		sendBroadcast(updateIntent);
+		Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+		updateWidget.putExtra("newSnapshot", currSnapshot);
+		sendBroadcast(updateWidget);
 	}
-	
+
 	public class SystemIntentsReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -175,7 +181,7 @@ public class StatisticsService extends Service{
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
 			}
-			
+
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 				Date now = new Date();
 				if ((now.getTime() - lastUnlock.getTime()) > 10000){
@@ -196,7 +202,7 @@ public class StatisticsService extends Service{
 					// e.printStackTrace();
 					return;
 				}
-				
+
 				String label = pm.getApplicationLabel(info).toString();
 				Intent launchIntent = pm.getLaunchIntentForPackage(name);
 				IWidgetItemInfo newItem = new WidgetItemInfo(image, name, launchIntent, label);
