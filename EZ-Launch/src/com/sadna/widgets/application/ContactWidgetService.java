@@ -1,28 +1,22 @@
 package com.sadna.widgets.application;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.android.data.Snapshot;
 import com.sadna.android.content.LauncherIntent;
+import com.sadna.interfaces.IWidgetItemInfo;
 
 
 
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+@SuppressLint("NewApi")
 public class ContactWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -34,22 +28,22 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
     public static final String TAG = "boombuler.ContactRemoteViewsFactory";
     private Context mContext;
     private int mAppWidgetId;
-	private List<ContactData> mData = null;
-	private int mDefWidth;
-	private Bitmap mFallbackImage;
+	private Snapshot mData = null;
+	//private int mDefWidth;
+	//private Bitmap mFallbackImage;
 
     public ContactRemoteViewsFactory(Context context, Intent intent) {
 		Log.d(TAG, "ContactRemoteViewsFactory created");
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
-        mDefWidth = intent.getIntExtra(ImplHC.EXTRA_DEFAULT_WIDTH, 1);
+        //mDefWidth = intent.getIntExtra(ImplHC.EXTRA_DEFAULT_WIDTH, 1);
     }
 
     public void onCreate() {    	
     }
 
-    public void onDestroy() {
+    public void onDestroy() {/*
 		if (mData != null) {
 			for (ContactData data : mData) {
 				if (data.Photo != mFallbackImage) 
@@ -60,7 +54,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if (mFallbackImage != null) {
 			mFallbackImage.recycle();
 			mFallbackImage = null;
-		}
+		}*/
     }
 
     public int getCount() {
@@ -73,7 +67,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
     public RemoteViews getViewAt(int position) {
 		Log.d(TAG, "get item at position: "+ position);
         // position will always range from 0 to getCount() - 1.
-		ContactData item = mData.get(position);
+		IWidgetItemInfo item = mData.get(position);
 		
 		boolean isICS = Preferences.getBGImage(mContext, mAppWidgetId) == Preferences.BG_ICS;
 		int textVisibility = Preferences.getShowName(mContext, mAppWidgetId) ? View.VISIBLE : View.GONE;		
@@ -95,19 +89,19 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemresid);
 		
 		if (textVisibility == View.VISIBLE) {
-			rv.setTextViewText(R.id.displayname, item.Name);			
+			rv.setTextViewText(R.id.displayname, item.getLabel());			
 		} else {
 			rv.setViewVisibility(R.id.displayname, textVisibility);
 			if (isICS) 
 				rv.setViewVisibility(R.id.label_overlay, textVisibility);
 		}
 		
-		rv.setImageViewBitmap(R.id.photo, item.Photo);
+		rv.setImageViewBitmap(R.id.photo, item.getBitmap(mContext));
 		
         // Next, we set a fill-intent which will be used to fill-in the pending intent template
         // which is set on the collection view in StackWidgetProvider.
         Bundle extras = new Bundle();
-        extras.putString(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS, item.URI);
+        extras.putString(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS, item.getPackageName());
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         rv.setOnClickFillInIntent(R.id.displayname, fillInIntent);
@@ -135,9 +129,12 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         return false;
     }
 
+    @Override 
     public void onDataSetChanged() {
 		Log.d(TAG, "Start Query!");
 		onDestroy();
+		
+		/*
 		Uri dataUri = DataProvider.CONTENT_URI_MESSAGES.buildUpon().appendEncodedPath(Integer.toString(mAppWidgetId)).build();
 	
 		DataProvider prov = new DataProvider();
@@ -190,5 +187,6 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         	mData = contacts; 
         }
         cursor.close();
+        */
     }
 }

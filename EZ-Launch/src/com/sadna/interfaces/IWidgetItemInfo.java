@@ -1,13 +1,15 @@
 package com.sadna.interfaces;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 
 public interface IWidgetItemInfo extends Parcelable{
 	
-	public Drawable getImage();
-	public void setImage(Drawable image);
+	public Drawable getImage(Context c);
+	public Bitmap getBitmap(Context c);
 	
 	public String getPackageName();
 	public void setPackageName(String packageName);

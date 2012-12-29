@@ -28,7 +28,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
+
 
 import android.os.IBinder;
 import android.util.Log;
@@ -125,12 +125,11 @@ public class StatisticsService extends Service{
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-
-			Drawable itemIcon = resolveInfo.loadIcon(packageManager);
+			
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
 			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
-			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemIcon, itemPkgName, itemIntent, itemLabel);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemIntent, itemLabel);
 			result.add(itemInfo);
 		}
 
@@ -193,9 +192,9 @@ public class StatisticsService extends Service{
 				int pkgId = Integer.parseInt(Intent.EXTRA_UID);
 				String name = pm.getNameForUid(pkgId);
 				ApplicationInfo info;
-				Drawable image;
+
 				try {
-					image = pm.getApplicationIcon(name);
+
 					info = pm.getApplicationInfo(name, PackageManager.GET_META_DATA);
 				} catch (NameNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -205,7 +204,7 @@ public class StatisticsService extends Service{
 
 				String label = pm.getApplicationLabel(info).toString();
 				Intent launchIntent = pm.getLaunchIntentForPackage(name);
-				IWidgetItemInfo newItem = new WidgetItemInfo(image, name, launchIntent, label);
+				IWidgetItemInfo newItem = new WidgetItemInfo(name, launchIntent, label);
 				currSnapshot.add(newItem);
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){

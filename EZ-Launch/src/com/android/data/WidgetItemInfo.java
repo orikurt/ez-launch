@@ -1,6 +1,11 @@
 package com.android.data;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,7 +14,7 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class WidgetItemInfo implements IWidgetItemInfo{
 
-	private Drawable image;
+	//private Drawable image;
 	private String packageName;
 	private String label;
 	private Intent launchIntent;
@@ -17,14 +22,13 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 
 	public WidgetItemInfo(String name,String label,double score) {
-		this(null,name,null,label,score);
+		this(name,null,label,score);
 	}
 
-	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,String label) {
-		this(image,name,launchIntent,label,0);
+	public WidgetItemInfo(String name, Intent launchIntent,String label) {
+		this(name,launchIntent,label,0);
 	}
-	public WidgetItemInfo(Drawable image, String name, Intent launchIntent,String label,double score) {
-		this.image = image;
+	public WidgetItemInfo(String name, Intent launchIntent,String label,double score) {
 		this.packageName = name;
 		this.launchIntent = launchIntent;
 		this.label = label;
@@ -38,13 +42,33 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	}
 
 	@Override
-	public Drawable getImage() {
-		return image;
+	public Drawable getImage(Context c) {
+		try {
+			return c.getPackageManager().getApplicationIcon(packageName);
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	@Override
-	public void setImage(Drawable image) {
-		this.image = image;
+	public Bitmap getBitmap(Context c) {
+		// TODO Auto-generated method stub
+		return getImage(getImage(c));
+	}	
+
+	private static Bitmap getImage(Drawable icon)
+	{
+		Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmp); 
+		icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		icon.draw(canvas);
+		//ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		//bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		//byte[] byteArray = stream.toByteArray();
+		return bmp;
 	}
+	
 	@Override
 	public String getPackageName() {
 		return packageName;
@@ -102,6 +126,8 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		dest.writeParcelable(launchIntent, flags);
 		dest.writeDouble(score);
 
-	}	
+	}
+
+
 
 }
