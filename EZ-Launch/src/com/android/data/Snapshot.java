@@ -25,8 +25,11 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 	}
 
 	public Snapshot(Parcel in) {
-		snapInfo = in.readParcelable(SnapshotInfo.class.getClassLoader());
-		in.readList(collection, IWidgetItemInfo.class.getClassLoader());
+		if (in != null) {
+			snapInfo = in.readParcelable(SnapshotInfo.class.getClassLoader());
+			collection = new ArrayList<IWidgetItemInfo>();
+			in.readList(collection, WidgetItemInfo.class.getClassLoader());
+		}
 
 	}
 
@@ -171,7 +174,7 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 	public <T> T[] toArray(T[] array) {
 		return collection.toArray(array);
 	}
-	
+
 	public static final Parcelable.Creator<Snapshot> CREATOR
 	= new Parcelable.Creator<Snapshot>() {
 		public Snapshot createFromParcel(Parcel in) {
@@ -182,7 +185,7 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 			return new Snapshot[size];
 		}
 	};
-	
+
 	@Override
 	public int describeContents() {
 		// TODO Auto-generated method stub
