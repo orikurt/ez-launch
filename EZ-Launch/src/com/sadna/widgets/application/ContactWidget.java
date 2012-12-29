@@ -30,7 +30,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 	
 	
 	// Tag for logging
-	private static final String TAG = "boombuler.ContactWidget";
+	private static final String TAG = "sadna.ContactWidget";
 
 	private WidgetImplementation mImpl;
 		
