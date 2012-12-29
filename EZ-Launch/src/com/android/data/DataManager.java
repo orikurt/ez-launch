@@ -62,7 +62,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private SharedPreferences sharedPreferences;
 	private static final String SELECTED_SNAPSHOT = "SelectedSnapshot";
 
-	private Snapshot selectedSnapshot = null;
+	private static Snapshot selectedSnapshot = null;
 
 	
 	public DataManager(Context context) {
