@@ -59,7 +59,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
         for (int i = 0; i < N; i++) {
             // Construct views
         	int appWidgetId = appWidgetIds[i];
-			mImpl.onUpdate(context, appWidgetId);
+			mImpl.onUpdate(context, appWidgetId);     
         }
 	}
 

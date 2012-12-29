@@ -36,6 +36,8 @@ import android.widget.Toast;
 
 public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
+	public static final String NEW_SNAPSHOT = "newSnapshot";
+	
 	Snapshot currSnapshot;
 	IDataManager dataManager;
 
@@ -172,7 +174,7 @@ public class StatisticsService extends Service{
 		Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		int[] ids = new int[] { widgetID };
 		updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-		updateWidget.putExtra("newSnapshot", currSnapshot);
+		updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);
 		sendBroadcast(updateWidget);
 	}
 
