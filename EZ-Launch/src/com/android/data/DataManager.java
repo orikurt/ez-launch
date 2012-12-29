@@ -25,7 +25,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private static final String BAD_SNAPSHOT = "Bad_SnapshotXXXERROR";
 
-	public static final String DATE_FORMAT = "YYYY-MM-DD HH:MM:SS";
+	public static final String DATE_FORMAT = "YYYY-MM-DD HH:MM:SS".toLowerCase(Locale.getDefault());
 
 	// All Static variables
 	// Database Name
