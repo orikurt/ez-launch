@@ -1,22 +1,23 @@
 package com.sadna.widgets.application;
 
 
-import com.android.data.Snapshot;
-import com.sadna.android.content.LauncherIntent;
-import com.sadna.service.StatisticsService;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.RemoteViews;
-import android.net.Uri;
-import android.view.View;
-import android.graphics.Color;
-import android.util.Log;
-import android.text.TextUtils;
+
+import com.android.data.Snapshot;
+import com.sadna.android.content.LauncherIntent;
+import com.sadna.service.StatisticsService;
 
 @SuppressLint("NewApi")
 public class ImplHC implements ContactWidget.WidgetImplementation {
@@ -65,7 +66,6 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 			
 		RemoteViews rv = new RemoteViews(context.getPackageName(), mainlayout);
 		
-		
 		String text = Preferences.getDisplayLabel(context, appWidgetId);
 
         boolean withHeader = text != "";
@@ -84,6 +84,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 			rv.setViewVisibility(R.id.group_caption, withHeader ? View.VISIBLE : View.GONE);
 	     	rv.setInt(R.id.backgroundImg, "setAlpha", Preferences.getBackgroundAlpha(context, appWidgetId));
 		}
+		
 		rv.setRemoteAdapter(R.id.my_gridview, intent);
 
 
