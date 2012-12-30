@@ -44,15 +44,6 @@
 		</activity>
 		
 		<!-- SERVICE COMPONENTS -->
-		
-		<activity android:name="com.sadna.service.serviceActivity"
-			android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-			<intent-filter>
-	            <action android:name="android.intent.action.MAIN" />
-	            <category android:name="android.intent.category.LAUNCHER" />
-	        </intent-filter>
-	     </activity>
-		
 		<service android:name="com.sadna.service.StatisticsService">
 		    <intent-filter>
 				<action	android:name="com.sadna.service.StatisticsService" />
@@ -64,7 +55,6 @@
 		        <action android:name="android.intent.action.BOOT_COMPLETED" />  
 		    </intent-filter>  
 		</receiver>
-		
 		<!-- END OF SERVICE COMPONENTS -->
 		
 		<service android:name="ContactWidgetService"
