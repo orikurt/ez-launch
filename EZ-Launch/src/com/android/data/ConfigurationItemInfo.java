@@ -9,9 +9,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.widgets.application.ConfigurationActivity;
 import com.sadna.widgets.application.R;
 
 public class ConfigurationItemInfo implements IWidgetItemInfo{
+
+	public static final String COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION = "com.sadna.widgets.application.configuration";
 
 	@Override
 	public int describeContents() {
@@ -48,7 +51,7 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public String getPackageName() {
-		return "com.sadna.widgets.application";
+		return COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION;
 	}
 
 	@Override
@@ -71,7 +74,7 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 	@Override
 	public Intent getLaunchIntent(Context c) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Intent(c,ConfigurationActivity.class);
 	}
 
 
