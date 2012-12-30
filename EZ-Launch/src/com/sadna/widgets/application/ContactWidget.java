@@ -3,7 +3,7 @@ package com.sadna.widgets.application;
 
 import java.util.Set;
 
-import com.android.data.Snapshot;
+import com.sadna.data.Snapshot;
 import com.sadna.service.StatisticsService;
 
 

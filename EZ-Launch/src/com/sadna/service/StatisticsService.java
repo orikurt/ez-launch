@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.android.data.ConfigurationItemInfo;
-import com.android.data.DataManager;
-import com.android.data.Snapshot;
-import com.android.data.SnapshotInfo;
-import com.android.data.WidgetItemInfo;
+import com.sadna.data.ConfigurationItemInfo;
+import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
+import com.sadna.data.SnapshotInfo;
+import com.sadna.data.WidgetItemInfo;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;

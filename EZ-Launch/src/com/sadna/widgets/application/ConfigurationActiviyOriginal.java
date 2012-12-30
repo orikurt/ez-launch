@@ -3,8 +3,8 @@ package com.sadna.widgets.application;
 
 import java.util.List;
 
+import com.sadna.data.Snapshot;
 import com.sadna.interfaces.IDataManager;
-import com.android.data.Snapshot;
 
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
