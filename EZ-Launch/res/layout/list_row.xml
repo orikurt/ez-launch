@@ -16,7 +16,7 @@
 	    android:layout_marginRight="5dip">
         
 		<ImageView     
-			android:id="@+id/list_image"   
+			android:id="@+id/APP_list_image"   
 	        android:layout_width="50dip"
 	        android:layout_height="50dip"
 	        android:src="@drawable/rihanna"/>
@@ -25,7 +25,7 @@
     
 	<!-- Title Of Song-->
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/APPtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
@@ -41,11 +41,11 @@
 	<!-- Rightend Duration -->
 
     <TextView
-        android:id="@+id/duration"
+        android:id="@+id/AppStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/title"
+        android:layout_alignTop="@+id/APPtitle"
         android:layout_marginRight="5dip"
         android:gravity="right"
         android:text="Auto"
