@@ -38,6 +38,9 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 	}
 
 	public IWidgetItemInfo getItemByName (String name) {
+		if (name == null)
+			return null;
+		
 		for (IWidgetItemInfo itemInfo : collection) {
 			if (name.equals(itemInfo.getPackageName())) {
 				return itemInfo;
