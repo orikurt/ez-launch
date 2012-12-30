@@ -326,10 +326,28 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public Snapshot getSelectedSnapshotFiltered() {
-
+		
+		Snapshot filtered = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
+		IWidgetItemInfo itemCopy;
+		
+		for (IWidgetItemInfo item: selectedSnapshot){
+			if (item.getItemState().getStatusCode().equals("MUS") && filtered.size()<APPLICATION_LIMIT){
+				itemCopy = new WidgetItemInfo(item.getPackageName(), item.getLabel(), item.getScore());
+				filtered.add(itemCopy);
+			}
+		}
+		
+		if (filtered.size() < APPLICATION_LIMIT){
+			for (IWidgetItemInfo item: selectedSnapshot){
+				if (item.getItemState().getStatusCode().equals("AUT") && filtered.size()<APPLICATION_LIMIT){
+					itemCopy = new WidgetItemInfo(item.getPackageName(), item.getLabel(), item.getScore());
+					filtered.add(itemCopy);
+				}
+			}
+		}
 		//APPLICATION_LIMIT
 		// TODO Auto-generated method stub
-		return null;
+		return filtered;
 	}
 
 
