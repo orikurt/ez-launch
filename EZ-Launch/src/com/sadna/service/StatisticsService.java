@@ -41,6 +41,7 @@ public class StatisticsService extends Service{
 	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
 	public static final String RESERVED_SNAPSHOT = "Default Snapshot";
+	private static final String SERVICE_NOTIFIER = "sadna.service_notifier";
 	private static final int MAX_TASKS = 25;
 
 	Snapshot		currSnapshot;
@@ -89,6 +90,7 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER));
 		IntentFilter launchFilter = new IntentFilter();
 		launchFilter.addCategory(Intent.CATEGORY_LAUNCHER);
 		launchFilter.addAction(Intent.ACTION_MAIN);
@@ -219,9 +221,8 @@ public class StatisticsService extends Service{
 
 			updateReservedSnapshot();
 			
-			if (intent.getAction().equals(Intent.ACTION_MAIN)){
-				Log.d(LOG_TAG, "Found New Activity:"+intent.toString());
-				return;
+			if (intent.getAction().equals(SERVICE_NOTIFIER)){
+				Log.d(LOG_TAG, "Found New Activity:"+intent.getStringExtra("name"));
 			}
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
