@@ -19,5 +19,4 @@
 	android:minHeight="284dip"
 	android:initialLayout="@layout/main"
 	android:configure="com.sadna.widgets.application.ConfigurationActivity"
-	android:updatePeriodMillis="86400000"
 	android:resizeMode="horizontal|vertical"/>
