@@ -1,14 +1,7 @@
 package com.sadna.widgets.application;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import com.sadna.data.DataManager;
-import com.sadna.data.WidgetItemInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.utils.LazyAdapter;
 
