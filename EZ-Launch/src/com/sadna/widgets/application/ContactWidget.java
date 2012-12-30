@@ -3,6 +3,9 @@ package com.sadna.widgets.application;
 
 import java.util.Set;
 
+import com.android.data.Snapshot;
+import com.sadna.service.StatisticsService;
+
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,13 +30,14 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		public void onUpdate(Context context, int appWidgetId);
 		public boolean onReceive(Context context, Intent intent);
 	}
-	
-	
+
+
 	// Tag for logging
 	private static final String TAG = "sadna.ContactWidget";
 
 	private WidgetImplementation mImpl;
-		
+	Snapshot snap;
+	
 	public ContactWidget() {
 		super();
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
@@ -41,26 +45,28 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		else
 			mImpl = new ImplHC();
 		mImpl.setWidget(this);
-		
+
 	}
-	
-		
+
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		// If no specific widgets requested, collect list of all
-
+		Log.d(TAG, "onUpdate");
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
 			return;
 		}
-		Log.d(TAG, "recieved onUpdate");
 
-        final int N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            // Construct views
-        	int appWidgetId = appWidgetIds[i];
-			mImpl.onUpdate(context, appWidgetId);     
-        }
+
+		final int N = appWidgetIds.length;
+		for (int i = 0; i < N; i++) {
+			// Construct views
+			int appWidgetId = appWidgetIds[i];
+			mImpl.onUpdate(context, appWidgetId);  
+		}
+
+
 	}
 
 	public abstract int getWidth();
@@ -100,17 +106,29 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Log.d(TAG, "Contact Widget - onReceive");
 		final String action = intent.getAction();
 		logIntent(intent, true);
+
+
 		if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
 			final int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
 					AppWidgetManager.INVALID_APPWIDGET_ID);
 			if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+				Log.d(TAG, "onReceive-calling delete");
 				this.onDeleted(context, new int[] { appWidgetId });
 			}
-		} else {
-			if (!mImpl.onReceive(context, intent))
-				super.onReceive(context, intent);
+		}
+
+		else if (StatisticsService.SNAPSHOT_UPDATE.equals(action)) {
+			Log.d(TAG, "onReceive- calling onupdate");
+			snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
+			/*onUpdate(context, Preferences.getAllWidgetIds(context));*/
+		}
+
+		else if (!mImpl.onReceive(context, intent)) {
+			Log.d(TAG, "onReceive- calling onReceive for mImpl");
+			super.onReceive(context, intent);
 		}
 	}
 
@@ -149,19 +167,19 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		{
 			Log.d(TAG, "FAILED: " + expt.getMessage());
 		}
-		*/
+		 */
 	}
 
 	public static int getICSWidth(Context context) {
 		return (int)context.getResources().getDimensionPixelSize(R.dimen.widgetColumnWidth);
 	}
-	
+
 	public static int calcWidthPixel(Context context, int appWidgetId, int width) {
 		DisplayMetrics dm = context.getResources().getDisplayMetrics();
 		Display display = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		display.getMetrics(dm);
 		boolean horizontal = (display.getOrientation() % 2) == 1;
-		
+
 		int spanx = Preferences.getSpanX(context, appWidgetId, width);
 		if (horizontal)
 			width = 106 * spanx;
