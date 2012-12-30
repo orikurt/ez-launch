@@ -64,9 +64,9 @@ public class ConfigurationActivity extends PreferenceActivity {
 		// Build GUI from resource
 		addPreferencesFromResource(R.xml.preferences);
 		ListView v = getListView();
-		Button but = new Button(this);
-		but.setText("Start");
-		but.setOnClickListener(new OnClickListener() {
+		Button startButton = new Button(this);
+		startButton.setText("Start");
+		startButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
 				Intent resultIntent = new Intent();
 				resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
@@ -87,7 +87,7 @@ public class ConfigurationActivity extends PreferenceActivity {
 				finish();
 			}
 		});
-		v.addFooterView(but);
+		v.addFooterView(startButton);
 
 
 		// Get the starting Intent
@@ -95,6 +95,10 @@ public class ConfigurationActivity extends PreferenceActivity {
 		Bundle extras = launchIntent.getExtras();
 		if (extras != null) {
 			widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+			   // Cancel by default
+            Intent cancelResultValue = new Intent();
+            cancelResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+            setResult(RESULT_CANCELED, cancelResultValue);
 		}
 		else
 		{
@@ -204,7 +208,7 @@ public class ConfigurationActivity extends PreferenceActivity {
 
 		DM = new DataManager(this);
 		SnapShots = DM.loadAllSnapshots();
-		int SnapShotsLength = SnapShots.size();
+		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
 		//Create the snapshot value arrays and fill them with data
 		CharSequence[] Titles= new CharSequence[SnapShotsLength];
