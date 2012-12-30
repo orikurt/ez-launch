@@ -56,7 +56,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if (dm == null) {
 			dm = new DataManager(mContext);
 		}
-		mData = dm.getSelectedSnapshot();
+		//mData = dm.getSelectedSnapshot();
+		mData = dm.getSelectedSnapshotFiltered();
 	}
 	@Override
 	public void onCreate() {    
@@ -181,7 +182,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			dm = new DataManager(mContext);
 		}
 		
-		mData = dm.getSelectedSnapshot();
+		//mData = dm.getSelectedSnapshot();
+		mData = dm.getSelectedSnapshotFiltered();
 		if (mData == null) {
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
