@@ -123,13 +123,13 @@ public class StatisticsService extends Service{
 		Log.d(LOG_TAG, "notifyWidget");
 
 		// Save snapshot to DB
-		currSnapshot.normalizeScores();
+		//currSnapshot.normalizeScores();
 		Collections.sort(currSnapshot);
 		dataManager.saveSnapshot(currSnapshot);
 		dataManager.setSelectedSnapshot(currSnapshot);
+		
 		// Send update intent
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
-		/*updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);*/
 		sendBroadcast(updateWidget);
 	}
 

@@ -57,21 +57,19 @@ private String LOG_TAG = "ConfigurationActivity";
 		startButton.setText("Start");
 		startButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
+				
+				// Start service
+				Intent intent = new Intent("com.sadna.service.StatisticsService");  
+			    startService(intent);
+			    
+			    // Start Widget
 				Intent resultIntent = new Intent();
 				resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
 				setResult(RESULT_OK, resultIntent);
 				Log.d(LOG_TAG, "widgetID=" + widgetID);
 				Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 				int[] ids = new int[] { widgetID };
-				
 				updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-
-				// Generate very first snapshot
-				/*Date currDate = new Date();
-				ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
-				Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-
-				updateWidget.putExtra(StatisticsService.NEW_SNAPSHOT, currSnapshot);*/
 				sendBroadcast(updateWidget);
 
 				finish();
