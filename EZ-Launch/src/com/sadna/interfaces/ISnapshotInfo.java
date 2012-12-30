@@ -10,5 +10,9 @@ public interface ISnapshotInfo extends Parcelable{
 	public String getLastEditedFormated();
 	public void setSnapshotName(String snapshotName);
 	public void setLastEdited(Date lastEdited);
+	@Override
+	public boolean equals(Object o);
+	@Override
+	public int hashCode();
 
 }

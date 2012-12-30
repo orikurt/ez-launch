@@ -53,6 +53,14 @@ public class SnapshotInfo implements ISnapshotInfo {
 			return false;
 		}
 	}
+	@Override
+    public int hashCode() {
+        return getSnapshotName().hashCode();
+    }
+
+
+
+
 	
 	public static final Parcelable.Creator<SnapshotInfo> CREATOR
 	= new Parcelable.Creator<SnapshotInfo>() {
