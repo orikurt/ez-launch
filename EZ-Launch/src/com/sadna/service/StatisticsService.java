@@ -41,7 +41,7 @@ public class StatisticsService extends Service{
 	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
 	public static final String RESERVED_SNAPSHOT = "Default Snapshot";
-	private static final String SERVICE_NOTIFIER = "sadna.service_notifier";
+	private static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
 	private static final int MAX_TASKS = 25;
 
 	Snapshot		currSnapshot;
@@ -90,7 +90,7 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
-		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER_LAUNCH));
 		IntentFilter launchFilter = new IntentFilter();
 		launchFilter.addCategory(Intent.CATEGORY_LAUNCHER);
 		launchFilter.addAction(Intent.ACTION_MAIN);
@@ -221,7 +221,7 @@ public class StatisticsService extends Service{
 
 			updateReservedSnapshot();
 			
-			if (intent.getAction().equals(SERVICE_NOTIFIER)){
+			if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
 				String pkgName = intent.getStringExtra("name");
 				IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
 				item.setScore(item.getScore()+1.0);
