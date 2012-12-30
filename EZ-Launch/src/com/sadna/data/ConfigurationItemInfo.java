@@ -10,7 +10,6 @@ import android.os.Parcel;
 
 import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
-import com.sadna.widgets.application.ConfigurationActivity;
 import com.sadna.widgets.application.R;
 import com.sadna.widgets.application.SettingsActivity;
 
