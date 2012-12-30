@@ -32,7 +32,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String DATABASE_NAME = "EZ_Launch_DB";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	// Snapshot info table name
 	private static final String TABLE_SNAPSHOT_INFO = "snapshotInfoTable";
