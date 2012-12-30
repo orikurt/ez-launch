@@ -1,9 +1,9 @@
 package com.sadna.enums;
 
 public enum ItemState {
-	NOT_ALLOWED("NOT"),
-	AUTO("AUT"),
-	MUST("MUS");
+	NOT_ALLOWED("Disabled"),
+	AUTO("Auto"),
+	MUST("Always On");
 
 	private String statusCode;
 	private ItemState(String p){
@@ -24,5 +24,8 @@ public enum ItemState {
 	public String getStatusCode(){
 		return statusCode;
 	}
-
+	@Override
+	public String toString(){
+		return statusCode;
+	}
 }
