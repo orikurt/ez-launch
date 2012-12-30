@@ -162,7 +162,7 @@ public class StatisticsService extends Service{
 	private void updateWithRunningTasks() {
 		// get the info from the currently running task
 		List< RunningTaskInfo > tasksInfo = activityManager.getRunningTasks(MAX_TASKS);
-		int i = currSnapshot.size() - tasksInfo.size();
+		double i = 1.0;
 		for (RunningTaskInfo taskInfo : tasksInfo) {
 			ComponentName componentInfo = taskInfo.baseActivity;
 			String pkgName = componentInfo.getPackageName();
@@ -172,7 +172,7 @@ public class StatisticsService extends Service{
 				Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(itemInfo.getScore()));
 			}
 
-			i--;
+			i/=10;
 		}
 	}
 
@@ -222,7 +222,11 @@ public class StatisticsService extends Service{
 			updateReservedSnapshot();
 			
 			if (intent.getAction().equals(SERVICE_NOTIFIER)){
-				Log.d(LOG_TAG, "Found New Activity:"+intent.getStringExtra("name"));
+				String pkgName = intent.getStringExtra("name");
+				IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
+				item.setScore(item.getScore()+1.0);
+				Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
+				
 			}
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
