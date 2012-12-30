@@ -109,9 +109,10 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 		final String action = intent.getAction();
 		if (TextUtils.equals(action, LauncherIntent.Action.ACTION_ITEM_CLICK)) {
 			int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-			Uri uri = Uri.parse(intent.getStringExtra(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS));
+			//Uri uri = Uri.parse(intent.getStringExtra(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS));
 			
-			mWidget.onClick(context, appWidgetId, intent.getSourceBounds(), uri);
+			Intent launchIntent = intent.getParcelableExtra(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT);
+			mWidget.onClick(context, appWidgetId, intent.getSourceBounds(), launchIntent);
 			return true;
 		}
 		return false;

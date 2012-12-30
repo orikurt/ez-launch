@@ -124,7 +124,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		// Next, we set a fill-intent which will be used to fill-in the pending intent template
 		// which is set on the collection view in StackWidgetProvider.
 		Bundle extras = new Bundle();
-		extras.putString(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS, item.getPackageName());
+		//extras.putString(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS, item.getPackageName());
+		extras.putParcelable(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT, item.getLaunchIntent(mContext));
 		Intent fillInIntent = new Intent();
 		fillInIntent.putExtras(extras);
 		rv.setOnClickFillInIntent(R.id.displayname, fillInIntent);

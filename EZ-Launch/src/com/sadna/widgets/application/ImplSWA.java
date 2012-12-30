@@ -113,7 +113,7 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 		int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		Log.d(TAG, "got appWidgetId: "+ appWidgetId);
 
-		Uri uri = Uri.parse(intent.getStringExtra(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS));
+		Intent launchIntent = intent.getParcelableExtra(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT);
 
 		Rect r;
 		if (intent.hasExtra(LauncherIntent.Extra.Scroll.EXTRA_SOURCE_BOUNDS)) {
@@ -122,7 +122,7 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 		} else {
 		    r = intent.getSourceBounds();
 		}
-		mWidget.onClick(context, appWidgetId, r, uri);
+		mWidget.onClick(context, appWidgetId, r, launchIntent);
 	}
 	
 	private void updateSize(Context context, Intent intent) {

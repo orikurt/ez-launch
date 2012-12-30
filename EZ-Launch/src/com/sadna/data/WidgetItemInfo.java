@@ -14,6 +14,8 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class WidgetItemInfo implements IWidgetItemInfo{
 
+	public static final String LAUNCH_INTENT = "com.sadna.data.LAUNCH_INTENT";
+	
 	//private Drawable image;
 	private String packageName;
 	private String label;
