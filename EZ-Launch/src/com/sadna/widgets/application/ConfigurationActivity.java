@@ -1,29 +1,16 @@
 package com.sadna.widgets.application;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import org.xmlpull.v1.XmlPullParser;
-
-
 import com.sadna.interfaces.IDataManager;
-import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
-import com.sadna.service.StatisticsService;
 import com.android.data.DataManager;
 import com.android.data.Snapshot;
-import com.android.data.SnapshotInfo;
 import com.android.data.WidgetItemInfo;
 //import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
 
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -32,18 +19,13 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -75,17 +57,17 @@ private String LOG_TAG = "ConfigurationActivity";
 				resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
 				setResult(RESULT_OK, resultIntent);
 				Log.d(LOG_TAG, "widgetID=" + widgetID);
-				Intent updateWidget = new Intent(StatisticsService.SNAPSHOT_UPDATE);
+				Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 				int[] ids = new int[] { widgetID };
 				
 				updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 
 				// Generate very first snapshot
-				Date currDate = new Date();
+				/*Date currDate = new Date();
 				ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 				Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 
-				updateWidget.putExtra(StatisticsService.NEW_SNAPSHOT, currSnapshot);
+				updateWidget.putExtra(StatisticsService.NEW_SNAPSHOT, currSnapshot);*/
 				sendBroadcast(updateWidget);
 
 				finish();
