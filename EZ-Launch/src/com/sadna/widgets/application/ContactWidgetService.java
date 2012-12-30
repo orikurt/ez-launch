@@ -180,10 +180,11 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if (dm == null) {
 			dm = new DataManager(mContext);
 		}
-		Date currDate = new Date();
-		ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
+		
 		mData = dm.getSelectedSnapshot();
-		if (mData ==null) {
+		if (mData == null) {
+			Date currDate = new Date();
+			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 			mData = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		}
 
