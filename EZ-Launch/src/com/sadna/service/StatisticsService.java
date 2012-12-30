@@ -221,13 +221,14 @@ public class StatisticsService extends Service{
 
 			updateReservedSnapshot();
 			
-			/*if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
+			if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
 				String pkgName = intent.getStringExtra("name");
-				IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
-				item.setScore(item.getScore()+1.0);
-				Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
-				
-			}*/
+				if (pkgName != null){ 
+					IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
+					item.setScore(item.getScore()+1.0);
+					Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
+				}
+			}
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
 			}
