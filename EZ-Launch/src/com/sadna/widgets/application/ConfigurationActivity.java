@@ -39,8 +39,10 @@ public class ConfigurationActivity extends PreferenceActivity {
 	private ListPreference loadSnapshot; 
 	private MultiSelectListPreference FixPreference;
 	private Preference HelpPref;
-	private Preference AboutPref; 
+	private Preference AboutPref;
+	private Preference SaveSnapshotPref;
 	private int widgetID;
+	
 private String LOG_TAG = "ConfigurationActivity";
 
 	@Override
@@ -92,6 +94,7 @@ private String LOG_TAG = "ConfigurationActivity";
 		}
 
 		prepareLoadScreenshotPref();
+		prepareSaveSnapshotPref();
 		prepareHelpBtn();
 		prepareAboutBtn();
 		prepareFixPref();
@@ -231,6 +234,15 @@ private String LOG_TAG = "ConfigurationActivity";
 		HelpPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this));
 
 	}
+	
+
+	private void prepareSaveSnapshotPref() {
+
+		SaveSnapshotPref = findPreference(Preferences.SAVE);
+		SaveSnapshotPref.setKey(String.format(Preferences.SAVE, widgetID));
+		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
+	}
+
 
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
 
@@ -281,10 +293,36 @@ private String LOG_TAG = "ConfigurationActivity";
 			return false;
 		}
 	}
+	
+	
+	public class SavePreferenceClickListener implements OnPreferenceClickListener {
 
+		private final Context fContext;
 
-
-	//HelpPreference.setOnPreferenceClickListener(new HelpButtonClick(this, true));
+		public SavePreferenceClickListener(Context context) 
+		{
+			fContext = context;
+		}
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			AlertDialog alertDialog;
+			alertDialog = new AlertDialog.Builder(fContext).create();
+			alertDialog.setTitle(fContext.getString(R.string.save));
+			alertDialog.setMessage(fContext.getString(R.string.saveAsk));
+			alertDialog.setButton(fContext.getString(R.string.okbtn), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			alertDialog.setButton2(fContext.getString(R.string.cancelbtn), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			alertDialog.show();
+			return false;
+		}
+	}
 }
 
 

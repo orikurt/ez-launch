@@ -9,8 +9,18 @@
 	      android:defaultValue="0"
 	      android:title="@string/loadSnapshot" />
   		
+  		<Preference 
+	      android:key="SaveSnap-%d"
+	      android:summary="@string/saveText"
+	      android:title="@string/save" />
+  		
   </PreferenceCategory>
+	  
+  
 
+
+  
+  
   <PreferenceCategory android:title="@string/behavior">
   	  
   	  <!-- 
