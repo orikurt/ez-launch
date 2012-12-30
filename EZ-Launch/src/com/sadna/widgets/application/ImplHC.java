@@ -47,7 +47,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 	}
 	
 	@SuppressLint("NewApi")
-	public void onUpdate(Context context, int appWidgetId) {
+	public void onUpdate(Context context, int appWidgetId, Snapshot snap) {
 		Log.d(TAG, "onUpdate called!");
 		// Here we setup the intent which points to the StackViewService which will
         // provide the views for this collection.
@@ -126,9 +126,6 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 			
 			mWidget.onClick(context, appWidgetId, intent.getSourceBounds(), uri);
 			return true;
-		}
-		if (TextUtils.equals(action, AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
-			snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
 		}
 		return false;
 	}

@@ -49,7 +49,7 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 		mWidget = widget;
 	}
 
-	public void onUpdate(Context context, int appWidgetId) {
+	public void onUpdate(Context context, int appWidgetId, Snapshot snap) {
 		final boolean isICS = Preferences.getBGImage(context, appWidgetId) == Preferences.BG_ICS;
         RemoteViews views = new RemoteViews(context.getPackageName(), isICS ? R.layout.main_swa_ics : R.layout.main);
         String text = Preferences.getDisplayLabel(context, appWidgetId);
@@ -263,7 +263,7 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 			return;
 		}
 
-		onUpdate(context, appWidgetId);
+		onUpdate(context, appWidgetId, null);
 		Intent replaceDummy = CreateMakeScrollableIntent(context, appWidgetId);
 
 		// Send it out

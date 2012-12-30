@@ -27,7 +27,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public interface WidgetImplementation {
 		public void setWidget(ContactWidget widget);
-		public void onUpdate(Context context, int appWidgetId);
+		public void onUpdate(Context context, int appWidgetId, Snapshot snap);
 		public boolean onReceive(Context context, Intent intent);
 	}
 
@@ -55,15 +55,21 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		Log.d(TAG, "onUpdate");
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
+		}
+		
+		if (appWidgetIds.length == 0) {
+			Log.d(TAG, "appWidgetIds is empty");
 			return;
 		}
+		
+		Log.d(TAG, "appWidgetIds[0]=" + appWidgetIds[0]);
 
 
 		final int N = appWidgetIds.length;
 		for (int i = 0; i < N; i++) {
 			// Construct views
 			int appWidgetId = appWidgetIds[i];
-			mImpl.onUpdate(context, appWidgetId);  
+			mImpl.onUpdate(context, appWidgetId, snap);  
 		}
 
 
@@ -123,7 +129,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		else if (StatisticsService.SNAPSHOT_UPDATE.equals(action)) {
 			Log.d(TAG, "onReceive- calling onupdate");
 			snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
-			/*onUpdate(context, Preferences.getAllWidgetIds(context));*/
+			onUpdate(context, null, Preferences.getAllWidgetIds(context));
 		}
 
 		else if (!mImpl.onReceive(context, intent)) {
