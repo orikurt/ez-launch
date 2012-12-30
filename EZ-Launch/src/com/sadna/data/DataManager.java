@@ -326,11 +326,14 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public Snapshot getSelectedSnapshotFiltered() {
-		
+		Snapshot s = getSelectedSnapshot();
+		if (s == null) {
+			return null;
+		}
 		Snapshot filtered = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
 		IWidgetItemInfo itemCopy;
 		
-		for (IWidgetItemInfo item: selectedSnapshot){
+		for (IWidgetItemInfo item: s){
 			if (item.getItemState().getStatusCode().equals("MUS") && filtered.size()<APPLICATION_LIMIT){
 				itemCopy = new WidgetItemInfo(item.getPackageName(), item.getLabel(), item.getScore());
 				filtered.add(itemCopy);
