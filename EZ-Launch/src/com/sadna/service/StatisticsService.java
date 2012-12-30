@@ -52,7 +52,7 @@ public class StatisticsService extends Service{
 	private Date lastUnlock;
 	private int widgetID;
 	
-	private int MAX_TASKS = 10;
+	private int MAX_TASKS = 25;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -114,7 +114,7 @@ public class StatisticsService extends Service{
 		}
 		else {
 			// DB isn't empty
-			currSnapshot = null;//dataManager.getSelectedSnapshot();
+			currSnapshot = dataManager.getSelectedSnapshot();
 		}
 	}
 
@@ -173,15 +173,6 @@ public class StatisticsService extends Service{
 
 		// Send update intent
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
-		/*AppWidgetManager widgetManager = AppWidgetManager.getInstance(this.getApplicationContext());
-		ComponentName widgetComponent = new ComponentName(this.getApplicationContext(), ContactWidget.class);
-		int[] widgetIds = widgetManager.getAppWidgetIds(widgetComponent);
-		if (widgetIds.length == 0) {
-			Log.d(LOG_TAG, "widgetIds is empty");
-			return;
-		}
-		Log.d(LOG_TAG, "widgetIds = " + widgetIds[0]);
-		updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds);*/
 		updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);
 		sendBroadcast(updateWidget);
 	}
