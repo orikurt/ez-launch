@@ -194,9 +194,37 @@ private String LOG_TAG = "ConfigurationActivity";
 		// TODO Auto-generated method stub
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
+		setListPreferenceData(loadSnapshot);
+		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener());
 
+		/*
 		//Here you put the names of the screenshots
+		SnapShots = DM.loadAllSnapshots();
+		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
+		//Create the snapshot value arrays and fill them with data
+		CharSequence[] Titles= new CharSequence[SnapShotsLength];
+		CharSequence[] Values= new CharSequence[SnapShotsLength];
+
+		for (int i = 0; i < SnapShotsLength; i++) {
+			Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+			Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+		}
+
+
+		//CharSequence[] Titles = new CharSequence[] {"1", "2", "3"};
+		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
+
+		loadSnapshot.setEntries(Titles);
+		loadSnapshot.setEntryValues(Values);
+		*/
+	}
+
+
+	private void setListPreferenceData(ListPreference loadSnapshot2) {
+		// TODO Auto-generated method stub
+		//Here you put the names of the screenshots
+		SnapShots = DM.loadAllSnapshots();
 		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
 		//Create the snapshot value arrays and fill them with data
@@ -216,7 +244,6 @@ private String LOG_TAG = "ConfigurationActivity";
 		loadSnapshot.setEntryValues(Values);
 
 	}
-
 
 	private void prepareAboutBtn() {
 		// TODO Auto-generated method stub
@@ -369,6 +396,16 @@ private String LOG_TAG = "ConfigurationActivity";
 			});
 			alertDialog.show();
 			*/
+			return false;
+		}
+	}
+	
+	public class onLoadPreferenceClickListener implements OnPreferenceClickListener {
+
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			// TODO Auto-generated method stub
+			setListPreferenceData(loadSnapshot);
 			return false;
 		}
 	}
