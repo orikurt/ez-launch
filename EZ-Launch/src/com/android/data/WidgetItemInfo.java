@@ -71,7 +71,7 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		//byte[] byteArray = stream.toByteArray();
 		return bmp;
 	}
-	
+
 	@Override
 	public String getPackageName() {
 		return packageName;
@@ -104,7 +104,7 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	public void setScore(double score) {
 		this.score = score;
 	}
-	
+
 	public static final Parcelable.Creator<WidgetItemInfo> CREATOR
 	= new Parcelable.Creator<WidgetItemInfo>() {
 		public WidgetItemInfo createFromParcel(Parcel in) {
@@ -131,6 +131,13 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 	}
 
-
-
+	@Override
+	public int compareTo(IWidgetItemInfo another) {
+		if (getScore() - another.getScore() < 0)
+			return 1;
+		if (getScore() - another.getScore() > 0)
+			return -1;
+		
+		return 0;
+	}
 }
