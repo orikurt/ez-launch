@@ -92,12 +92,12 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 
 	@Override
 	public boolean containsAll(Collection<?> arg0) {
-		return containsAll(arg0);
+		return collection.containsAll(arg0);
 	}
 
 	@Override
 	public IWidgetItemInfo get(int location) {
-		return get(location);
+		return collection.get(location);
 	}
 
 	@Override
