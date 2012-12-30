@@ -7,9 +7,11 @@ import com.android.data.Snapshot;
 import com.sadna.service.StatisticsService;
 
 
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -37,7 +39,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	private WidgetImplementation mImpl;
 	Snapshot snap;
-	
+
 	public ContactWidget() {
 		super();
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
@@ -56,12 +58,12 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
 		}
-		
+
 		if (appWidgetIds.length == 0) {
 			Log.d(TAG, "appWidgetIds is empty");
 			return;
 		}
-		
+
 		Log.d(TAG, "appWidgetIds[0]=" + appWidgetIds[0]);
 
 
@@ -110,6 +112,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		Log.d(TAG, "----------------------------------");
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "Contact Widget - onReceive");
@@ -128,8 +131,17 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 		else if (StatisticsService.SNAPSHOT_UPDATE.equals(action)) {
 			Log.d(TAG, "onReceive- calling onupdate");
-			snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
-			onUpdate(context, null, Preferences.getAllWidgetIds(context));
+
+			// Generate appWidgetManager
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+			ComponentName thisWidget = new ComponentName(context, getClass());
+			int [] widgetIDs = appWidgetManager.getAppWidgetIds(thisWidget);
+			/*snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
+			onUpdate(context, null, Preferences.getAllWidgetIds(context));*/
+			for (int id : widgetIDs) {
+				Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
+				appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
+			}
 		}
 
 		else if (!mImpl.onReceive(context, intent)) {
