@@ -216,7 +216,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 					lastEdited = new Date();
 				}
 				ISnapshotInfo si = new SnapshotInfo(snapshotName,lastEdited);
-				IWidgetItemInfo wi = new WidgetItemInfo(packageName,label,score);
+				IWidgetItemInfo wi = iWidgetItemInfoFactory(packageName, label, score);
 				if (hs.containsKey(si)) {
 					List<IWidgetItemInfo> widgList = hs.get(si);
 					widgList.add(wi);
@@ -238,6 +238,13 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return retList;
 		}
 		return null;
+	}
+
+	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score) {
+		if (packageName.equalsIgnoreCase(ConfigurationItemInfo.COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION)) {
+			return new ConfigurationItemInfo();
+		}
+		return new WidgetItemInfo(packageName,label,score);
 	}
 
 	private String getBaseSelectWithJoin() {
