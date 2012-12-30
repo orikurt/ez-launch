@@ -42,6 +42,11 @@
 				<action android:name="com.sadna.widgets.application.PREFS" />
 			</intent-filter>
 		</activity>
+		<activity android:name=".SettingsActivity">
+			<intent-filter>
+				<action android:name="com.sadna.widgets.application.PREFS" />
+			</intent-filter>
+		</activity>
 		
 		<!-- SERVICE COMPONENTS -->
 		<service android:name="com.sadna.service.StatisticsService">
