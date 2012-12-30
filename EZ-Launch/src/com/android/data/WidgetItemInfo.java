@@ -59,6 +59,9 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 	private static Bitmap getImage(Drawable icon)
 	{
+		if (icon == null) {
+			return null;
+		}
 		Bitmap bmp = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmp); 
 		icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
