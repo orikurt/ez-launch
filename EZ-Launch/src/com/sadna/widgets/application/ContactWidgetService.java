@@ -187,7 +187,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if (mData == null) {
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
-			mData = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+			mData = dm.getSelectedSnapshotFiltered(new Snapshot(snapshotInfo, getInstalledAppsInfo()));
 		}
 
 		/*
