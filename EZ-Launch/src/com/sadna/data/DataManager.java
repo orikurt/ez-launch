@@ -345,8 +345,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				}
 			}
 		}
-		//APPLICATION_LIMIT
-		// TODO Auto-generated method stub
 		return filtered;
 	}
 
