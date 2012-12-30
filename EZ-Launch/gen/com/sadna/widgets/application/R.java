@@ -86,6 +86,7 @@ public final class R {
         public static final int button_text=0x7f06002f;
         public static final int cancelbtn=0x7f060035;
         public static final int columncount=0x7f06001c;
+        public static final int configuration=0x7f060036;
         public static final int directdial=0x7f060022;
         public static final int displayLabel=0x7f06000c;
         public static final int displayname=0x7f060005;
@@ -126,17 +127,17 @@ public final class R {
         public static final int textalign=0x7f060026;
         public static final int transparent=0x7f06000f;
         public static final int white=0x7f06000e;
-        public static final int widget1x2=0x7f060036;
-        public static final int widget1x3=0x7f060037;
-        public static final int widget1x4=0x7f060038;
-        public static final int widget2x2=0x7f060039;
-        public static final int widget2x3=0x7f06003a;
-        public static final int widget2x4=0x7f06003b;
-        public static final int widget3x2=0x7f06003c;
-        public static final int widget3x3=0x7f06003d;
-        public static final int widget3x4=0x7f06003e;
-        public static final int widget4x2=0x7f06003f;
-        public static final int widget4x3=0x7f060040;
+        public static final int widget1x2=0x7f060037;
+        public static final int widget1x3=0x7f060038;
+        public static final int widget1x4=0x7f060039;
+        public static final int widget2x2=0x7f06003a;
+        public static final int widget2x3=0x7f06003b;
+        public static final int widget2x4=0x7f06003c;
+        public static final int widget3x2=0x7f06003d;
+        public static final int widget3x3=0x7f06003e;
+        public static final int widget3x4=0x7f06003f;
+        public static final int widget4x2=0x7f060040;
+        public static final int widget4x3=0x7f060041;
         public static final int widget4x4=0x7f060001;
     }
     public static final class xml {
