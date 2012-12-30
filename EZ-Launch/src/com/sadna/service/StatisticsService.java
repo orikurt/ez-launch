@@ -2,9 +2,11 @@ package com.sadna.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
+import com.android.data.ConfigurationItemInfo;
 import com.android.data.DataManager;
 import com.android.data.Snapshot;
 import com.android.data.SnapshotInfo;
@@ -109,6 +111,8 @@ public class StatisticsService extends Service{
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 			currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+			// Adding the config option
+			currSnapshot.add(new ConfigurationItemInfo());
 			dataManager.saveSnapshot(currSnapshot);
 			dataManager.setSelectedSnapshot(currSnapshot);
 		}
