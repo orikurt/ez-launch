@@ -262,6 +262,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		String loadSomeQuery = getBaseSelectWithJoin() + inQuery;
 		Cursor c  = db.rawQuery(loadSomeQuery, null);
 		List<Snapshot> retVal = extractSnapshotFormDB(c);
+		c.close();
 		db.close();
 		return retVal;
 	}
@@ -280,6 +281,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor c = db.rawQuery(loadQuery, null);
 		List<Snapshot> retval = extractSnapshotFormDB(c);
+		c.close();
+		db.close();
 		return (retval != null) ? retval.get(0) : null;
 	}
 
