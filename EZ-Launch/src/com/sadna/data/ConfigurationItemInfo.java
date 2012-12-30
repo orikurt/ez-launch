@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
+import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.ConfigurationActivity;
 import com.sadna.widgets.application.R;
@@ -99,6 +100,16 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 		if (getScore() - another.getScore() > 0)
 			return -1;
 		return 0;
+	}
+
+	@Override
+	public void setItemState(ItemState iState) {
+		
+	}
+
+	@Override
+	public ItemState getItemState() {
+		return ItemState.MUST;
 	}
 
 }

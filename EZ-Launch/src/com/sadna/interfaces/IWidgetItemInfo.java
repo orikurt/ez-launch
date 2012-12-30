@@ -1,5 +1,7 @@
 package com.sadna.interfaces;
 
+import com.sadna.enums.ItemState;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +21,10 @@ public interface IWidgetItemInfo extends Parcelable, Comparable<IWidgetItemInfo>
 	
 	public Intent getLaunchIntent(Context c);
 	
+	public void setItemState(ItemState iState);
+	public ItemState getItemState();
+		
+		
 	
 	public double getScore();
 	public void setScore(double newScore);
