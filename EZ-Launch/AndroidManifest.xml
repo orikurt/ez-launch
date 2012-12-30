@@ -25,6 +25,10 @@
 				<action   
 					android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
+			<intent-filter>
+				<action   
+					android:name="com.sadna.widgets.application.SNAPSHOT_UPDATE" />
+			</intent-filter>
 			<meta-data android:name="android.appwidget.provider"
 				android:resource="@xml/contact_widget_provider4x4" />
 			<meta-data android:name="LauncherMetadata.Requirements.APIVersion"
