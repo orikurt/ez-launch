@@ -124,11 +124,7 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public int compareTo(IWidgetItemInfo another) {
-		if (getScore() - another.getScore() < 0)
-			return 1;
-		if (getScore() - another.getScore() > 0)
-			return -1;
+		return (int) (getScore() - another.getScore());
 		
-		return 0;
 	}
 }
