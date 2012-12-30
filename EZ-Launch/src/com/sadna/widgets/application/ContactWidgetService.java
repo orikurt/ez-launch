@@ -165,8 +165,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
-			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
-			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemIntent, itemLabel);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
 			result.add(itemInfo);
 		}
 

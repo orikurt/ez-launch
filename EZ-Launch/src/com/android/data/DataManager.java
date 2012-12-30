@@ -197,7 +197,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
 		//Snapshot snapArr[]=new Snapshot[c.getCount()];
-		Map<SnapshotInfo, List<IWidgetItemInfo>> hs = new HashMap<SnapshotInfo, List<IWidgetItemInfo>>();
+		Map<ISnapshotInfo, List<IWidgetItemInfo>> hs = new HashMap<ISnapshotInfo, List<IWidgetItemInfo>>();
 		
 		
 		if (c.getCount() > 0) 
@@ -215,8 +215,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				} catch (ParseException e) {
 					lastEdited = new Date();
 				}
-				SnapshotInfo si = new SnapshotInfo(snapshotName,lastEdited);
-				WidgetItemInfo wi = new WidgetItemInfo(packageName,label,score);
+				ISnapshotInfo si = new SnapshotInfo(snapshotName,lastEdited);
+				IWidgetItemInfo wi = new WidgetItemInfo(packageName,label,score);
 				if (hs.containsKey(si)) {
 					List<IWidgetItemInfo> widgList = hs.get(si);
 					widgList.add(wi);

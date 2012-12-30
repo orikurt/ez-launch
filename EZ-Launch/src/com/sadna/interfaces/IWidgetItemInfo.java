@@ -17,8 +17,8 @@ public interface IWidgetItemInfo extends Parcelable, Comparable<IWidgetItemInfo>
 	public String getLabel();
 	public void setLabel(String label);
 	
-	public Intent getLaunchIntent();
-	public void setLaunchIntent(Intent launchIntent);
+	public Intent getLaunchIntent(Context c);
+	
 	
 	public double getScore();
 	public void setScore(double newScore);

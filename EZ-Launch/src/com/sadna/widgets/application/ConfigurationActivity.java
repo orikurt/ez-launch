@@ -116,8 +116,7 @@ private String LOG_TAG = "ConfigurationActivity";
 
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
 			String itemPkgName = resolveInfo.resolvePackageName;
-			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
-			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemIntent, itemLabel);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
 			result.add(itemInfo);
 		}
 
