@@ -161,7 +161,10 @@ public class StatisticsService extends Service{
 			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(pkgName);
 			if (itemInfo != null) {
 				itemInfo.setScore(itemInfo.getScore()+i);
-				Log.d(LOG_TAG, pkgName + " new score:" + itemInfo.getScore());
+				if (Double.isNaN(itemInfo.getScore())) {
+					int b = 10;
+				}
+				Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(itemInfo.getScore()));
 			}
 
 			i--;
