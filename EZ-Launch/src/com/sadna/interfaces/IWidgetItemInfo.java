@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 
-public interface IWidgetItemInfo extends Parcelable{
+public interface IWidgetItemInfo extends Parcelable, Comparable<IWidgetItemInfo>{
 	
 	public Drawable getImage(Context c);
 	public Bitmap getBitmap(Context c);
