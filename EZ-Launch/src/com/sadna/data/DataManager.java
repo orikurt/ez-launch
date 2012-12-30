@@ -15,6 +15,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
@@ -32,7 +34,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String DATABASE_NAME = "EZ_Launch_DB";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	// Snapshot info table name
 	private static final String TABLE_SNAPSHOT_INFO = "snapshotInfoTable";
@@ -49,6 +51,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String KEY_WIDGET_NAME = "packageName";
 	private static final String COLUMN_WIDGET_LABEL = "widgetInfo";
 	private static final String COLUMN_WIDGET_SCORE = "widgetScore";
+	private static final String COLUMN_WIDGET_STATE = "widgetState";
 
 
 	// Widget info to Snapshot table
@@ -82,7 +85,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		String CREATE_WIDGET_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WIDGET_INFO + "("
 				+ KEY_WIDGET_NAME + " TEXT PRIMARY KEY," + 
 				COLUMN_WIDGET_LABEL + " TEXT," + 
-				COLUMN_WIDGET_SCORE+ " REAL NOT NULL DEFAULT '0'" + ");";
+				COLUMN_WIDGET_SCORE+ " REAL NOT NULL DEFAULT '0'," +
+				COLUMN_WIDGET_STATE + " TEXT (10) " + ");";
 		db.execSQL(CREATE_WIDGET_INFO_TABLE);
 
 		String CREATE_WIDGET_TO_SNAPSHOT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WIDGET_TO_SNAPSHOT + "("
@@ -151,8 +155,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private boolean saveWidgetInfo(IWidgetItemInfo widg, SQLiteDatabase db){
 		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
-				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE}, 
-				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore())});
+				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE}, 
+				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode()});
 		db.execSQL(insertWidgetQuery);
 		return true;
 	}
@@ -209,6 +213,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				String label =			c.getString(c.getColumnIndex(COLUMN_WIDGET_LABEL));
 				double score = 			c.getDouble(c.getColumnIndex(COLUMN_WIDGET_SCORE));
 				String snapshotName = 	c.getString(c.getColumnIndex(KEY_SNAPSHOT_NAME));
+				ItemState itemState = 	ItemState.parse(c.getString(c.getColumnIndex(COLUMN_WIDGET_STATE)));
 				Date lastEdited;
 				try {
 					lastEdited = df.parse(c.getString(c.getColumnIndex(COLUMN_SNAPSHOT_LAST_DATE)));
@@ -216,7 +221,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 					lastEdited = new Date();
 				}
 				ISnapshotInfo si = new SnapshotInfo(snapshotName,lastEdited);
-				IWidgetItemInfo wi = iWidgetItemInfoFactory(packageName, label, score);
+				IWidgetItemInfo wi = iWidgetItemInfoFactory(packageName, label, score,itemState);
 				if (hs.containsKey(si)) {
 					List<IWidgetItemInfo> widgList = hs.get(si);
 					widgList.add(wi);
@@ -240,15 +245,15 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return null;
 	}
 
-	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score) {
+	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score, ItemState itemState) {
 		if (packageName.equalsIgnoreCase(ConfigurationItemInfo.COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION)) {
 			return new ConfigurationItemInfo();
 		}
-		return new WidgetItemInfo(packageName,label,score);
+		return new WidgetItemInfo(packageName,label,score,itemState);
 	}
 
 	private String getBaseSelectWithJoin() {
-		return "SELECT " + KEY_WIDGET_NAME + " , " + COLUMN_WIDGET_LABEL + " , "  + COLUMN_WIDGET_SCORE + " , "  + KEY_SNAPSHOT_NAME + " , "  + COLUMN_SNAPSHOT_LAST_DATE + " "  +
+		return "SELECT " + KEY_WIDGET_NAME + " , " + COLUMN_WIDGET_LABEL + " , "  + COLUMN_WIDGET_SCORE +" , " + COLUMN_WIDGET_STATE + " , "  + KEY_SNAPSHOT_NAME + " , "  + COLUMN_SNAPSHOT_LAST_DATE + " "  +
 				"FROM " + TABLE_WIDGET_INFO + " , " + TABLE_SNAPSHOT_INFO + " , "  + TABLE_WIDGET_TO_SNAPSHOT + " " +
 				"WHERE " + KEY_WIDGET_NAME + " = " + KEY_WIDGET_REF + " AND " + KEY_SNAPSHOT_NAME + " = " + KEY_SNAPSHOT_REF;
 	}

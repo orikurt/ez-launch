@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
 
 public class WidgetItemInfo implements IWidgetItemInfo{
@@ -21,17 +22,23 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	private String label;
 	private double score;
 
-
-
+	private ItemState itemState;
 
 	public WidgetItemInfo(String name, String label) {
 		this(name,label,0);
 	}
-	public WidgetItemInfo(String name, String label,double score) {
+	
+	public WidgetItemInfo(String name, String label,double score,ItemState itemState) {
 		this.packageName = name;
 		this.label = label;
 		this.score = score;
+		this.itemState = itemState;
 	}
+	
+	public WidgetItemInfo(String name, String label,double score) {
+		this(name,label,score,ItemState.AUTO);
+	}
+	
 	public WidgetItemInfo(Parcel in) {
 		packageName = in.readString();
 		label = in.readString();
@@ -132,5 +139,14 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 			return -1;
 		
 		return 0;
+	}
+	@Override
+	public void setItemState(ItemState iState) {
+		this.itemState = iState;
+		
+	}
+	@Override
+	public ItemState getItemState() {
+		return itemState;
 	}
 }
