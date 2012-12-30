@@ -93,6 +93,9 @@ private String LOG_TAG = "ConfigurationActivity";
 			finish();
 		}
 
+		DM = new DataManager(this);
+		SnapShots = DM.loadAllSnapshots();
+		
 		prepareLoadScreenshotPref();
 		prepareSaveSnapshotPref();
 		prepareHelpBtn();
@@ -195,8 +198,6 @@ private String LOG_TAG = "ConfigurationActivity";
 
 		//Here you put the names of the screenshots
 
-		DM = new DataManager(this);
-		SnapShots = DM.loadAllSnapshots();
 		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
 		//Create the snapshot value arrays and fill them with data
