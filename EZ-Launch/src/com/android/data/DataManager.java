@@ -197,7 +197,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
 		//Snapshot snapArr[]=new Snapshot[c.getCount()];
-		Map<ISnapshotInfo, List<IWidgetItemInfo>> hs = new HashMap<ISnapshotInfo, List<IWidgetItemInfo>>();
+		Map<SnapshotInfo, List<IWidgetItemInfo>> hs = new HashMap<SnapshotInfo, List<IWidgetItemInfo>>();
 		
 		
 		if (c.getCount() > 0) 

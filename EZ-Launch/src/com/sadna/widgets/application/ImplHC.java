@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2010 Florian Sundermann
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.sadna.widgets.application;
 
 
@@ -37,7 +21,7 @@ import android.text.TextUtils;
 public class ImplHC implements ContactWidget.WidgetImplementation {
 	public static final String TAG = "boombuler.ImplHC";
 	private ContactWidget mWidget;
-	private Snapshot snap;
+	//private Snapshot snap;
 	
 	public static final String EXTRA_DEFAULT_WIDTH = "EXTRA_DEFAULT_WIDTH";
 
@@ -98,7 +82,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 			rv.setViewVisibility(R.id.group_caption, withHeader ? View.VISIBLE : View.GONE);
 	     	rv.setInt(R.id.backgroundImg, "setAlpha", Preferences.getBackgroundAlpha(context, appWidgetId));
 		}
-		rv.setRemoteAdapter(appWidgetId, R.id.my_gridview, intent);
+		rv.setRemoteAdapter(R.id.my_gridview, intent);
 
 
 		// Here we setup the a pending intent template. Individuals items of a collection
