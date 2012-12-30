@@ -28,7 +28,9 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputBinding;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class ConfigurationActivity extends PreferenceActivity {
@@ -303,14 +305,62 @@ private String LOG_TAG = "ConfigurationActivity";
 		{
 			fContext = context;
 		}
+		
+		private boolean saveSnapshotProcess(String value) 
+		{	
+			Snapshot snap = DM.getSelectedSnapshot();
+			String oldName = snap.getSnapshotInfo().getSnapshotName();
+			snap.getSnapshotInfo().setSnapshotName(value);
+			if (SnapShots.contains(snap))
+			{
+				snap.getSnapshotInfo().setSnapshotName(oldName);
+				return false;
+			}
+			DM.saveSnapshot(snap);
+			return true;
+		}
+		
+		
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
+			
+			Context Cntxt = this.fContext;
+			AlertDialog.Builder alert = new AlertDialog.Builder(Cntxt);
+
+			alert.setTitle("Save Snapshot");
+			alert.setMessage("Enter name to save:");
+
+			
+			// Set an EditText view to get user input 
+			final EditText input = new EditText(Cntxt);
+			alert.setView(input);
+
+			alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			  final String value = input.getText().toString();
+			  saveSnapshotProcess(value);
+				}
+			});
+			  // Do something with value!
+
+			alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				  public void onClick(DialogInterface dialog, int whichButton) {
+				    // Canceled.
+				  }
+				});
+
+			alert.show();
+
+			
+			
+			/*
 			AlertDialog alertDialog;
 			alertDialog = new AlertDialog.Builder(fContext).create();
 			alertDialog.setTitle(fContext.getString(R.string.save));
 			alertDialog.setMessage(fContext.getString(R.string.saveAsk));
 			alertDialog.setButton(fContext.getString(R.string.okbtn), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
+					
 					dialog.cancel();
 				}
 			});
@@ -320,6 +370,7 @@ private String LOG_TAG = "ConfigurationActivity";
 				}
 			});
 			alertDialog.show();
+			*/
 			return false;
 		}
 	}
