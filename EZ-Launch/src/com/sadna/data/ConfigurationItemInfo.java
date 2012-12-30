@@ -74,7 +74,7 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 	@Override
 	public Intent getLaunchIntent(Context c) {
 		// TODO Auto-generated method stub
-		return new Intent(c,ConfigurationActivity.class);
+		return new Intent(c, ConfigurationActivity.class);
 	}
 
 
