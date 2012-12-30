@@ -14,6 +14,7 @@ import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.ContactWidget;
 import com.sadna.widgets.application.R;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -39,7 +40,7 @@ public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
 	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
-	
+
 	Snapshot currSnapshot;
 	IDataManager dataManager;
 
@@ -51,7 +52,7 @@ public class StatisticsService extends Service{
 	// Intent related globals
 	private Date lastUnlock;
 	private int widgetID;
-	
+
 	private int MAX_TASKS = 25;
 
 	@Override
@@ -78,7 +79,7 @@ public class StatisticsService extends Service{
 		// Notify the user about Starting.
 		Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Started");
-		
+
 		// Initialize all private fields
 		initFields();
 
@@ -89,7 +90,7 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
-		
+
 		return START_STICKY;
 	}
 
@@ -128,7 +129,7 @@ public class StatisticsService extends Service{
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-			
+
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
 			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
@@ -151,14 +152,37 @@ public class StatisticsService extends Service{
 		currSnapshot.normalizeScores();
 	}
 
+	@SuppressLint("NewApi")
 	private void updateWithRecentTasks() {
 		// get the info from the currently running task
 		List<RecentTaskInfo> tasksInfo = activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
 		double i = currSnapshot.size() - tasksInfo.size();
 
 		for (RecentTaskInfo taskInfo : tasksInfo) {
-			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(taskInfo.origActivity.getPackageName().toString());
+
+			IWidgetItemInfo itemInfo = null;
+
+			// Trying desperately to find package name
+			String pkgName = null;
+			ComponentName compName = null;
+
+			// First shot
+			pkgName = taskInfo.baseIntent.getPackage();
+			if (pkgName != null) {
+				Log.d(LOG_TAG, "pkgName is not null!");
+				itemInfo = currSnapshot.getItemByName(pkgName);
+			}
+			// Second shot
+			else if ((compName = taskInfo.origActivity) != null) {
+				Log.d(LOG_TAG, "compName is not null!");
+				pkgName = compName.getPackageName();
+				if (pkgName != null) {
+					itemInfo = currSnapshot.getItemByName(pkgName);
+				}
+			}
+
 			if (itemInfo == null)
+				// We don't Have package name
 				continue;
 
 			itemInfo.setScore(itemInfo.getScore()+i);
@@ -171,9 +195,12 @@ public class StatisticsService extends Service{
 	public void notifyWidget() {
 		Log.d(LOG_TAG, "notifyWidget");
 
+		// Save snapshot to DB
+		dataManager.saveSnapshot(currSnapshot);
+
 		// Send update intent
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
-		updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);
+		/*updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);*/
 		sendBroadcast(updateWidget);
 	}
 
@@ -187,13 +214,13 @@ public class StatisticsService extends Service{
 			}
 
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-				/*Date now = new Date();
-				if ((now.getTime() - lastUnlock.getTime()) > 10000){
+				Date now = new Date();
+				if ((now.getTime() - lastUnlock.getTime()) > /*1000*/0){
 					updateWithRecentTasks();
 					notifyWidget();
-				}*/
-				notifyWidget();
+				}
 			}
+
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				int pkgId = Integer.parseInt(Intent.EXTRA_UID);
 				String name = pm.getNameForUid(pkgId);
