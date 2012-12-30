@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.sadna.data.Snapshot;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.widgets.application.R;
 import com.sadna.widgets.application.SettingsListActivity;
 
 
@@ -48,11 +49,11 @@ public class LazyAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.list_row, null);
 
-        TextView title = (TextView)vi.findViewById(R.id.APPtitle); // title
-        
-        TextView status = (TextView)vi.findViewById(R.id.AppStatus); // duration
-        ImageView thumb_image=(ImageView)vi.findViewById(R.id.APP_list_image); // thumb image
-        
+           TextView title = (TextView)vi.findViewById(R.id.APPtitle); // title
+           
+           TextView status = (TextView)vi.findViewById(R.id.AppStatus); // duration
+           ImageView thumb_image=(ImageView)vi.findViewById(R.id.APP_list_image); // thumb image
+           
         
         IWidgetItemInfo wi = data.get(position);
         
