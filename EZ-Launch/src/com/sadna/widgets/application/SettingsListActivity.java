@@ -18,15 +18,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SettingsListActivity extends PreferenceActivity{
 
-	
-	public static final String KEY_SONG = "song"; // parent node
-
-	
-	
-	
-	
-	
-
 	public ListView list;
     public LazyAdapter adapter;
     
@@ -55,7 +46,7 @@ public class SettingsListActivity extends PreferenceActivity{
 
 		
 
-		list=(ListView)findViewById(R.id.list);
+		list=(ListView)findViewById(R.id.listConfigAPP);
 		
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, appList);        
