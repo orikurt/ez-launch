@@ -89,6 +89,11 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
+		IntentFilter launchFilter = new IntentFilter();
+		launchFilter.addCategory(Intent.CATEGORY_LAUNCHER);
+		launchFilter.addAction(Intent.ACTION_MAIN);
+		
+		registerReceiver(systemIntentsReceiver, launchFilter);
 
 		return START_STICKY;
 	}
@@ -213,7 +218,11 @@ public class StatisticsService extends Service{
 		public void onReceive(Context context, Intent intent) {
 
 			updateReservedSnapshot();
-
+			
+			if (intent.getAction().equals(Intent.ACTION_MAIN)){
+				Log.d(LOG_TAG, "Found New Activity:"+intent.toString());
+				return;
+			}
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
 			}
@@ -244,6 +253,7 @@ public class StatisticsService extends Service{
 				String label = packageManager.getApplicationLabel(info).toString();
 				IWidgetItemInfo newItem = new WidgetItemInfo(name, label);
 				currSnapshot.add(newItem);
+				Collections.sort(currSnapshot);
 			}
 
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
