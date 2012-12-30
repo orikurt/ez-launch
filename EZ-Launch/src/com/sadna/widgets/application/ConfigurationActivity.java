@@ -2,11 +2,12 @@ package com.sadna.widgets.application;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
+import com.sadna.data.WidgetItemInfo;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.IWidgetItemInfo;
-import com.android.data.DataManager;
-import com.android.data.Snapshot;
-import com.android.data.WidgetItemInfo;
 //import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
 
 

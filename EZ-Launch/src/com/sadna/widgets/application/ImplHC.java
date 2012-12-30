@@ -15,8 +15,8 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.RemoteViews;
 
-import com.android.data.Snapshot;
 import com.sadna.android.content.LauncherIntent;
+import com.sadna.data.Snapshot;
 import com.sadna.service.StatisticsService;
 
 @SuppressLint("NewApi")

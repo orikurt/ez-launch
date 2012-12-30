@@ -2,7 +2,7 @@ package com.sadna.interfaces;
 
 import java.util.List;
 
-import com.android.data.Snapshot;
+import com.sadna.data.Snapshot;
 
 public interface IDataManager {
 	

@@ -1,4 +1,4 @@
-package com.android.data;
+package com.sadna.data;
 
 import android.content.Context;
 import android.content.Intent;

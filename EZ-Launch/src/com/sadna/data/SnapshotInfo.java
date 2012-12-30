@@ -1,4 +1,4 @@
-package com.android.data;
+package com.sadna.data;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

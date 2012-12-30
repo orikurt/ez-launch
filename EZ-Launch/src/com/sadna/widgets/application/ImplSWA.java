@@ -18,10 +18,10 @@ package com.sadna.widgets.application;
 
 
 
-import com.android.data.Snapshot;
 import com.sadna.android.content.LauncherIntent;
 import com.sadna.android.widget.BoundRemoteViews;
 import com.sadna.android.widget.SimpleRemoteViews;
+import com.sadna.data.Snapshot;
 
 
 import android.app.PendingIntent;
