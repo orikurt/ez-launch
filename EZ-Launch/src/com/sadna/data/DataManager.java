@@ -322,6 +322,12 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}		
 	}
 
+	@Override
+	public Snapshot getSelectedSnapshotFiltered() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }
