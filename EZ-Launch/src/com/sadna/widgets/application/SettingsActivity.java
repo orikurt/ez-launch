@@ -7,8 +7,10 @@ import com.sadna.data.Snapshot;
 import com.sadna.interfaces.IDataManager;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,6 +19,10 @@ import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -38,8 +44,23 @@ public class SettingsActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		// Build GUI from resource
 		addPreferencesFromResource(R.xml.preferences);
+		
+		// Add SettingsList button
 		ListView v = getListView();
-
+		Button settingsListButton = new Button(this);
+		settingsListButton.setText("Configure Permanents");
+		settingsListButton.setOnClickListener(new OnClickListener() {
+			public void onClick(final View Arg) {
+			    
+			    // Start SettingsList
+				Intent launch = new Intent(getApplicationContext(), SettingsListActivity.class);
+				startActivity(launch);
+			}
+		});
+		v.addFooterView(settingsListButton);
+		
+		
+		// Prepare
 		DM = new DataManager(this);
 		SnapShots = DM.loadAllSnapshots();
 		
