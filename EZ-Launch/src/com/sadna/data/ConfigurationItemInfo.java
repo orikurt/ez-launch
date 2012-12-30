@@ -11,6 +11,7 @@ import android.os.Parcel;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.ConfigurationActivity;
 import com.sadna.widgets.application.R;
+import com.sadna.widgets.application.SettingsActivity;
 
 public class ConfigurationItemInfo implements IWidgetItemInfo{
 
@@ -74,7 +75,7 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 	@Override
 	public Intent getLaunchIntent(Context c) {
 		// TODO Auto-generated method stub
-		return new Intent(c, ConfigurationActivity.class);
+		return new Intent(c, SettingsActivity.class);
 	}
 
 
