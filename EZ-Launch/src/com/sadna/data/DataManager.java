@@ -23,7 +23,7 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
-	private static final int APPLICATION_LIMIT = 15;
+	private static final int APPLICATION_LIMIT = 16;
 
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
 
@@ -348,7 +348,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				}
 			}
 		}
-		filtered.add(new ConfigurationItemInfo());
+		//filtered.add(new ConfigurationItemInfo());
 		return filtered;
 	}
 	
