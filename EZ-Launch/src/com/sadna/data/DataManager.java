@@ -23,6 +23,8 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
+	private static final int APPLICATION_LIMIT = 16;
+
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
 
 	private static final String BAD_SNAPSHOT = "Bad_SnapshotXXXERROR";
@@ -324,6 +326,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public Snapshot getSelectedSnapshotFiltered() {
+
+		//APPLICATION_LIMIT
 		// TODO Auto-generated method stub
 		return null;
 	}
