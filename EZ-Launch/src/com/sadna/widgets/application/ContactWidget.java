@@ -168,8 +168,8 @@ public abstract class ContactWidget extends AppWidgetProvider {
 	}
 
 
-	public void onClick(Context context, int appWidgetId, Rect targetRect, Uri uri) {
-		Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(uri.toString());
+	public void onClick(Context context, int appWidgetId, Rect targetRect, Intent LaunchIntent) {
+		//Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(uri.toString());
 		context.startActivity(LaunchIntent);
 		Intent serviceIntent = new Intent(SERVICE_NOTIFIER_LAUNCH);
 		serviceIntent.putExtra("name", LaunchIntent.getPackage());
