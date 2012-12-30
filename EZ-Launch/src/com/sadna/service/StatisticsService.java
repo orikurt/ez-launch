@@ -11,6 +11,7 @@ import com.android.data.WidgetItemInfo;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.widgets.application.ContactWidget;
 import com.sadna.widgets.application.R;
 
 import android.app.ActivityManager;
@@ -36,7 +37,8 @@ import android.widget.Toast;
 
 public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
-	public static final String NEW_SNAPSHOT = "newSnapshot";
+	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
+	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
 	
 	Snapshot currSnapshot;
 	IDataManager dataManager;
@@ -51,7 +53,6 @@ public class StatisticsService extends Service{
 	private int widgetID;
 	
 	private int MAX_TASKS = 10;
-	public static String UPDATE_INTENT = "com.sadna.intents.UPDATE_INTENT";
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -77,7 +78,7 @@ public class StatisticsService extends Service{
 		// Notify the user about Starting.
 		Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Started");
-
+		
 		// Initialize all private fields
 		initFields();
 
@@ -88,7 +89,7 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
-
+		
 		return START_STICKY;
 	}
 
@@ -113,7 +114,7 @@ public class StatisticsService extends Service{
 		}
 		else {
 			// DB isn't empty
-			currSnapshot = dataManager.getSelectedSnapshot();
+			currSnapshot = null;//dataManager.getSelectedSnapshot();
 		}
 	}
 
@@ -171,9 +172,16 @@ public class StatisticsService extends Service{
 		Log.d(LOG_TAG, "notifyWidget");
 
 		// Send update intent
-		Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		int[] ids = new int[] { widgetID };
-		updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
+		/*AppWidgetManager widgetManager = AppWidgetManager.getInstance(this.getApplicationContext());
+		ComponentName widgetComponent = new ComponentName(this.getApplicationContext(), ContactWidget.class);
+		int[] widgetIds = widgetManager.getAppWidgetIds(widgetComponent);
+		if (widgetIds.length == 0) {
+			Log.d(LOG_TAG, "widgetIds is empty");
+			return;
+		}
+		Log.d(LOG_TAG, "widgetIds = " + widgetIds[0]);
+		updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds);*/
 		updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);
 		sendBroadcast(updateWidget);
 	}
@@ -188,11 +196,12 @@ public class StatisticsService extends Service{
 			}
 
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-				Date now = new Date();
+				/*Date now = new Date();
 				if ((now.getTime() - lastUnlock.getTime()) > 10000){
 					updateWithRecentTasks();
 					notifyWidget();
-				}
+				}*/
+				notifyWidget();
 			}
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				int pkgId = Integer.parseInt(Intent.EXTRA_UID);
