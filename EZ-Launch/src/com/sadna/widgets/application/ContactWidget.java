@@ -22,6 +22,7 @@ import android.provider.ContactsContract.QuickContact;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.WindowManager;
 
 
@@ -58,6 +59,10 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
 		}
+
+		
+		
+        
 
 		if (appWidgetIds.length == 0) {
 			Log.d(TAG, "appWidgetIds is empty");
