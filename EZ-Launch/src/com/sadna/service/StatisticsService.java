@@ -144,8 +144,7 @@ public class StatisticsService extends Service{
 		for (ResolveInfo resolveInfo : pkgAppsList) {
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
-			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
-			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemIntent, itemLabel);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
 			result.add(itemInfo);
 		}
 
@@ -242,8 +241,7 @@ public class StatisticsService extends Service{
 				}
 
 				String label = packageManager.getApplicationLabel(info).toString();
-				Intent launchIntent = packageManager.getLaunchIntentForPackage(name);
-				IWidgetItemInfo newItem = new WidgetItemInfo(name, launchIntent, label);
+				IWidgetItemInfo newItem = new WidgetItemInfo(name, label);
 				currSnapshot.add(newItem);
 			}
 

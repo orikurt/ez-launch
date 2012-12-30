@@ -17,27 +17,22 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	//private Drawable image;
 	private String packageName;
 	private String label;
-	private Intent launchIntent;
 	private double score;
 
 
-	public WidgetItemInfo(String name,String label,double score) {
-		this(name,null,label,score);
-	}
 
-	public WidgetItemInfo(String name, Intent launchIntent,String label) {
-		this(name,launchIntent,label,0);
+
+	public WidgetItemInfo(String name, String label) {
+		this(name,label,0);
 	}
-	public WidgetItemInfo(String name, Intent launchIntent,String label,double score) {
+	public WidgetItemInfo(String name, String label,double score) {
 		this.packageName = name;
-		this.launchIntent = launchIntent;
 		this.label = label;
 		this.score = score;
 	}
 	public WidgetItemInfo(Parcel in) {
 		packageName = in.readString();
 		label = in.readString();
-		launchIntent = in.readParcelable(Intent.class.getClassLoader());
 		score = in.readDouble();
 	}
 
@@ -89,13 +84,10 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		this.label = label;
 	}
 	@Override
-	public Intent getLaunchIntent() {
-		return launchIntent;
+	public Intent getLaunchIntent(Context c) {
+		return c.getPackageManager().getLaunchIntentForPackage(getPackageName());
 	}
-	@Override
-	public void setLaunchIntent(Intent launchIntent) {
-		this.launchIntent = launchIntent;
-	}
+	
 	@Override
 	public double getScore() {
 		return score;
@@ -126,7 +118,6 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		/*dest.writeParcelable(image, flags);*/
 		dest.writeString(packageName);
 		dest.writeString(label);
-		dest.writeParcelable(launchIntent, flags);
 		dest.writeDouble(score);
 
 	}
