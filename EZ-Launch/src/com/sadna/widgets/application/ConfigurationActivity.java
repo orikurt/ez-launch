@@ -14,6 +14,7 @@ import org.xmlpull.v1.XmlPullParser;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.service.StatisticsService;
 import com.android.data.DataManager;
 import com.android.data.Snapshot;
 import com.android.data.SnapshotInfo;
@@ -41,6 +42,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,6 +59,7 @@ public class ConfigurationActivity extends PreferenceActivity {
 	private Preference HelpPref;
 	private Preference AboutPref; 
 	private int widgetID;
+private String LOG_TAG = "ConfigurationActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +74,10 @@ public class ConfigurationActivity extends PreferenceActivity {
 				Intent resultIntent = new Intent();
 				resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
 				setResult(RESULT_OK, resultIntent);
-
-				Intent updateWidget = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+				Log.d(LOG_TAG, "widgetID=" + widgetID);
+				Intent updateWidget = new Intent(StatisticsService.SNAPSHOT_UPDATE);
 				int[] ids = new int[] { widgetID };
+				
 				updateWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 
 				// Generate very first snapshot
@@ -81,7 +85,7 @@ public class ConfigurationActivity extends PreferenceActivity {
 				ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 				Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 
-				updateWidget.putExtra("newSnapshot", currSnapshot);
+				updateWidget.putExtra(StatisticsService.NEW_SNAPSHOT, currSnapshot);
 				sendBroadcast(updateWidget);
 
 				finish();
