@@ -27,7 +27,7 @@
     <string-array name="empty_array"/>
     
     <string name="loading">Please check your if launcher supports scrolling (ADW Launcher/Launcher Pro) AND if scrolling is enabled.</string>
-    <string name="save">Save &amp; Start</string>
+    <string name="save">Save Snapshot</string>
     <string name="select_contact_group">Contact group</string>
     <string name="allcontacts">All Contacts *</string>
     <string name="starred">Favorites *</string>
@@ -76,5 +76,8 @@
 	<string name="fixAppsOnScreen">Fixed Apps</string>
 	<string name="pickApps">Pick apps to persist to home screen</string>
 	<string name="selectApps">Select Apps</string>
+	<string name="saveText">Save Current Widget State to Data Base</string>
+	<string name="saveAsk">Save Current Snapshot?</string>
+	<string name="cancelbtn">Cancel</string>
 	
 </resources>
