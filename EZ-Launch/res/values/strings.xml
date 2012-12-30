@@ -79,5 +79,6 @@
 	<string name="saveText">Save Current Widget State to Data Base</string>
 	<string name="saveAsk">Save Current Snapshot?</string>
 	<string name="cancelbtn">Cancel</string>
+	<string name="configuration">Configuration</string>
 	
 </resources>
