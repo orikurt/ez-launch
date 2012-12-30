@@ -1,6 +1,7 @@
 package com.sadna.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -40,20 +41,19 @@ public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
 	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
+	public static final String RESERVED_SNAPSHOT = "com.sadna.widgets.application.RESERVED170388";
+	private static final int MAX_TASKS = 25;
 
-	Snapshot currSnapshot;
-	IDataManager dataManager;
+	Snapshot		currSnapshot;
+	IDataManager	dataManager;
 
 	SystemIntentsReceiver systemIntentsReceiver;
 
-	PackageManager packageManager;
-	ActivityManager activityManager;
+	PackageManager	packageManager;
+	ActivityManager	activityManager;
 
 	// Intent related globals
 	private Date lastUnlock;
-	private int widgetID;
-
-	private int MAX_TASKS = 25;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -97,11 +97,10 @@ public class StatisticsService extends Service{
 	public void initFields() {
 
 		dataManager = new DataManager(this.getApplicationContext());
-		if (dataManager == null) {
-			//Error
-		}
+
 		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 		packageManager = getPackageManager();
+
 		lastUnlock = new Date();
 
 		// Get current snapshot
@@ -119,6 +118,20 @@ public class StatisticsService extends Service{
 		}
 	}
 
+	public void notifyWidget() {
+		Log.d(LOG_TAG, "notifyWidget");
+
+		// Save snapshot to DB
+		Collections.sort(currSnapshot);
+		dataManager.saveSnapshot(currSnapshot);
+		dataManager.setSelectedSnapshot(currSnapshot);
+		Log.d(LOG_TAG, "contacts real score:" + currSnapshot.getItemByName("com.android.contacts").getScore());
+		// Send update intent
+		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
+		/*updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);*/
+		sendBroadcast(updateWidget);
+	}
+	
 	private List<IWidgetItemInfo> getInstalledAppsInfo() {
 		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
 
@@ -129,7 +142,6 @@ public class StatisticsService extends Service{
 		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
 
 		for (ResolveInfo resolveInfo : pkgAppsList) {
-
 			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
 			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
@@ -143,13 +155,20 @@ public class StatisticsService extends Service{
 	private void updateWithRunningTasks() {
 		// get the info from the currently running task
 		List< RunningTaskInfo > tasksInfo = activityManager.getRunningTasks(MAX_TASKS);
-
+		int i = currSnapshot.size() - tasksInfo.size();
 		for (RunningTaskInfo taskInfo : tasksInfo) {
-
 			ComponentName componentInfo = taskInfo.baseActivity;
-			componentInfo.getPackageName();
+			String pkgName = componentInfo.getPackageName();
+			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(pkgName);
+			if (itemInfo != null) {
+				itemInfo.setScore(itemInfo.getScore()+i);
+				Log.d(LOG_TAG, pkgName + " new score:" + itemInfo.getScore());
+				Log.d(LOG_TAG, pkgName + " real score:" + currSnapshot.getItemByName(pkgName).getScore());
+			}
+			
+			i--;
 		}
-		currSnapshot.normalizeScores();
+		//currSnapshot.normalizeScores();
 	}
 
 	@SuppressLint("NewApi")
@@ -186,28 +205,16 @@ public class StatisticsService extends Service{
 				continue;
 
 			itemInfo.setScore(itemInfo.getScore()+i);
-			i/=10;
+			i--;
 		}
-
 		currSnapshot.normalizeScores();
-	}
-
-	public void notifyWidget() {
-		Log.d(LOG_TAG, "notifyWidget");
-
-		// Save snapshot to DB
-		dataManager.saveSnapshot(currSnapshot);
-
-		// Send update intent
-		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
-		/*updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);*/
-		sendBroadcast(updateWidget);
 	}
 
 	public class SystemIntentsReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			PackageManager pm = getPackageManager();
+
+			updateReservedSnapshot();
 
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
@@ -216,33 +223,53 @@ public class StatisticsService extends Service{
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 				Date now = new Date();
 				if ((now.getTime() - lastUnlock.getTime()) > /*1000*/0){
-					updateWithRecentTasks();
+					//updateWithRecentTasks();
+					updateWithRunningTasks();
 					notifyWidget();
 				}
 			}
 
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 				int pkgId = Integer.parseInt(Intent.EXTRA_UID);
-				String name = pm.getNameForUid(pkgId);
+				String name = packageManager.getNameForUid(pkgId);
 				ApplicationInfo info;
 
 				try {
 
-					info = pm.getApplicationInfo(name, PackageManager.GET_META_DATA);
+					info = packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA);
 				} catch (NameNotFoundException e) {
 					// TODO Auto-generated catch block
-					// e.printStackTrace();
+					e.printStackTrace();
 					return;
 				}
 
-				String label = pm.getApplicationLabel(info).toString();
-				Intent launchIntent = pm.getLaunchIntentForPackage(name);
+				String label = packageManager.getApplicationLabel(info).toString();
+				Intent launchIntent = packageManager.getLaunchIntentForPackage(name);
 				IWidgetItemInfo newItem = new WidgetItemInfo(name, launchIntent, label);
 				currSnapshot.add(newItem);
 			}
+
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
 				notifyWidget();
 			}
+		}
+	}
+
+	public void updateReservedSnapshot() {
+
+		Snapshot newCurrSnapshot = dataManager.getSelectedSnapshot();
+		if (newCurrSnapshot == null) {
+			notifyWidget();
+			return;
+		}
+
+		String newName = newCurrSnapshot.getSnapshotInfo().getSnapshotName();
+		if ((newName != null) && (!newName.equals(RESERVED_SNAPSHOT))) {
+
+			// User changed the current snapshot
+			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
+			currSnapshot = newCurrSnapshot;
+			notifyWidget();
 		}
 	}
 }
