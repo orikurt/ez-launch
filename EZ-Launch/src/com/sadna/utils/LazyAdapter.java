@@ -1,14 +1,8 @@
 package com.sadna.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import com.sadna.data.Snapshot;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.R;
-import com.sadna.widgets.application.SettingsListActivity;
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
