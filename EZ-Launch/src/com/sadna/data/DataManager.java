@@ -330,6 +330,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return null;
 		}
 		Snapshot filtered = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
+		filtered.add(new ConfigurationItemInfo());
 		IWidgetItemInfo itemCopy;
 		
 		for (IWidgetItemInfo item: s){
@@ -340,7 +341,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		
 		if (filtered.size() < APPLICATION_LIMIT){
-			for (IWidgetItemInfo item: selectedSnapshot){
+			for (IWidgetItemInfo item: s){
 				if (item.getItemState().getStatusCode().equals("AUT") && filtered.size()<APPLICATION_LIMIT){
 					itemCopy = new WidgetItemInfo(item.getPackageName(), item.getLabel(), item.getScore());
 					filtered.add(itemCopy);
