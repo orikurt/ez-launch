@@ -2,7 +2,6 @@ package com.sadna.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 
@@ -14,14 +13,12 @@ import com.android.data.WidgetItemInfo;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
-import com.sadna.widgets.application.ContactWidget;
 import com.sadna.widgets.application.R;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.appwidget.AppWidgetManager;
 import android.app.Service;
 
 import android.content.BroadcastReceiver;
@@ -264,7 +261,7 @@ public class StatisticsService extends Service{
 		}
 
 		String newName = newCurrSnapshot.getSnapshotInfo().getSnapshotName();
-		if ((newName != null) && (!newName.equals(RESERVED_SNAPSHOT))) {
+		if ((newName != null) && (!newName.equalsIgnoreCase(RESERVED_SNAPSHOT))) {
 
 			// User changed the current snapshot
 			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
