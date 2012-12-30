@@ -122,16 +122,16 @@ public class StatisticsService extends Service{
 		Log.d(LOG_TAG, "notifyWidget");
 
 		// Save snapshot to DB
+		currSnapshot.normalizeScores();
 		Collections.sort(currSnapshot);
 		dataManager.saveSnapshot(currSnapshot);
 		dataManager.setSelectedSnapshot(currSnapshot);
-		Log.d(LOG_TAG, "contacts real score:" + currSnapshot.getItemByName("com.android.contacts").getScore());
 		// Send update intent
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
 		/*updateWidget.putExtra(NEW_SNAPSHOT, currSnapshot);*/
 		sendBroadcast(updateWidget);
 	}
-	
+
 	private List<IWidgetItemInfo> getInstalledAppsInfo() {
 		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
 
@@ -163,12 +163,10 @@ public class StatisticsService extends Service{
 			if (itemInfo != null) {
 				itemInfo.setScore(itemInfo.getScore()+i);
 				Log.d(LOG_TAG, pkgName + " new score:" + itemInfo.getScore());
-				Log.d(LOG_TAG, pkgName + " real score:" + currSnapshot.getItemByName(pkgName).getScore());
 			}
-			
+
 			i--;
 		}
-		//currSnapshot.normalizeScores();
 	}
 
 	@SuppressLint("NewApi")
