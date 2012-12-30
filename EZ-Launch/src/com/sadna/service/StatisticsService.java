@@ -43,7 +43,7 @@ public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
 	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
-	public static final String RESERVED_SNAPSHOT = "com.sadna.widgets.application.RESERVED170388";
+	public static final String RESERVED_SNAPSHOT = "Default Snapshot";
 	private static final int MAX_TASKS = 25;
 
 	Snapshot		currSnapshot;
