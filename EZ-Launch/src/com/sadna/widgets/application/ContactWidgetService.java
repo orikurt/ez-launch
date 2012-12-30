@@ -1,7 +1,14 @@
 package com.sadna.widgets.application;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.android.data.Snapshot;
+import com.android.data.SnapshotInfo;
+import com.android.data.WidgetItemInfo;
 import com.sadna.android.content.LauncherIntent;
+import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.service.StatisticsService;
 
@@ -11,6 +18,8 @@ import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +35,7 @@ public class ContactWidgetService extends RemoteViewsService {
 }
 
 class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
-    public static final String TAG = "boombuler.ContactRemoteViewsFactory";
+    public static final String TAG = "sadna.ContactRemoteViewsFactory";
     private Context mContext;
     private int mAppWidgetId;
 	private Snapshot mData = null;
@@ -135,12 +144,34 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
         return false;
     }
 
+	private List<IWidgetItemInfo> getInstalledAppsInfo() {
+		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
+
+		
+
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> pkgAppsList = mContext.getPackageManager().queryIntentActivities(mainIntent, 0);
+		PackageManager packageManager =  mContext.getPackageManager();
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+
+			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
+			String itemPkgName = resolveInfo.resolvePackageName;
+			Intent itemIntent = packageManager.getLaunchIntentForPackage(itemPkgName);
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemIntent, itemLabel);
+			result.add(itemInfo);
+		}
+
+		return result;
+	}
     @Override 
     public void onDataSetChanged() {
 		Log.d(TAG, "Start Query!");
 		
 		//onDestroy();
-		
+		Date currDate = new Date();
+		ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
+		mData = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		/*
 		Uri dataUri = DataProvider.CONTENT_URI_MESSAGES.buildUpon().appendEncodedPath(Integer.toString(mAppWidgetId)).build();
 	
