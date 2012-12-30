@@ -10,6 +10,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.GridView;
 import android.widget.RemoteViews;
 import android.net.Uri;
 import android.view.View;
@@ -60,6 +61,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 				default: mainlayout = R.layout.main_hc1; break;
 			}
 		}
+		
 			
 		RemoteViews rv = new RemoteViews(context.getPackageName(), mainlayout);
 		
