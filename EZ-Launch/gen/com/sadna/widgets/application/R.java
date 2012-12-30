@@ -8,6 +8,9 @@
 package com.sadna.widgets.application;
 
 public final class R {
+    public static final class array {
+        public static final int empty_array=0x7f070000;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -32,17 +35,17 @@ public final class R {
     }
     public static final class id {
         public static final int actualValue=0x01010001;
-        public static final int backgroundImg=0x7f070005;
-        public static final int dialogMessage=0x7f070009;
-        public static final int displayname=0x7f070002;
-        public static final int group_caption=0x7f070006;
-        public static final int label_overlay=0x7f070004;
-        public static final int list_item=0x7f070003;
-        public static final int loading=0x7f070008;
+        public static final int backgroundImg=0x7f080005;
+        public static final int dialogMessage=0x7f080009;
+        public static final int displayname=0x7f080002;
+        public static final int group_caption=0x7f080006;
+        public static final int label_overlay=0x7f080004;
+        public static final int list_item=0x7f080003;
+        public static final int loading=0x7f080008;
         public static final int myBar=0x01010000;
-        public static final int my_gridview=0x7f070000;
-        public static final int photo=0x7f070001;
-        public static final int widget_content=0x7f070007;
+        public static final int my_gridview=0x7f080000;
+        public static final int photo=0x7f080001;
+        public static final int widget_content=0x7f080007;
     }
     public static final class layout {
         public static final int gridview=0x7f030000;
@@ -80,46 +83,60 @@ public final class R {
         public static final int background_alpha=0x7f06001d;
         public static final int behavior=0x7f060020;
         public static final int black=0x7f06000d;
+        public static final int button_text=0x7f06002f;
+        public static final int cancelbtn=0x7f060035;
         public static final int columncount=0x7f06001c;
         public static final int directdial=0x7f060022;
         public static final int displayLabel=0x7f06000c;
         public static final int displayname=0x7f060005;
         public static final int familyname=0x7f060004;
+        public static final int fixAppsOnScreen=0x7f060030;
         public static final int givenname=0x7f060003;
         public static final int help=0x7f060016;
         public static final int help_summary=0x7f060017;
         public static final int helptext=0x7f060019;
         public static final int ics_style=0x7f060010;
         public static final int launcher_too_old=0x7f06001e;
+        public static final int loadSnapshot=0x7f06002b;
         public static final int loading=0x7f060007;
         public static final int namekind=0x7f060002;
         public static final int needs_froyo=0x7f06001f;
         public static final int okbtn=0x7f060018;
         public static final int onclick=0x7f060024;
+        public static final int pickApps=0x7f060031;
+        public static final int picksnap=0x7f06002a;
         public static final int pref_grp_data=0x7f060013;
         public static final int pref_grp_general=0x7f060015;
         public static final int pref_grp_layout=0x7f060014;
         public static final int quickcontactbar=0x7f060021;
         public static final int save=0x7f060008;
+        public static final int saveAsk=0x7f060034;
+        public static final int saveText=0x7f060033;
+        public static final int selectApps=0x7f060032;
         public static final int select_contact_group=0x7f060009;
         public static final int sendsms=0x7f060025;
         public static final int showName=0x7f060012;
         public static final int showcontact=0x7f060023;
         public static final int starred=0x7f06000b;
+        /**  SERVICE STRINGS 
+         */
+        public static final int statistics_service_created=0x7f06002c;
+        public static final int statistics_service_started=0x7f06002d;
+        public static final int statistics_service_stopped=0x7f06002e;
         public static final int textalign=0x7f060026;
         public static final int transparent=0x7f06000f;
         public static final int white=0x7f06000e;
-        public static final int widget1x2=0x7f06002a;
-        public static final int widget1x3=0x7f06002b;
-        public static final int widget1x4=0x7f06002c;
-        public static final int widget2x2=0x7f06002d;
-        public static final int widget2x3=0x7f06002e;
-        public static final int widget2x4=0x7f06002f;
-        public static final int widget3x2=0x7f060030;
-        public static final int widget3x3=0x7f060031;
-        public static final int widget3x4=0x7f060032;
-        public static final int widget4x2=0x7f060033;
-        public static final int widget4x3=0x7f060034;
+        public static final int widget1x2=0x7f060036;
+        public static final int widget1x3=0x7f060037;
+        public static final int widget1x4=0x7f060038;
+        public static final int widget2x2=0x7f060039;
+        public static final int widget2x3=0x7f06003a;
+        public static final int widget2x4=0x7f06003b;
+        public static final int widget3x2=0x7f06003c;
+        public static final int widget3x3=0x7f06003d;
+        public static final int widget3x4=0x7f06003e;
+        public static final int widget4x2=0x7f06003f;
+        public static final int widget4x3=0x7f060040;
         public static final int widget4x4=0x7f060001;
     }
     public static final class xml {

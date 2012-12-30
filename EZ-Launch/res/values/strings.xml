@@ -66,7 +66,7 @@
 	<string name="align_right">Right of the picture</string>
 	
 	<string name="picksnap">Pick from saved home screens</string>
-	<string name="loadSnapshot">Load SnapShot</string>
+	<string name="loadSnapshot">Load Snapshot</string>
 	
 	<!-- SERVICE STRINGS -->
 	<string name="statistics_service_created">EZ-Launch Created</string>
