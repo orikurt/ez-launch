@@ -20,11 +20,11 @@ public class SettingsListActivity extends PreferenceActivity{
 
 	
 	public static final String KEY_SONG = "song"; // parent node
-	public static final String KEY_ID = "id";
-	public static final String KEY_TITLE = "title";
-	public static final String KEY_ARTIST = "artist";
-	public static final String KEY_DURATION = "duration";
-	public static final String KEY_THUMB_URL = "thumb_url";
+
+	
+	
+	
+	
 	
 
 	public ListView list;
