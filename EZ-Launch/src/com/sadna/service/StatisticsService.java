@@ -94,8 +94,12 @@ public class StatisticsService extends Service{
 		IntentFilter launchFilter = new IntentFilter();
 		launchFilter.addCategory(Intent.CATEGORY_LAUNCHER);
 		launchFilter.addAction(Intent.ACTION_MAIN);
+		IntentFilter homeFilter = new IntentFilter();
+		homeFilter.addCategory(Intent.CATEGORY_HOME);
+		homeFilter.addAction(Intent.ACTION_MAIN);
 		
 		registerReceiver(systemIntentsReceiver, launchFilter);
+		registerReceiver(systemIntentsReceiver, homeFilter);
 
 		return START_STICKY;
 	}
@@ -220,6 +224,11 @@ public class StatisticsService extends Service{
 		public void onReceive(Context context, Intent intent) {
 
 			updateReservedSnapshot();
+			
+			if (intent.getAction().equals(Intent.ACTION_MAIN) && intent.hasCategory(Intent.CATEGORY_HOME)){
+				Log.d(LOG_TAG, "Home button pressed; notifying widget");
+				notifyWidget();
+			}
 			
 			if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
 				String pkgName = intent.getStringExtra("name");
