@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.sadna.android.content.LauncherIntent;
+import com.sadna.data.ConfigurationItemInfo;
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 import com.sadna.data.SnapshotInfo;
@@ -120,13 +121,13 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 				rv.setViewVisibility(R.id.label_overlay, textVisibility);
 		}
 
-		rv.setImageViewBitmap(R.id.photo, item.getBitmap(mContext));
+		rv.setImageViewBitmap(R.id.photo, item.getBitmap(mContext.getApplicationContext()));
 
 		// Next, we set a fill-intent which will be used to fill-in the pending intent template
 		// which is set on the collection view in StackWidgetProvider.
 		Bundle extras = new Bundle();
 		//extras.putString(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS, item.getPackageName());
-		extras.putParcelable(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT, item.getLaunchIntent(mContext));
+		extras.putParcelable(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT, item.getLaunchIntent(mContext.getApplicationContext()));
 		Intent fillInIntent = new Intent();
 		fillInIntent.putExtras(extras);
 		rv.setOnClickFillInIntent(R.id.displayname, fillInIntent);
@@ -188,6 +189,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 			mData = dm.getSelectedSnapshotFiltered(new Snapshot(snapshotInfo, getInstalledAppsInfo()));
+			mData.remove(mData.size()-1);
+			mData.add(new ConfigurationItemInfo());
 		}
 
 		/*

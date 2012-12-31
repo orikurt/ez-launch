@@ -46,7 +46,7 @@ public class SettingsListActivity extends PreferenceActivity{
 
 		
 
-		list=(ListView)findViewById(R.id.listConfigAPP);
+		list=(ListView)findViewById(R.id.list);
 		
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, appList);        
