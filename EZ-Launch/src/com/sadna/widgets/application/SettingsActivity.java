@@ -5,6 +5,8 @@ import java.util.List;
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 import com.sadna.interfaces.IDataManager;
+import com.sadna.interfaces.IWidgetItemInfo;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
@@ -78,19 +80,19 @@ public class SettingsActivity extends PreferenceActivity {
 		FixPreference = (MultiSelectListPreference)findPreference(Preferences.FIX);
 		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
 
-
-		PackageManager pm = getPackageManager();
-		List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		Snapshot Snapy = DM.getSelectedSnapshot();
+		
 		int i = 0;
-		int numApps = packages.size();
+		int numApps = Snapy.size();
 		CharSequence[] Appnames = new CharSequence[numApps];
 		CharSequence[] Values = new CharSequence[numApps]; 
-		for (ApplicationInfo applicationInfo : packages) 
+		for (IWidgetItemInfo wInfo : Snapy) 
 		{
-			Appnames[i] = applicationInfo.loadLabel(pm);
-			Values[i] = Appnames[i];
+			Appnames[i] = wInfo.getLabel();
+			Values[i] = wInfo.getPackageName();
 			i++;
 		}
+
 		
 		FixPreference.setDefaultValue(Values);
 		FixPreference.setEntries(Appnames);
