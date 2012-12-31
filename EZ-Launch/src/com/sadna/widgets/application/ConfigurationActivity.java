@@ -131,17 +131,18 @@ private String LOG_TAG = "ConfigurationActivity";
 		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
 		//		Context c = getApplicationContext();
 
-
-		PackageManager pm = getPackageManager();
-		List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		//PackageManager pm = getPackageManager();
+		//List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		Snapshot Snapy = DM.getSelectedSnapshot();
+		
 		int i = 0;
-		int numApps = packages.size();
+		int numApps = Snapy.size();
 		CharSequence[] Appnames = new CharSequence[numApps];
 		CharSequence[] Values = new CharSequence[numApps]; 
-		for (ApplicationInfo applicationInfo : packages) 
+		for (IWidgetItemInfo wInfo : Snapy) 
 		{
-			Appnames[i] = applicationInfo.loadLabel(pm);
-			Values[i] = Appnames[i];
+			Appnames[i] = wInfo.getLabel();
+			Values[i] = wInfo.getPackageName();
 			i++;
 		}
 
