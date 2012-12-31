@@ -48,13 +48,14 @@ public class SettingsActivity extends PreferenceActivity {
 		// Add SettingsList button
 		ListView v = getListView();
 		Button settingsListButton = new Button(this);
-		settingsListButton.setText("Configure Permanents");
+		settingsListButton.setText("Save");
 		settingsListButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
 			    
 			    // Start SettingsList
-				Intent launch = new Intent(getApplicationContext(), SettingsListActivity.class);
-				startActivity(launch);
+				/*Intent launch = new Intent(getApplicationContext(), SettingsListActivity.class);
+				startActivity(launch);*/
+				finish();
 			}
 		});
 		v.addFooterView(settingsListButton);
