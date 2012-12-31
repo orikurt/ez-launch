@@ -2,10 +2,12 @@ package com.sadna.widgets.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 import com.sadna.data.WidgetItemInfo;
+import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.IWidgetItemInfo;
 //import com.sadna.widgets.application.ConfigurationActiviyOriginal.HelpButtonClick;
@@ -24,6 +26,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
@@ -34,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+@SuppressLint("NewApi")
 public class ConfigurationActivity extends PreferenceActivity {
 
 	private List<Snapshot> SnapShots;
@@ -129,28 +133,38 @@ private String LOG_TAG = "ConfigurationActivity";
 
 		FixPreference = (MultiSelectListPreference)findPreference(Preferences.FIX);
 		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
+		
+		CharSequence[] Appnames;
+		CharSequence[] Values;
 		//		Context c = getApplicationContext();
 
 		//PackageManager pm = getPackageManager();
 		//List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		Snapshot Snapy = DM.getSelectedSnapshot();
-		
+		if (Snapy != null)
+		{
 		int i = 0;
 		int numApps = Snapy.size();
-		CharSequence[] Appnames = new CharSequence[numApps];
-		CharSequence[] Values = new CharSequence[numApps]; 
+		Appnames = new CharSequence[numApps];
+		Values = new CharSequence[numApps]; 
 		for (IWidgetItemInfo wInfo : Snapy) 
 		{
 			Appnames[i] = wInfo.getLabel();
 			Values[i] = wInfo.getPackageName();
 			i++;
 		}
-
+		}
+		else
+		{
+			Appnames = new CharSequence[]{};
+			Values = new CharSequence[]{};
+		}
 		//CharSequence[] Appnames = new CharSequence[] {"1", "2", "3"};
 		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
 		FixPreference.setDefaultValue(Values);
 		FixPreference.setEntries(Appnames);
 		FixPreference.setEntryValues(Values);
+		FixPreference.setOnPreferenceChangeListener(new OnFixPreferenceChangeListener());
 
 		/*
 		FixPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -410,6 +424,31 @@ private String LOG_TAG = "ConfigurationActivity";
 			setListPreferenceData(loadSnapshot);
 			return false;
 		}
+	}
+	
+	public class OnFixPreferenceChangeListener implements OnPreferenceChangeListener{
+
+		Set<String> packNames;
+		@SuppressLint("NewApi")
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue) {
+			
+			packNames = FixPreference.getValues();
+			Snapshot Snapy = DM.getSelectedSnapshot();
+			
+			//CharSequence[] Appnames = new CharSequence[numApps];
+			//CharSequence[] Values = new CharSequence[numApps]; 
+			for (IWidgetItemInfo wInfo : Snapy) 
+			{
+				if (packNames.contains(wInfo.getPackageName()))
+				{
+					wInfo.setItemState(ItemState.MUST);
+				}
+			}
+
+			return false;
+		}
+		
 	}
 }
 
