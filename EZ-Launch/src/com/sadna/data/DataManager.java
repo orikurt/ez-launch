@@ -335,7 +335,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		
 		for (IWidgetItemInfo item: s){
 			if ((item.getItemState() == ItemState.MUST) && filtered.size()<APPLICATION_LIMIT){
-				itemCopy = new WidgetItemInfo(item.getPackageName(), item.getLabel(), item.getScore());
+				itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState());
 				filtered.add(itemCopy);
 			}
 		}
@@ -343,7 +343,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		if (filtered.size() < APPLICATION_LIMIT){
 			for (IWidgetItemInfo item: s){
 				if ((item.getItemState() == ItemState.AUTO) && filtered.size()<APPLICATION_LIMIT){
-					itemCopy = new WidgetItemInfo(item.getPackageName(), item.getLabel(), item.getScore());
+					itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState());
 					filtered.add(itemCopy);
 				}
 			}
