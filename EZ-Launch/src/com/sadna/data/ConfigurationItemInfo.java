@@ -63,7 +63,7 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public String getLabel() {
-		return "Configuration";
+		return "Settings";
 	}
 
 	@Override
