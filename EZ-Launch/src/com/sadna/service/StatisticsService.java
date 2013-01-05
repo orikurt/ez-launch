@@ -166,7 +166,7 @@ public class StatisticsService extends Service{
 	private void updateWithRunningTasks() {
 		// get the info from the currently running task
 		List< RunningTaskInfo > tasksInfo = activityManager.getRunningTasks(MAX_TASKS);
-		double i = 1.0;
+		double i = currSnapshot.size() - tasksInfo.size();
 		for (RunningTaskInfo taskInfo : tasksInfo) {
 			ComponentName componentInfo = taskInfo.baseActivity;
 			String pkgName = componentInfo.getPackageName();
@@ -176,8 +176,9 @@ public class StatisticsService extends Service{
 				Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(itemInfo.getScore()));
 			}
 
-			i/=10;
+			i--;
 		}
+		currSnapshot.normalizeScores();
 	}
 
 	@SuppressLint("NewApi")
