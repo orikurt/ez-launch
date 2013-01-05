@@ -38,7 +38,7 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 	public IWidgetItemInfo getItemByName (String name) {
 		if (name == null)
 			return null;
-		
+
 		for (IWidgetItemInfo itemInfo : collection) {
 			if (name.equals(itemInfo.getPackageName())) {
 				return itemInfo;
@@ -54,10 +54,11 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 			rootSumOfSqaures += (itemInfo.getScore() * itemInfo.getScore());
 		}
 		rootSumOfSqaures = Math.sqrt(rootSumOfSqaures);
-
-		// Divide each score in root of sum-of-squares
-		for (IWidgetItemInfo itemInfo : collection) {
-			itemInfo.setScore(itemInfo.getScore() / rootSumOfSqaures);
+		if (rootSumOfSqaures != 0) {
+			// Divide each score in root of sum-of-squares
+			for (IWidgetItemInfo itemInfo : collection) {
+				itemInfo.setScore(itemInfo.getScore() / rootSumOfSqaures);
+			}
 		}
 	}
 
