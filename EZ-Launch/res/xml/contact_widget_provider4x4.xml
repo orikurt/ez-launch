@@ -4,5 +4,7 @@
 	android:minWidth="264dip"
 	android:minHeight="284dip"
 	android:initialLayout="@layout/main"
-	android:configure="com.sadna.widgets.application.ConfigurationActivity"
+	
 	android:resizeMode="horizontal|vertical"/>
+
+<!-- android:configure="com.sadna.widgets.application.ConfigurationActivity" -->
