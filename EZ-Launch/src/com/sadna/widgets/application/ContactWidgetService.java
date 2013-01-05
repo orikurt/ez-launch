@@ -51,9 +51,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		mContext = context;
 		mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
-		//mData = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
-		//mDefWidth = intent.getIntExtra(ImplHC.EXTRA_DEFAULT_WIDTH, 1);
-		
+
 		if (dm == null) {
 			dm = new DataManager(mContext);
 		}
@@ -61,8 +59,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		mData = dm.getSelectedSnapshotFiltered();
 	}
 	@Override
-	public void onCreate() {    
-
+	public void onCreate() {
 	}
 
 	@Override
@@ -182,7 +179,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		if (dm == null) {
 			dm = new DataManager(mContext);
 		}
-		
+
 		//mData = dm.getSelectedSnapshot();
 		mData = dm.getSelectedSnapshotFiltered();
 		if (mData == null) {

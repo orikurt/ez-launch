@@ -37,7 +37,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	// Tag for logging
 	private static final String TAG = "sadna.ContactWidget";
-	
+
 	private static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
 
 	private WidgetImplementation mImpl;
@@ -45,6 +45,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public ContactWidget() {
 		super();
+		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 			mImpl = new ImplSWA();
 		else
@@ -53,18 +54,15 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	}
 
-
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		// If no specific widgets requested, collect list of all
+
 		Log.d(TAG, "onUpdate");
+		
+		// If no specific widgets requested, collect list of all
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
 		}
-
-		
-		
-        
 
 		if (appWidgetIds.length == 0) {
 			Log.d(TAG, "appWidgetIds is empty");
@@ -80,8 +78,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			int appWidgetId = appWidgetIds[i];
 			mImpl.onUpdate(context, appWidgetId, snap);  
 		}
-
-
 	}
 
 	public abstract int getWidth();
@@ -135,7 +131,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 				this.onDeleted(context, new int[] { appWidgetId });
 			}
 		}
-
 		else if (StatisticsService.SNAPSHOT_UPDATE.equals(action)) {
 			Log.d(TAG, "onReceive- calling onupdate");
 
@@ -143,14 +138,16 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			ComponentName thisWidget = new ComponentName(context, getClass());
 			int [] widgetIDs = appWidgetManager.getAppWidgetIds(thisWidget);
-			/*snap = intent.getParcelableExtra(StatisticsService.NEW_SNAPSHOT);
-			onUpdate(context, null, Preferences.getAllWidgetIds(context));*/
 			for (int id : widgetIDs) {
 				Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
 				appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
 			}
 		}
-
+		else if (AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {
+			// Start StatisticsService
+			Intent serviceIntent = new Intent("com.sadna.service.StatisticsService");  
+			context.startService(serviceIntent);
+		}
 		else if (!mImpl.onReceive(context, intent)) {
 			Log.d(TAG, "onReceive- calling onReceive for mImpl");
 			super.onReceive(context, intent);
