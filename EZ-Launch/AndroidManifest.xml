@@ -37,11 +37,11 @@
 				android:value="true" />
 		</receiver>		
 		
-		<activity android:name=".ConfigurationActivity">
+		<!-- activity android:name=".ConfigurationActivity">
 			<intent-filter>
 				<action android:name="com.sadna.widgets.application.PREFS" />
 			</intent-filter>
-		</activity>
+		</activity-->
 		<activity android:name=".SettingsActivity">
 			<intent-filter>
 				<action android:name="com.sadna.widgets.application.PREFS" />
