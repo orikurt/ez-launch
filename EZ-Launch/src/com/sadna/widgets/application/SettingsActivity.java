@@ -8,6 +8,7 @@ import com.sadna.data.Snapshot;
 import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.service.StatisticsService;
 import com.sadna.widgets.application.ConfigurationActivity.OnFixPreferenceChangeListener;
 
 import android.annotation.SuppressLint;
@@ -132,15 +133,20 @@ public class SettingsActivity extends PreferenceActivity {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
 		SnapShots = DM.loadAllSnapshots();
-		String Default = "Default Snapshot";
+		String Default = StatisticsService.RESERVED_SNAPSHOT;
 		Boolean DefaultSnap;
 		
 		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
+		if (existsDefaultSnap(SnapShotsLength))
+		{
+			SnapShotsLength--;
+		}
 		//Create the snapshot value arrays and fill them with data
-		CharSequence[] Titles= new CharSequence[SnapShotsLength - 1];
+
+		CharSequence[] Titles= new CharSequence[SnapShotsLength];
 		
-		CharSequence[] Values= new CharSequence[SnapShotsLength - 1];
+		CharSequence[] Values= new CharSequence[SnapShotsLength];
 		int j = 0;
 		for (int i = 0; i < SnapShotsLength; i++) {
 			DefaultSnap = SnapShots.get(i).getSnapshotInfo().getSnapshotName().equals(Default);
@@ -156,6 +162,22 @@ public class SettingsActivity extends PreferenceActivity {
 		loadSnapshot.setEntries(Titles);
 		loadSnapshot.setEntryValues(Values);
 
+	}
+	private boolean existsDefaultSnap(int SnapShotsLength) {
+		// TODO Auto-generated method stub
+		Boolean DefaultSnap;
+		if (SnapShotsLength == 0)
+		{
+			return false;
+		}
+		for (int i = 0; i < SnapShotsLength; i++) {
+			DefaultSnap = SnapShots.get(i).getSnapshotInfo().getSnapshotName().equals(StatisticsService.RESERVED_SNAPSHOT);
+			if (DefaultSnap)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	/************************* End of Preparing Functions ****************************/
 
