@@ -1,15 +1,8 @@
 package com.sadna.widgets.application;
 
-import java.util.ArrayList;
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
-import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.utils.LazyAdapter;
-
-
-
-
-
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.View;
@@ -21,6 +14,9 @@ public class SettingsListActivity extends PreferenceActivity{
 
 	public ListView list;
     public LazyAdapter adapter;
+	private DataManager dm;
+	//private ArrayList<IWidgetItemInfo> appList;
+	private Snapshot snap;
     
 
 	@Override
@@ -29,8 +25,8 @@ public class SettingsListActivity extends PreferenceActivity{
 		setContentView(R.layout.configuration_list);
 		
 
-		DataManager dm = new DataManager(getApplicationContext());
-		ArrayList<IWidgetItemInfo> appList = new ArrayList<IWidgetItemInfo>();
+		dm = new DataManager(getApplicationContext());
+		//appList = new ArrayList<IWidgetItemInfo>();
 
 		
 		//String xml = parser.getXmlFromUrl(URL); // getting XML from URL
@@ -38,13 +34,13 @@ public class SettingsListActivity extends PreferenceActivity{
 		
 		//NodeList nl = doc.getElementsByTagName(KEY_SONG);
 		// looping through all song nodes <song>
-		Snapshot snap = dm.getSelectedSnapshot();
-		for (IWidgetItemInfo wi : snap) {
-			
-
-			// adding HashList to ArrayList
-			appList.add(wi);
-		}
+		snap = dm.getSelectedSnapshot();
+//		for (IWidgetItemInfo wi : snap) {
+//			
+//
+//			// adding HashList to ArrayList
+//			appList.add(wi);
+//		}
 
 		
 
@@ -52,7 +48,7 @@ public class SettingsListActivity extends PreferenceActivity{
 		//list=(ListView)findViewById(R.id.list);
 		
 		// Getting adapter by passing xml data ArrayList
-        adapter=new LazyAdapter(this, appList);        
+        adapter=new LazyAdapter(this, snap);        
         list.setAdapter(adapter);
         
 
@@ -68,4 +64,9 @@ public class SettingsListActivity extends PreferenceActivity{
 		});		
 	}	
 
+	@Override
+	public void onStop(){
+		super.onStop();
+		dm.setSelectedSnapshot(snap);
+	}
 }
