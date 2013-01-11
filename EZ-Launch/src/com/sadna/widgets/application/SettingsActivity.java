@@ -28,6 +28,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -253,8 +254,10 @@ public class SettingsActivity extends PreferenceActivity {
 				    // Canceled.
 				  }
 				});
-
-			alert.show();
+			AlertDialog dialog = alert.create();
+			dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+			dialog.show();
+			//alert.show();
 			
 			return false;
 		}
