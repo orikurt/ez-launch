@@ -22,31 +22,21 @@
   
   
   <PreferenceCategory android:title="@string/behavior">
-  	  
-  	  <!-- 
-  	  <ListPreference
-  	        android:key="onClick-%d"
-  	        android:summary="@string/quickcontactbar"
-  	        android:defaultValue="0"
-  	        android:title="@string/onclick" />
-  	  
-  	  
-  	  <com.sadna.android.widget.ListPreferenceMultiSelect android:defaultValue="#NONE#"
-			android:dependency="@string/pref_auto_scan_image"
-    		android:key="@string/pref_upload_buckets_image"
-  			android:summary="Specify which app should always be on the screen"
-    		android:entries="@array/pref_upload_buckets_default_entries"
-    		android:title="Image folders to monitor" android:dialogTitle="Image folders to monitor"
-    		android:entryValues="@array/pref_upload_buckets_default_values"/>
-  	   -->
+
+  	  <Preference
+  	        android:key="fixApps-%d"
+  	      	android:title="@string/fixAppsOnScreen"
+  	      	android:summary="@string/pickApps" 
+        	android:persistent = "true"
+  	      />
   	   
   	  
-  	  <MultiSelectListPreference
+  	  <!-- MultiSelectListPreference
   	      	android:key="fixApps-%d"
   	      	android:title="@string/fixAppsOnScreen"
   	      	android:summary="@string/pickApps" 
         	android:persistent = "true"
-        	android:defaultValue="@array/empty_array"/>
+        	android:defaultValue="@array/empty_array"/-->
   	      	
   	      	 
   	  
