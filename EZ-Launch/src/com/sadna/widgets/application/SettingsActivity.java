@@ -47,6 +47,7 @@ public class SettingsActivity extends PreferenceActivity {
 	
 	private final String LOG_TAG = "SettingsActivity";
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,6 +125,7 @@ public class SettingsActivity extends PreferenceActivity {
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
 		setListPreferenceData(loadSnapshot);
 		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener());
+		loadSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener());
 	}
 
 
@@ -277,8 +279,23 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-			// TODO Auto-generated method stub
 			setListPreferenceData(loadSnapshot);
+			return false;
+		}
+	}
+	
+	public class onLoadPreferenceChangeListener implements OnPreferenceChangeListener {
+
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue) {
+			String snapName = newValue.toString();
+			Snapshot SnapToLoad = DM.loadSnapshot(snapName);
+			DM.setSelectedSnapshot(SnapToLoad);
+			
+			// Send update intent
+			Intent updateWidget = new Intent(com.sadna.service.StatisticsService.SNAPSHOT_UPDATE);
+			sendBroadcast(updateWidget);
+			
 			return false;
 		}
 	}
