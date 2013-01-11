@@ -304,6 +304,7 @@ public class StatisticsService extends Service{
 		IWidgetItemInfo itemInfo = currSnapshot.getItemByName(name);
 		if (itemInfo == null) return;
 		itemInfo.setScore(itemInfo.getScore() + score);
+		itemInfo.setLastUse(new Date());
 		Log.d(LOG_TAG, name + " score increased by " + Double.toString(score));
 	}
 
@@ -321,6 +322,7 @@ public class StatisticsService extends Service{
 				if (pkgName != null){ 
 					IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
 					item.setScore(item.getScore()+0.25);
+					item.setLastUse(new Date());
 					Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
 				}
 			}
