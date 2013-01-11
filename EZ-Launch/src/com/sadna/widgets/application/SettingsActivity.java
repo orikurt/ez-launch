@@ -127,15 +127,25 @@ public class SettingsActivity extends PreferenceActivity {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
 		SnapShots = DM.loadAllSnapshots();
+		String Default = "Default Snapshot";
+		Boolean DefaultSnap;
+		
 		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
 		//Create the snapshot value arrays and fill them with data
-		CharSequence[] Titles= new CharSequence[SnapShotsLength];
-		CharSequence[] Values= new CharSequence[SnapShotsLength];
-
+		CharSequence[] Titles= new CharSequence[SnapShotsLength - 1];
+		
+		CharSequence[] Values= new CharSequence[SnapShotsLength - 1];
+		int j = 0;
 		for (int i = 0; i < SnapShotsLength; i++) {
-			Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-			Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+			DefaultSnap = SnapShots.get(i).getSnapshotInfo().getSnapshotName().equals(Default);
+			if (DefaultSnap)
+			{
+				i++;
+			}
+			Values[j] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+			Titles[j] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
+			j++;
 		}
 
 		loadSnapshot.setEntries(Titles);
