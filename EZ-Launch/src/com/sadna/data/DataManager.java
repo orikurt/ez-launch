@@ -40,7 +40,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String DATABASE_NAME = "EZ_Launch_DB";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 
 	// Snapshot info table name
 	private static final String TABLE_SNAPSHOT_INFO = "snapshotInfoTable";
@@ -58,6 +58,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String COLUMN_WIDGET_LABEL = "widgetInfo";
 	private static final String COLUMN_WIDGET_SCORE = "widgetScore";
 	private static final String COLUMN_WIDGET_STATE = "widgetState";
+	private static final String COLUMN_WIDGET_LAST_DATE = "widgetLastUsed";
 
 
 	// Widget info to Snapshot table
@@ -94,7 +95,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				+ KEY_WIDGET_NAME + " TEXT PRIMARY KEY," + 
 				COLUMN_WIDGET_LABEL + " TEXT," + 
 				COLUMN_WIDGET_SCORE+ " REAL NOT NULL DEFAULT '0'," +
-				COLUMN_WIDGET_STATE + " TEXT (10) " + ");";
+				COLUMN_WIDGET_STATE + " TEXT (10),"+
+				COLUMN_WIDGET_LAST_DATE + " TEXT DEFAULT CURRENT_TIMESTAMP "+ ");";
 		db.execSQL(CREATE_WIDGET_INFO_TABLE);
 
 		String CREATE_WIDGET_TO_SNAPSHOT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WIDGET_TO_SNAPSHOT + "("
@@ -163,8 +165,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private boolean saveWidgetInfo(IWidgetItemInfo widg, SQLiteDatabase db){
 		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
-				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE}, 
-				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode()});
+				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE,COLUMN_WIDGET_LAST_DATE}, 
+				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode(),widg.getLastUsedFormated()});
 		db.execSQL(insertWidgetQuery);
 		return true;
 	}
@@ -222,14 +224,17 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				double score = 			c.getDouble(c.getColumnIndex(COLUMN_WIDGET_SCORE));
 				String snapshotName = 	c.getString(c.getColumnIndex(KEY_SNAPSHOT_NAME));
 				ItemState itemState = 	ItemState.parse(c.getString(c.getColumnIndex(COLUMN_WIDGET_STATE)));
+				Date lastUsed;
 				Date lastEdited;
 				try {
 					lastEdited = df.parse(c.getString(c.getColumnIndex(COLUMN_SNAPSHOT_LAST_DATE)));
+					lastUsed = df.parse(c.getString(c.getColumnIndex(COLUMN_WIDGET_LAST_DATE)));
 				} catch (ParseException e) {
 					lastEdited = new Date();
+					lastUsed = new Date();
 				}
 				ISnapshotInfo si = new SnapshotInfo(snapshotName,lastEdited);
-				IWidgetItemInfo wi = iWidgetItemInfoFactory(packageName, label, score,itemState);
+				IWidgetItemInfo wi = iWidgetItemInfoFactory(packageName, label, score,itemState,lastUsed);
 				if (hs.containsKey(si)) {
 					List<IWidgetItemInfo> widgList = hs.get(si);
 					widgList.add(wi);
@@ -253,15 +258,15 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return null;
 	}
 
-	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score, ItemState itemState) {
+	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score, ItemState itemState,Date lastUsed) {
 		if (packageName.equalsIgnoreCase(ConfigurationItemInfo.COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION)) {
 			return new ConfigurationItemInfo();
 		}
-		return new WidgetItemInfo(packageName,label,score,itemState);
+		return new WidgetItemInfo(packageName,label,score,itemState,lastUsed);
 	}
 
 	private String getBaseSelectWithJoin() {
-		return "SELECT " + KEY_WIDGET_NAME + " , " + COLUMN_WIDGET_LABEL + " , "  + COLUMN_WIDGET_SCORE +" , " + COLUMN_WIDGET_STATE + " , "  + KEY_SNAPSHOT_NAME + " , "  + COLUMN_SNAPSHOT_LAST_DATE + " "  +
+		return "SELECT " + KEY_WIDGET_NAME + " , " + COLUMN_WIDGET_LABEL + " , "  + COLUMN_WIDGET_SCORE +" , " + COLUMN_WIDGET_STATE + " , " + COLUMN_WIDGET_LAST_DATE + " , "  + KEY_SNAPSHOT_NAME + " , "  + COLUMN_SNAPSHOT_LAST_DATE + " "  +
 				"FROM " + TABLE_WIDGET_INFO + " , " + TABLE_SNAPSHOT_INFO + " , "  + TABLE_WIDGET_TO_SNAPSHOT + " " +
 				"WHERE " + KEY_WIDGET_NAME + " = " + KEY_WIDGET_REF + " AND " + KEY_SNAPSHOT_NAME + " = " + KEY_SNAPSHOT_REF;
 	}
@@ -367,7 +372,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		
 		for (IWidgetItemInfo item: s){
 			if ((item.getItemState() == ItemState.MUST) && filtered.size()<APPLICATION_LIMIT){
-				itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState());
+				itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
 				filtered.add(itemCopy);
 			}
 		}
@@ -375,7 +380,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		if (filtered.size() < APPLICATION_LIMIT){
 			for (IWidgetItemInfo item: s){
 				if ((item.getItemState() == ItemState.AUTO) && filtered.size()<APPLICATION_LIMIT){
-					itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState());
+					itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
 					filtered.add(itemCopy);
 				}
 			}
