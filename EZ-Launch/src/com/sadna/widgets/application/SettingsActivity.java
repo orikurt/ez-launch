@@ -81,11 +81,10 @@ public class SettingsActivity extends PreferenceActivity {
 	protected void onDestroy() {
 
 		// Send update intent
-		Intent updateWidget = new Intent(com.sadna.service.StatisticsService.SERVICE_UPDATE);
-		sendBroadcast(updateWidget);
+		Intent updateService = new Intent(com.sadna.service.StatisticsService.SERVICE_UPDATE);
+		sendBroadcast(updateService);
 		
 		super.onDestroy();
-		
 	}
 	
 	/************************* Preparing Functions ****************************/
