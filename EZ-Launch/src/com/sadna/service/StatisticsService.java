@@ -311,8 +311,6 @@ public class StatisticsService extends Service{
 		@Override
 		public void onReceive(Context context, Intent intent) {
 
-			updateReservedSnapshot();
-			
 			if (intent.getAction().equals(Intent.ACTION_MAIN) && intent.hasCategory(Intent.CATEGORY_HOME)){
 				Log.d(LOG_TAG, "Home button pressed; notifying widget");
 				notifyWidget();
@@ -366,6 +364,7 @@ public class StatisticsService extends Service{
 			}
 			
 			if (intent.getAction().equals(SERVICE_UPDATE)){
+				updateReservedSnapshot();
 				notifyWidget();
 			}
 		}
@@ -375,7 +374,6 @@ public class StatisticsService extends Service{
 
 		Snapshot newCurrSnapshot = dataManager.getSelectedSnapshot();
 		if (newCurrSnapshot == null) {
-			notifyWidget();
 			return;
 		}
 
@@ -385,7 +383,6 @@ public class StatisticsService extends Service{
 			// User changed the current snapshot
 			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
 			currSnapshot = newCurrSnapshot;
-			notifyWidget();
 		}
 	}
 }
