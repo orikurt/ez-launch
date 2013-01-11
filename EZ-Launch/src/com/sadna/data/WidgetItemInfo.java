@@ -1,5 +1,10 @@
 package com.sadna.data;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -24,19 +29,22 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 	private ItemState itemState;
 
+	private Date lastUsed;
+
 	public WidgetItemInfo(String name, String label) {
 		this(name,label,0);
 	}
 	
-	public WidgetItemInfo(String name, String label,double score,ItemState itemState) {
+	public WidgetItemInfo(String name, String label,double score,ItemState itemState,Date lastUsed) {
 		this.packageName = name;
 		this.label = label;
 		this.score = score;
 		this.itemState = itemState;
+		this.lastUsed = lastUsed;
 	}
 	
 	public WidgetItemInfo(String name, String label,double score) {
-		this(name,label,score,ItemState.AUTO);
+		this(name,label,score,ItemState.AUTO,new Date());
 	}
 	
 	public WidgetItemInfo(Parcel in) {
@@ -148,5 +156,23 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	@Override
 	public ItemState getItemState() {
 		return itemState;
+	}
+
+	@Override
+	public Date getLastUse() {
+		// TODO Auto-generated method stub
+		return this.lastUsed;
+	}
+
+	@Override
+	public void setLastUse(Date lastUse) {
+		this.lastUsed = lastUse;
+	}
+
+	@Override
+	public String getLastUsedFormated() {
+		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
+		// TODO Auto-generated method stub
+		return df.format(getLastUse());
 	}
 }

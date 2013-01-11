@@ -1,5 +1,7 @@
 package com.sadna.interfaces;
 
+import java.util.Date;
+
 import com.sadna.enums.ItemState;
 
 import android.content.Context;
@@ -24,7 +26,9 @@ public interface IWidgetItemInfo extends Parcelable, Comparable<IWidgetItemInfo>
 	public void setItemState(ItemState iState);
 	public ItemState getItemState();
 		
-		
+	public Date getLastUse();
+	public void setLastUse(Date lastUse);	
+	public String getLastUsedFormated();
 	
 	public double getScore();
 	public void setScore(double newScore);

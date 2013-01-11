@@ -1,5 +1,10 @@
 package com.sadna.data;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -105,6 +110,23 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 	@Override
 	public ItemState getItemState() {
 		return ItemState.MUST;
+	}
+
+	@Override
+	public Date getLastUse() {
+		return new Date();
+	}
+
+	@Override
+	public void setLastUse(Date lastUse) {
+		
+	}
+
+	@Override
+	public String getLastUsedFormated() {
+		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
+		// TODO Auto-generated method stub
+		return df.format(getLastUse());
 	}
 
 }
