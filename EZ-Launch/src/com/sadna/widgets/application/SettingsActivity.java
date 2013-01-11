@@ -45,7 +45,8 @@ public class SettingsActivity extends PreferenceActivity {
 	private Preference SaveSnapshotPref;
 	private int widgetID;
 	
-
+	private final String LOG_TAG = "SettingsActivity";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,14 +56,13 @@ public class SettingsActivity extends PreferenceActivity {
 		// Add SettingsList button
 		ListView v = getListView();
 		Button settingsListButton = new Button(this);
-		settingsListButton.setText("Save");
+		settingsListButton.setText("settingsList");
 		settingsListButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
 			    
 			    // Start SettingsList
-				/*Intent launch = new Intent(getApplicationContext(), SettingsListActivity.class);
-				startActivity(launch);*/
-				finish();
+				Intent launch = new Intent(getApplicationContext(), SettingsListActivity.class);
+				startActivity(launch);
 			}
 		});
 		v.addFooterView(settingsListButton);
@@ -290,6 +290,7 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			
+			Log.d(LOG_TAG, "onPreferenceChange");
 			packNames = FixPreference.getValues();
 			Snapshot Snapy = DM.getSelectedSnapshot();
 			
