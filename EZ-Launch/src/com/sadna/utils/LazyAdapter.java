@@ -2,6 +2,7 @@ package com.sadna.utils;
 
 import java.util.ArrayList;
 
+import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.R;
 import android.app.Activity;
@@ -58,13 +59,14 @@ public class LazyAdapter extends BaseAdapter {
 		ImageButton leftBtn = (ImageButton)vi.findViewById(R.id.arrowLeft);
 		ImageButton rightBtn = (ImageButton)vi.findViewById(R.id.arrowRight);
 		final ViewFlipper vf = (ViewFlipper)vi.findViewById(R.id.viewFlipper1);
-		TextView statusOff = (TextView)vi.findViewById(R.id.AppStatus1); // duration
-		TextView statusAuto = (TextView)vi.findViewById(R.id.AppStatus2); // duration
-		TextView statusAlways = (TextView)vi.findViewById(R.id.AppStatus3); // duration
+		final TextView statusOff = (TextView)vi.findViewById(R.id.AppStatus1); // duration
+		final TextView statusAuto = (TextView)vi.findViewById(R.id.AppStatus2); // duration
+		final TextView statusAlways = (TextView)vi.findViewById(R.id.AppStatus3); // duration
 		
 	
 
-	
+		final IWidgetItemInfo wi = data.get(position);
+		
 		leftBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
@@ -74,6 +76,7 @@ public class LazyAdapter extends BaseAdapter {
 				vf.setOutAnimation(AnimationUtils.loadAnimation(mContext,
 						R.anim.right_out));
 				vf.showPrevious();
+				wi.setItemState(getSelectedState(vf, statusOff, statusAuto, statusAlways));
 			}
 		});
 
@@ -86,10 +89,11 @@ public class LazyAdapter extends BaseAdapter {
 				vf.setOutAnimation(AnimationUtils.loadAnimation(mContext,
 						R.anim.left_out));
 				vf.showNext();
+				wi.setItemState(getSelectedState(vf, statusOff, statusAuto, statusAlways));
 			}
 		});
 		
-		IWidgetItemInfo wi = data.get(position);
+		
 
 		// Setting all values in listview
 		title.setText(wi.getLabel());
@@ -117,6 +121,21 @@ public class LazyAdapter extends BaseAdapter {
 		while (!(vf.getCurrentView() == v)) {
 			vf.showNext();
 		}
+	}
+	private ItemState getSelectedState(ViewFlipper vf, View statusOff, View statusAuto, View statusAlways){
+		View v = vf.getCurrentView();
+		if (v == statusOff) {
+			return ItemState.NOT_ALLOWED;
+		}
+		if (v == statusAuto) {
+			return ItemState.AUTO;
+		}
+		if (v == statusAlways) {
+			return ItemState.MUST;
+		}
+		
+		return null;
+		
 	}
 
 
