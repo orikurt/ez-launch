@@ -60,6 +60,11 @@ public class SettingsActivity extends PreferenceActivity {
 		goButton.setText("Go!");
 		goButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
+
+				// Send update intent
+				Intent updateWidget = new Intent(com.sadna.service.StatisticsService.SNAPSHOT_UPDATE);
+				sendBroadcast(updateWidget);
+				
 			    finish();
 			}
 		});
@@ -256,12 +261,7 @@ public class SettingsActivity extends PreferenceActivity {
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			String snapName = newValue.toString();
 			Snapshot SnapToLoad = DM.loadSnapshot(snapName);
-			DM.setSelectedSnapshot(SnapToLoad);
-			
-			// Send update intent
-			Intent updateWidget = new Intent(com.sadna.service.StatisticsService.SNAPSHOT_UPDATE);
-			sendBroadcast(updateWidget);
-			
+			DM.setSelectedSnapshot(SnapToLoad);			
 			return false;
 		}
 	}
