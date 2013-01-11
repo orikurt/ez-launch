@@ -119,8 +119,6 @@ public class StatisticsService extends Service{
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 			currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-			// Adding the config option
-			currSnapshot.add(new ConfigurationItemInfo());
 			dataManager.saveSnapshot(currSnapshot);
 			dataManager.setSelectedSnapshot(currSnapshot);
 		}
