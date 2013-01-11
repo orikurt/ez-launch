@@ -1,5 +1,7 @@
 package com.sadna.widgets.application;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ import android.widget.ListView;
 @SuppressLint("NewApi")
 public class SettingsActivity extends PreferenceActivity {
 
-	private List<Snapshot> SnapShots;
+	private List<Snapshot> snapShots;
 	public IDataManager DM;
 
 	private ListPreference loadSnapshot; 
@@ -70,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		// Prepare
 		DM = new DataManager(this);
-		SnapShots = DM.loadAllSnapshots();
+		snapShots = DM.loadAllSnapshots();
 		
 		prepareLoadScreenshotPref();
 		prepareSaveSnapshotPref();
@@ -132,53 +134,30 @@ public class SettingsActivity extends PreferenceActivity {
 	private void setListPreferenceData(ListPreference loadSnapshot2) {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
-		SnapShots = DM.loadAllSnapshots();
-		String Default = StatisticsService.RESERVED_SNAPSHOT;
-		Boolean DefaultSnap;
+		snapShots = DM.loadAllSnapshots();
 		
-		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
-
-		if (existsDefaultSnap(SnapShotsLength))
-		{
-			SnapShotsLength--;
+		if (snapShots == null) {
+			// Should consider display a message to the user... "no snapshots available"
+			loadSnapshot.setEntries(new CharSequence[0]);
+			loadSnapshot.setEntryValues(new CharSequence[0]);
+			return;
 		}
+
+		
 		//Create the snapshot value arrays and fill them with data
 
-		CharSequence[] Titles= new CharSequence[SnapShotsLength];
+		List<CharSequence> Titles= new ArrayList<CharSequence>();
 		
-		CharSequence[] Values= new CharSequence[SnapShotsLength];
-		int j = 0;
-		for (int i = 0; i < SnapShotsLength; i++) {
-			DefaultSnap = SnapShots.get(i).getSnapshotInfo().getSnapshotName().equals(Default);
-			if (DefaultSnap)
-			{
-				i++;
-			}
-			Values[j] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-			Titles[j] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-			j++;
-		}
-
-		loadSnapshot.setEntries(Titles);
-		loadSnapshot.setEntryValues(Values);
-
-	}
-	private boolean existsDefaultSnap(int SnapShotsLength) {
-		// TODO Auto-generated method stub
-		Boolean DefaultSnap;
-		if (SnapShotsLength == 0)
-		{
-			return false;
-		}
-		for (int i = 0; i < SnapShotsLength; i++) {
-			DefaultSnap = SnapShots.get(i).getSnapshotInfo().getSnapshotName().equals(StatisticsService.RESERVED_SNAPSHOT);
-			if (DefaultSnap)
-			{
-				return true;
+		for (Snapshot snap : snapShots) {
+			if (!snap.getSnapshotInfo().getSnapshotName().equals(StatisticsService.RESERVED_SNAPSHOT)) {
+				Titles.add(snap.getSnapshotInfo().getSnapshotName());
 			}
 		}
-		return false;
+		loadSnapshot.setEntries(Titles.toArray(new CharSequence[Titles.size()]));
+		loadSnapshot.setEntryValues(Titles.toArray(new CharSequence[Titles.size()]));
+
 	}
+
 	/************************* End of Preparing Functions ****************************/
 
 
@@ -239,7 +218,7 @@ public class SettingsActivity extends PreferenceActivity {
 			Snapshot snap = DM.getSelectedSnapshot();
 			String oldName = snap.getSnapshotInfo().getSnapshotName();
 			snap.getSnapshotInfo().setSnapshotName(value);
-			if (SnapShots.contains(snap))
+			if (snapShots.contains(snap))
 			{
 				snap.getSnapshotInfo().setSnapshotName(oldName);
 				return false;
