@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-
- <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" >
+
     <ImageView
-        android:id="@+id/photo" 
-        android:src="@drawable/no_image"
+        android:id="@+id/photo"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widgetThumbnailHeight"
+        android:cropToPadding="true"
         android:scaleType="centerInside"
-        android:cropToPadding="true"/>
-        <!-- android:background="@drawable/thumb_holo"-->
-        
+        android:src="@drawable/no_image" />
+    <!-- android:background="@drawable/thumb_holo" -->
+
     <LinearLayout
         android:id="@+id/label_overlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/photo"
-        android:background="@android:color/transparent"
+        android:layout_marginBottom="2dip"
         android:layout_marginLeft="2dip"
         android:layout_marginRight="2dip"
-        android:layout_marginBottom="2dip">
+        android:background="@android:color/transparent" >
+
         <TextView
             android:id="@+id/displayname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:singleLine="true"
+            android:layout_gravity="center"
+            android:background="@drawable/text_back"
             android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="0.5"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
             android:textSize="12sp"
-            android:typeface="sans"
-            android:background="@android:color/transparent"
-            android:textColor="@android:color/white" />
+            android:typeface="sans" />
     </LinearLayout>
+
 </RelativeLayout>
