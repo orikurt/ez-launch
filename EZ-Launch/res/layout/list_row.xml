@@ -6,24 +6,27 @@
     android:orientation="horizontal"
     android:padding="5dip" >
 
-	<!--  ListRow Left sied Thumbnail image -->
-	<LinearLayout android:id="@+id/thumbnail" 
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:padding="3dip"		
+    <!-- ListRow Left sied Thumbnail image -->
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/image_bg" 
-	    android:layout_marginRight="5dip">
+        android:layout_marginRight="5dip"
+
+        android:padding="3dip" >
+<!--         android:background="@drawable/image_bg" -->
         
-		<ImageView     
-			android:id="@+id/APP_list_image"   
-	        android:layout_width="50dip"
-	        android:layout_height="50dip"
-	        android:src="@drawable/rihanna"/>
-        
-	</LinearLayout>
-    
-	<!-- Title Of Song-->
+        <ImageView
+            android:id="@+id/APP_list_image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/rihanna" />
+    </LinearLayout>
+
+    <!-- Title Of Song -->
+
     <TextView
         android:id="@+id/APPtitle"
         android:layout_width="wrap_content"
@@ -32,13 +35,14 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Rihanna Love the way lie"
         android:textColor="#040404"
-        android:typeface="sans" 
         android:textSize="15dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:typeface="sans" />
 
-	<!-- Artist Name -->
+    <!-- Artist Name -->
 
-	<!-- Rightend Duration -->
+
+    <!-- Rightend Duration -->
 
     <TextView
         android:id="@+id/AppStatus"
@@ -52,22 +56,24 @@
         android:textColor="#10bcc9"
         android:textSize="10dp"
         android:textStyle="bold" />
-      
-     <!-- Rightend Arrow -->
 
-     <Switch
-         android:id="@+id/switch1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBottom="@+id/thumbnail"
-         android:layout_alignRight="@+id/duration" />
+    <!-- Rightend Arrow -->
 
-     <CheckBox
-         android:id="@+id/checkBoxManual "
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_alignBottom="@+id/thumbnail"
-         android:layout_toRightOf="@+id/thumbnail"
-         android:text="Manual" />
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+    <CheckBox
+        android:id="@+id/checkBoxManual "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Manual" />
 
 </RelativeLayout>
