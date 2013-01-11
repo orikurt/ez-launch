@@ -39,7 +39,7 @@ public class SettingsActivity extends PreferenceActivity {
 	public IDataManager DM;
 
 	private ListPreference loadSnapshot; 
-	private MultiSelectListPreference FixPreference;
+	private Preference FixPreference;
 	private Preference HelpPref;
 	private Preference AboutPref;
 	private Preference SaveSnapshotPref;
@@ -56,17 +56,14 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		// Add SettingsList button
 		ListView v = getListView();
-		Button settingsListButton = new Button(this);
-		settingsListButton.setText("settingsList");
-		settingsListButton.setOnClickListener(new OnClickListener() {
+		Button saveButton = new Button(this);
+		saveButton.setText("Save");
+		saveButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
-			    
-			    // Start SettingsList
-				Intent launch = new Intent(getApplicationContext(), SettingsListActivity.class);
-				startActivity(launch);
+			    finish();
 			}
 		});
-		v.addFooterView(settingsListButton);
+		v.addFooterView(saveButton);
 		
 		
 		// Prepare
@@ -75,50 +72,13 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		prepareLoadScreenshotPref();
 		prepareSaveSnapshotPref();
+		prepareFixPref();
 		prepareHelpBtn();
 		prepareAboutBtn();
-		prepareFixPref();
 	}
-
-	@SuppressLint("NewApi")
-	private void prepareFixPref() {
-
-		FixPreference = (MultiSelectListPreference)findPreference(Preferences.FIX);
-		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
-		
-		CharSequence[] Appnames;
-		CharSequence[] Values;
-		//		Context c = getApplicationContext();
-
-		//PackageManager pm = getPackageManager();
-		//List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-		Snapshot Snapy = DM.getSelectedSnapshot();
-		if (Snapy != null)
-		{
-		int i = 0;
-		int numApps = Snapy.size();
-		Appnames = new CharSequence[numApps];
-		Values = new CharSequence[numApps]; 
-		for (IWidgetItemInfo wInfo : Snapy) 
-		{
-			Appnames[i] = wInfo.getLabel();
-			Values[i] = wInfo.getPackageName();
-			i++;
-		}
-		}
-		else
-		{
-			Appnames = new CharSequence[]{};
-			Values = new CharSequence[]{};
-		}
-		//CharSequence[] Appnames = new CharSequence[] {"1", "2", "3"};
-		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
-		FixPreference.setDefaultValue(Values);
-		FixPreference.setEntries(Appnames);
-		FixPreference.setEntryValues(Values);
-		FixPreference.setOnPreferenceChangeListener(new OnFixPreferenceChangeListener());
-	}
-
+	
+	
+	/************************* Preparing Functions ****************************/
 	private void prepareLoadScreenshotPref() {
 		// TODO Auto-generated method stub
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
@@ -127,8 +87,37 @@ public class SettingsActivity extends PreferenceActivity {
 		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener());
 		loadSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener());
 	}
+	
+	private void prepareSaveSnapshotPref() {
 
+		SaveSnapshotPref = findPreference(Preferences.SAVE);
+		SaveSnapshotPref.setKey(String.format(Preferences.SAVE, widgetID));
+		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
+	}
+	
+	@SuppressLint("NewApi")
+	private void prepareFixPref() {
+		FixPreference = findPreference(Preferences.FIX);
+		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
+		FixPreference.setOnPreferenceClickListener(new onFixPreferenceClickListener());
+	}
+	
+	private void prepareAboutBtn() {
+		// TODO Auto-generated method stub
+		AboutPref = findPreference("ABOUT");
+		//AboutPref.setKey(String.format(Preferences.ABOUT, widgetID));
+		AboutPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this, true));
+	}
+	
+	private void prepareHelpBtn() {
 
+		HelpPref = findPreference(Preferences.HELP);
+		HelpPref.setKey(String.format(Preferences.HELP, widgetID));
+
+		HelpPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this));
+
+	}
+	
 	private void setListPreferenceData(ListPreference loadSnapshot2) {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
@@ -148,31 +137,8 @@ public class SettingsActivity extends PreferenceActivity {
 		loadSnapshot.setEntryValues(Values);
 
 	}
+	/************************* End of Preparing Functions ****************************/
 
-	private void prepareAboutBtn() {
-		// TODO Auto-generated method stub
-		AboutPref = findPreference("ABOUT");
-		//AboutPref.setKey(String.format(Preferences.ABOUT, widgetID));
-		AboutPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this, true));
-	}
-
-
-	private void prepareHelpBtn() {
-
-		HelpPref = findPreference(Preferences.HELP);
-		HelpPref.setKey(String.format(Preferences.HELP, widgetID));
-
-		HelpPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this));
-
-	}
-	
-
-	private void prepareSaveSnapshotPref() {
-
-		SaveSnapshotPref = findPreference(Preferences.SAVE);
-		SaveSnapshotPref.setKey(String.format(Preferences.SAVE, widgetID));
-		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
-	}
 
 
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
@@ -300,30 +266,17 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 	
-	public class OnFixPreferenceChangeListener implements OnPreferenceChangeListener{
+	public class onFixPreferenceClickListener implements OnPreferenceClickListener {
 
-		Set<String> packNames;
-		@SuppressLint("NewApi")
 		@Override
-		public boolean onPreferenceChange(Preference preference, Object newValue) {
-			
-			Log.d(LOG_TAG, "onPreferenceChange");
-			packNames = FixPreference.getValues();
-			Snapshot Snapy = DM.getSelectedSnapshot();
-			
-			//CharSequence[] Appnames = new CharSequence[numApps];
-			//CharSequence[] Values = new CharSequence[numApps]; 
-			for (IWidgetItemInfo wInfo : Snapy) 
-			{
-				if (packNames.contains(wInfo.getPackageName()))
-				{
-					wInfo.setItemState(ItemState.MUST);
-				}
-			}
-
+		public boolean onPreferenceClick(Preference preference) {
+			Log.d(LOG_TAG, "onFixPreferenceClickListener");
+			Log.d(LOG_TAG, "onFixPreferenceClickListener");
+			Log.d(LOG_TAG, "onFixPreferenceClickListener");
+			Intent fixIntent = new Intent(preference.getContext(), SettingsListActivity.class);
+			startActivity(fixIntent);
 			return false;
 		}
-		
 	}
 }
 
