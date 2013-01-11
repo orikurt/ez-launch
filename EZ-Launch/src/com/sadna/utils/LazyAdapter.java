@@ -55,7 +55,7 @@ public class LazyAdapter extends BaseAdapter {
         title.setText(wi.getLabel());
         //artist.setText(song.get(SettingsListActivity.KEY_ARTIST));
         status.setText(wi.getItemState().toString());
-        thumb_image.setImageBitmap(wi.getBitmap(convertView.getContext()));
+        thumb_image.setImageBitmap(wi.getBitmap(vi.getContext()));
         return vi;
     }
 }

@@ -2,6 +2,7 @@ package com.sadna.widgets.application;
 
 import java.util.ArrayList;
 import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.utils.LazyAdapter;
 
@@ -37,7 +38,8 @@ public class SettingsListActivity extends PreferenceActivity{
 		
 		//NodeList nl = doc.getElementsByTagName(KEY_SONG);
 		// looping through all song nodes <song>
-		for (IWidgetItemInfo wi : dm.getSelectedSnapshot()) {
+		Snapshot snap = dm.getSelectedSnapshot();
+		for (IWidgetItemInfo wi : snap) {
 			
 
 			// adding HashList to ArrayList
@@ -46,7 +48,8 @@ public class SettingsListActivity extends PreferenceActivity{
 
 		
 
-		list=(ListView)findViewById(R.id.list);
+		list=(ListView)findViewById(android.R.id.list);
+		//list=(ListView)findViewById(R.id.list);
 		
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, appList);        

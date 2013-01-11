@@ -13,7 +13,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -71,10 +73,12 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private static Snapshot selectedSnapshot = null;
 
+	private Context mContext;
+
 	
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+		mContext = context;
 		sharedPreferences = context.getSharedPreferences(APPLICATION_SHARED_PREFRENCES, Context.MODE_PRIVATE);
 
 	}
@@ -320,10 +324,36 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		String selected = sharedPreferences.getString(SELECTED_SNAPSHOT,BAD_SNAPSHOT);
 		if (selected.toString().equals(BAD_SNAPSHOT)) {
-			return null;
+			// DB is empty - Generate first snapshot
+			Date currDate = new Date();
+			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
+			Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+			this.saveSnapshot(currSnapshot);
+			this.setSelectedSnapshot(currSnapshot);
+			return currSnapshot;
 		} else {
 			return loadSnapshot(selected);
 		}		
+	}
+	
+	
+	private List<IWidgetItemInfo> getInstalledAppsInfo() {
+		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
+
+		Context context = this.mContext;
+
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
+
+		for (ResolveInfo resolveInfo : pkgAppsList) {
+			String itemLabel = resolveInfo.loadLabel(mContext.getPackageManager()).toString();
+			String itemPkgName = resolveInfo.activityInfo.packageName;
+			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
+			result.add(itemInfo);
+		}
+
+		return result;
 	}
 
 	@Override
