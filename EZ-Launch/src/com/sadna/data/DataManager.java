@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,7 +41,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String DATABASE_NAME = "EZ_Launch_DB";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
 
 	// Snapshot info table name
 	private static final String TABLE_SNAPSHOT_INFO = "snapshotInfoTable";
@@ -136,18 +137,25 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		for (IWidgetItemInfo iWidgetItemInfo : snap) {
 			saveWidgetInfo(iWidgetItemInfo,db);
 		}
-		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
-				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
-				new String[] {snap.getSnapshotInfo().getSnapshotName(),snap.getSnapshotInfo().getLastEditedFormated()});
-
-		db.execSQL(insertSnapShotQuery);
+//		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
+//				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
+//				new String[] {snap.getSnapshotInfo().getSnapshotName(),snap.getSnapshotInfo().getLastEditedFormated()});
+		ContentValues iSSQCV = new ContentValues(2);
+		iSSQCV.put(KEY_SNAPSHOT_NAME, snap.getSnapshotInfo().getSnapshotName());
+		iSSQCV.put(COLUMN_SNAPSHOT_LAST_DATE, snap.getSnapshotInfo().getLastEditedFormated());
+		db.insertWithOnConflict(TABLE_SNAPSHOT_INFO, null, iSSQCV, SQLiteDatabase.CONFLICT_REPLACE);
+		//db.execSQL(insertSnapShotQuery);
 
 		// Update relations - the current Implementation is not perfect as it sends many queries to the DB instead of 1 query
 		for (IWidgetItemInfo widg : snap) {
-			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
-					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
-					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
-			db.execSQL(insertSnapToWidgetQuery);
+//			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
+//					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
+//					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
+			ContentValues iSTWQ = new ContentValues(2);
+			iSTWQ.put(KEY_WIDGET_REF, widg.getPackageName());
+			iSTWQ.put(KEY_SNAPSHOT_REF, snap.getSnapshotInfo().getSnapshotName());
+			db.insertWithOnConflict(TABLE_WIDGET_TO_SNAPSHOT, null, iSTWQ, SQLiteDatabase.CONFLICT_REPLACE);
+			//db.execSQL(insertSnapToWidgetQuery);
 		}
 
 		db.setTransactionSuccessful();
@@ -164,14 +172,23 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	private boolean saveWidgetInfo(IWidgetItemInfo widg, SQLiteDatabase db){
-		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
-				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE,COLUMN_WIDGET_LAST_DATE}, 
-				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode(),widg.getLastUsedFormated()});
-		db.execSQL(insertWidgetQuery);
+//		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
+//				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE,COLUMN_WIDGET_LAST_DATE}, 
+//				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode(),widg.getLastUsedFormated()});
+		ContentValues cv = new ContentValues(5);
+		cv.put(KEY_WIDGET_NAME, widg.getPackageName());
+		cv.put(COLUMN_WIDGET_LABEL, widg.getLabel());
+		cv.put(COLUMN_WIDGET_SCORE, widg.getScore());
+		cv.put(COLUMN_WIDGET_STATE, widg.getItemState().getStatusCode());
+		cv.put(COLUMN_WIDGET_LAST_DATE, widg.getLastUsedFormated());
+		
+		
+		db.insertWithOnConflict(TABLE_WIDGET_INFO, null, cv,SQLiteDatabase.CONFLICT_REPLACE); 
+		//db.execSQL(insertWidgetQuery);
 		return true;
 	}
 	//field 
-	private String getInsertOrReplaceQuery(String table,String fields[], String values[]){
+	private String getInsertOrReplaceQuery2(String table,String fields[], String values[]){
 		StringBuilder res = new StringBuilder();
 		res.append("INSERT OR REPLACE INTO ");
 		res.append(table);
