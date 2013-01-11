@@ -1,34 +1,26 @@
 package com.sadna.widgets.application;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+
 import java.util.List;
-import java.util.Set;
+
 
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
-import com.sadna.enums.ItemState;
-import com.sadna.interfaces.IDataManager;
-import com.sadna.interfaces.IWidgetItemInfo;
-import com.sadna.service.StatisticsService;
-import com.sadna.widgets.application.ConfigurationActivity.OnFixPreferenceChangeListener;
 
+import com.sadna.interfaces.IDataManager;
+import com.sadna.service.StatisticsService;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
