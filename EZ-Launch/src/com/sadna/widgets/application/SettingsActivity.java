@@ -88,7 +88,7 @@ public class SettingsActivity extends PreferenceActivity {
 		// TODO Auto-generated method stub
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
-		setListPreferenceData(loadSnapshot);
+		setListPreferenceData();
 		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener());
 		loadSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener());
 	}
@@ -123,7 +123,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 	}
 	
-	private void setListPreferenceData(ListPreference loadSnapshot2) {
+	private void setListPreferenceData() {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
 		snapShots = DM.loadAllSnapshots();
@@ -216,6 +216,7 @@ public class SettingsActivity extends PreferenceActivity {
 				return false;
 			}
 			DM.saveSnapshot(snap);
+			setListPreferenceData();
 			return true;
 		}
 		
@@ -260,8 +261,8 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-			setListPreferenceData(loadSnapshot);
-			return false;
+			setListPreferenceData();
+			return true;
 		}
 	}
 	
