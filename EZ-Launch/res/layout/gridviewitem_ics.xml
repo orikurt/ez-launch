@@ -35,7 +35,7 @@
             android:shadowRadius="0.5"
             android:singleLine="true"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:typeface="sans" />
     </LinearLayout>
 
