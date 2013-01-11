@@ -25,7 +25,7 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
-	private static final int APPLICATION_LIMIT = 16;
+	private static final int APPLICATION_LIMIT = 15;
 
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
 
@@ -38,7 +38,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String DATABASE_NAME = "EZ_Launch_DB";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 
 	// Snapshot info table name
 	private static final String TABLE_SNAPSHOT_INFO = "snapshotInfoTable";
@@ -352,6 +352,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		//filtered.add(new ConfigurationItemInfo());
 		Collections.sort(filtered);
+		filtered.add(new ConfigurationItemInfo());
 		return filtered;
 	}
 	
