@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/photo"
-        android:background="@drawable/overlay_holo"
+        android:background="@android:color/transparent"
         android:layout_marginLeft="2dip"
         android:layout_marginRight="2dip"
         android:layout_marginBottom="2dip">
@@ -32,6 +32,7 @@
             android:ellipsize="end"
             android:textSize="12sp"
             android:typeface="sans"
+            android:background="@android:color/transparent"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </RelativeLayout>
