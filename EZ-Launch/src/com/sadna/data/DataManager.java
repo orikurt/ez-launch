@@ -23,6 +23,7 @@ import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.service.StatisticsService;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
@@ -313,6 +314,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public boolean setSelectedSnapshot(Snapshot snap) {
+		if (snap == null) {
+			throw new NullPointerException();
+		}
 		selectedSnapshot = snap;
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString(SELECTED_SNAPSHOT, snap.getSnapshotInfo().getSnapshotName());
@@ -329,15 +333,24 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		String selected = sharedPreferences.getString(SELECTED_SNAPSHOT,BAD_SNAPSHOT);
 		if (selected.toString().equals(BAD_SNAPSHOT)) {
 			// DB is empty - Generate first snapshot
-			Date currDate = new Date();
-			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
-			Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-			this.saveSnapshot(currSnapshot);
-			this.setSelectedSnapshot(currSnapshot);
-			return currSnapshot;
+			return generateValidSnapshot();
 		} else {
-			return loadSnapshot(selected);
+			Snapshot ret = loadSnapshot(selected);
+			if (ret == null) {
+				// the Db has a corrupted snapshot ! generating a new one
+				return generateValidSnapshot();
+			}
+			return ret;
 		}		
+	}
+
+	private Snapshot generateValidSnapshot() {
+		Date currDate = new Date();
+		ISnapshotInfo snapshotInfo = new SnapshotInfo(StatisticsService.RESERVED_SNAPSHOT, currDate);
+		Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+		this.saveSnapshot(currSnapshot);
+		this.setSelectedSnapshot(currSnapshot);
+		return currSnapshot;
 	}
 	
 	
