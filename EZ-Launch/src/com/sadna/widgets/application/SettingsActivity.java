@@ -56,14 +56,14 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		// Add SettingsList button
 		ListView v = getListView();
-		Button saveButton = new Button(this);
-		saveButton.setText("Save");
-		saveButton.setOnClickListener(new OnClickListener() {
+		Button goButton = new Button(this);
+		goButton.setText("Go!");
+		goButton.setOnClickListener(new OnClickListener() {
 			public void onClick(final View Arg) {
 			    finish();
 			}
 		});
-		v.addFooterView(saveButton);
+		v.addFooterView(goButton);
 		
 		
 		// Prepare
@@ -270,9 +270,6 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-			Log.d(LOG_TAG, "onFixPreferenceClickListener");
-			Log.d(LOG_TAG, "onFixPreferenceClickListener");
-			Log.d(LOG_TAG, "onFixPreferenceClickListener");
 			Intent fixIntent = new Intent(preference.getContext(), SettingsListActivity.class);
 			startActivity(fixIntent);
 			return false;
