@@ -114,18 +114,9 @@ public class StatisticsService extends Service{
 		lastUnlock = new Date();
 
 		// Get current snapshot
-		if (dataManager.getSelectedSnapshot() == null) {
-			// DB is empty - Generate first snapshot
-			Date currDate = new Date();
-			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
-			currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-			dataManager.saveSnapshot(currSnapshot);
-			dataManager.setSelectedSnapshot(currSnapshot);
-		}
-		else {
-			// DB isn't empty
-			currSnapshot = dataManager.getSelectedSnapshot();
-		}
+
+		currSnapshot = dataManager.getSelectedSnapshot();
+
 	}
 
 	public void notifyWidget() {
@@ -142,24 +133,7 @@ public class StatisticsService extends Service{
 		sendBroadcast(updateWidget);
 	}
 
-	private List<IWidgetItemInfo> getInstalledAppsInfo() {
-		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
-
-		Context context = getApplicationContext();
-
-		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
-
-		for (ResolveInfo resolveInfo : pkgAppsList) {
-			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
-			String itemPkgName = resolveInfo.activityInfo.packageName;
-			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
-			result.add(itemInfo);
-		}
-
-		return result;
-	}
+	
 
 	private void updateWithRunningTasks() {
 		// get the info from the currently running task
