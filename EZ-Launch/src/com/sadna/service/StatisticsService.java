@@ -126,6 +126,7 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER_LAUNCH));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_UPDATE));
 
 		return START_STICKY;
 	}
@@ -361,6 +362,10 @@ public class StatisticsService extends Service{
 			}
 
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
+				notifyWidget();
+			}
+			
+			if (intent.getAction().equals(SERVICE_UPDATE)){
 				notifyWidget();
 			}
 		}
