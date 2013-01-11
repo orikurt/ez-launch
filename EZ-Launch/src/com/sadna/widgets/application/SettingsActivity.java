@@ -59,12 +59,7 @@ public class SettingsActivity extends PreferenceActivity {
 		Button goButton = new Button(this);
 		goButton.setText("Go!");
 		goButton.setOnClickListener(new OnClickListener() {
-			public void onClick(final View Arg) {
-
-				// Send update intent
-				Intent updateWidget = new Intent(com.sadna.service.StatisticsService.SNAPSHOT_UPDATE);
-				sendBroadcast(updateWidget);
-				
+			public void onClick(final View Arg) {				
 			    finish();
 			}
 		});
@@ -82,6 +77,16 @@ public class SettingsActivity extends PreferenceActivity {
 		prepareAboutBtn();
 	}
 	
+	@Override
+	protected void onDestroy() {
+
+		// Send update intent
+		Intent updateWidget = new Intent(com.sadna.service.StatisticsService.SERVICE_UPDATE);
+		sendBroadcast(updateWidget);
+		
+		super.onDestroy();
+		
+	}
 	
 	/************************* Preparing Functions ****************************/
 	private void prepareLoadScreenshotPref() {

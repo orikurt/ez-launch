@@ -42,6 +42,7 @@ public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
 	public static final String NEW_SNAPSHOT = "com.sadna.widgets.application.newSnapshot";
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
+	public static final String SERVICE_UPDATE = "com.sadna.widgets.application.SERVICE_UPDATE";
 	public static final String RESERVED_SNAPSHOT = "Default Snapshot";
 	private static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
 	private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
