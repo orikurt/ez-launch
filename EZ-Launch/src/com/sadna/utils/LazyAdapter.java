@@ -52,12 +52,15 @@ public class LazyAdapter extends BaseAdapter {
 		final Context mContext = vi.getContext();
 		TextView title = (TextView)vi.findViewById(R.id.APPtitle); // title
 
-		//TextView status = (TextView)vi.findViewById(R.id.AppStatus); // duration
+		
 		ImageView thumb_image=(ImageView)vi.findViewById(R.id.APP_list_image); // thumb image
 		//Switch onOff = (Switch)vi.findViewById(R.id.switch1);
 		ImageButton leftBtn = (ImageButton)vi.findViewById(R.id.arrowLeft);
 		ImageButton rightBtn = (ImageButton)vi.findViewById(R.id.arrowRight);
 		final ViewFlipper vf = (ViewFlipper)vi.findViewById(R.id.viewFlipper1);
+		TextView statusOff = (TextView)vi.findViewById(R.id.AppStatus1); // duration
+		TextView statusAuto = (TextView)vi.findViewById(R.id.AppStatus2); // duration
+		TextView statusAlways = (TextView)vi.findViewById(R.id.AppStatus3); // duration
 		
 	
 
@@ -90,10 +93,30 @@ public class LazyAdapter extends BaseAdapter {
 
 		// Setting all values in listview
 		title.setText(wi.getLabel());
+		
+		switch (wi.getItemState()) {
+		case AUTO:
+			setFliperState(vf, statusAuto);
+			break;
+		case MUST:
+			setFliperState(vf, statusAlways);
+			break;
+		case NOT_ALLOWED:
+			setFliperState(vf, statusOff);
+			break;
+
+		default:
+			break;
+		}
 		//artist.setText(song.get(SettingsListActivity.KEY_ARTIST));
 		//status.setText(wi.getItemState().toString());
 		thumb_image.setImageBitmap(wi.getBitmap(mContext));
 		return vi;
+	}
+	private void setFliperState(ViewFlipper vf, View v){
+		while (!(vf.getCurrentView() == v)) {
+			vf.showNext();
+		}
 	}
 
 
