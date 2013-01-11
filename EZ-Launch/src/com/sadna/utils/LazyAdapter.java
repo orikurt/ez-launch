@@ -1,6 +1,7 @@
 package com.sadna.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
@@ -21,11 +22,11 @@ import android.widget.ViewFlipper;
 public class LazyAdapter extends BaseAdapter {
 
 	private Activity activity;
-	private ArrayList<IWidgetItemInfo> data;
+	private List<IWidgetItemInfo> data;
 	private static LayoutInflater inflater=null;
 
 
-	public LazyAdapter(Activity a, ArrayList<IWidgetItemInfo> d) {
+	public LazyAdapter(Activity a, List<IWidgetItemInfo> d) {
 		activity = a;
 		data=d;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
