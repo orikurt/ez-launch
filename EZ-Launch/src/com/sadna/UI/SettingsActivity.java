@@ -1,4 +1,4 @@
-package com.sadna.widgets.application;
+package com.sadna.UI;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,11 @@ import com.sadna.data.Snapshot;
 
 import com.sadna.interfaces.IDataManager;
 import com.sadna.service.StatisticsService;
+import com.sadna.widgets.application.Preferences;
+import com.sadna.widgets.application.R;
+import com.sadna.widgets.application.R.string;
+import com.sadna.widgets.application.R.xml;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
