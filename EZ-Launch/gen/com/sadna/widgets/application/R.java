@@ -45,9 +45,10 @@ public final class R {
         public static final int overlay_holo=0x7f020010;
         public static final int play=0x7f020011;
         public static final int rihanna=0x7f020012;
-        public static final int thumb_holo=0x7f020013;
-        public static final int thumb_selector=0x7f020014;
-        public static final int thumb_selector_pressed=0x7f020015;
+        public static final int text_back=0x7f020013;
+        public static final int thumb_holo=0x7f020014;
+        public static final int thumb_selector=0x7f020015;
+        public static final int thumb_selector_pressed=0x7f020016;
     }
     public static final class id {
         public static final int APP_list_image=0x7f090006;
