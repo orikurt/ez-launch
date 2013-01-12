@@ -29,7 +29,7 @@ import com.sadna.service.StatisticsService;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
-	private static final int APPLICATION_LIMIT = 15;
+	private static final int APPLICATION_LIMIT = 16;
 
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
 
@@ -430,7 +430,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Collections.sort(must);
 
 		must.addAll(filtered);
-		must.add(APPLICATION_LIMIT,new ConfigurationItemInfo());
+		must.add(APPLICATION_LIMIT - 1,new ConfigurationItemInfo());
 		return must;
 	}
 	
@@ -453,7 +453,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 
 		public Snapshot getSplitlist(int id) {
-			int start = id * APPLICATION_LIMIT;
+			int start = Math.min(id * APPLICATION_LIMIT,snap.size() - 1);
 			int end = Math.min(((id + 1) * APPLICATION_LIMIT),snap.size());
 			return new Snapshot(snap.getSnapshotInfo() ,snap.subList(start, end));
 		}
