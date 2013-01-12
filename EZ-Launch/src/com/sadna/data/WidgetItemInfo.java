@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import android.content.Intent;
@@ -106,8 +107,14 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	}
 	
 	@Override
+	/**
+	 * We are trying a new method
+	 * we normalize in here 
+	 * */
 	public double getScore() {
-		return score;
+		long diff = (new Date().getTime()) -  getLastUse().getTime();
+		long days = TimeUnit.MILLISECONDS.toDays(diff);
+		return score * Math.pow((99.0/100.0), days);
 	}
 	@Override
 	public void setScore(double score) {
