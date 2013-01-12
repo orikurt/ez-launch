@@ -81,4 +81,9 @@
 	<string name="cancelbtn">Cancel</string>
 	<string name="configuration">Configuration</string>
 	
+	<!-- UI STRINGS -->
+	<string name="insert_widget">To start launching easily,\n
+	    please add EZ-Launch widgets\n
+	    to your Homescreen.</string>
+	
 </resources>
