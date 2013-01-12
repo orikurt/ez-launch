@@ -41,7 +41,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String DATABASE_NAME = "EZ_Launch_DB";
 
 	// Database Version
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 12;
 
 	// Snapshot info table name
 	private static final String TABLE_SNAPSHOT_INFO = "snapshotInfoTable";
@@ -57,8 +57,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	// Widget info table columns
 	private static final String KEY_WIDGET_NAME = "packageName";
 	private static final String COLUMN_WIDGET_LABEL = "widgetInfo";
-	private static final String COLUMN_WIDGET_SCORE = "widgetScore";
-	private static final String COLUMN_WIDGET_STATE = "widgetState";
 	private static final String COLUMN_WIDGET_LAST_DATE = "widgetLastUsed";
 
 
@@ -68,6 +66,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	// Widget info to Snapshot columns 
 	private static final String KEY_WIDGET_REF = "packageNameREF";
 	private static final String KEY_SNAPSHOT_REF = "snapshotNameREF";
+	private static final String COLUMN_WIDGET_SCORE = "widgetScore";
+	private static final String COLUMN_WIDGET_STATE = "widgetState";
+
 	
 	// Shared Preferences
 	private static SharedPreferences sharedPreferences;
@@ -95,14 +96,14 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		String CREATE_WIDGET_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WIDGET_INFO + "("
 				+ KEY_WIDGET_NAME + " TEXT PRIMARY KEY," + 
 				COLUMN_WIDGET_LABEL + " TEXT," + 
-				COLUMN_WIDGET_SCORE+ " REAL NOT NULL DEFAULT '0'," +
-				COLUMN_WIDGET_STATE + " TEXT (10),"+
 				COLUMN_WIDGET_LAST_DATE + " TEXT DEFAULT CURRENT_TIMESTAMP "+ ");";
 		db.execSQL(CREATE_WIDGET_INFO_TABLE);
 
 		String CREATE_WIDGET_TO_SNAPSHOT_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_WIDGET_TO_SNAPSHOT + "("
 				+ KEY_WIDGET_REF + " TEXT (35) NOT NULL," + 
 				KEY_SNAPSHOT_REF + " TEXT (35) NOT NULL, " + 
+				COLUMN_WIDGET_SCORE+ " REAL NOT NULL DEFAULT '1'," +
+				COLUMN_WIDGET_STATE + " TEXT (10),"+
 				"PRIMARY KEY (" + KEY_WIDGET_REF + ", "  + KEY_SNAPSHOT_REF +  " ), "
 				+ "FOREIGN KEY(" + KEY_WIDGET_REF + ") REFERENCES " + TABLE_WIDGET_INFO + "(" + KEY_WIDGET_NAME +") ON UPDATE CASCADE ON DELETE CASCADE,"
 				+ "FOREIGN KEY(" + KEY_SNAPSHOT_REF + ") REFERENCES " + TABLE_SNAPSHOT_INFO + "(" + KEY_SNAPSHOT_NAME +") ON UPDATE CASCADE ON DELETE CASCADE" +");";
@@ -151,9 +152,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 //			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
 //					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
 //					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
-			ContentValues iSTWQ = new ContentValues(2);
+			ContentValues iSTWQ = new ContentValues(4);
 			iSTWQ.put(KEY_WIDGET_REF, widg.getPackageName());
 			iSTWQ.put(KEY_SNAPSHOT_REF, snap.getSnapshotInfo().getSnapshotName());
+			iSTWQ.put(COLUMN_WIDGET_SCORE, widg.getScore());
+			iSTWQ.put(COLUMN_WIDGET_STATE, widg.getItemState().getStatusCode());
 			db.insertWithOnConflict(TABLE_WIDGET_TO_SNAPSHOT, null, iSTWQ, SQLiteDatabase.CONFLICT_REPLACE);
 			//db.execSQL(insertSnapToWidgetQuery);
 		}
@@ -175,11 +178,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 //		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
 //				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE,COLUMN_WIDGET_LAST_DATE}, 
 //				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode(),widg.getLastUsedFormated()});
-		ContentValues cv = new ContentValues(5);
+		ContentValues cv = new ContentValues(3);
 		cv.put(KEY_WIDGET_NAME, widg.getPackageName());
 		cv.put(COLUMN_WIDGET_LABEL, widg.getLabel());
-		cv.put(COLUMN_WIDGET_SCORE, widg.getScore());
-		cv.put(COLUMN_WIDGET_STATE, widg.getItemState().getStatusCode());
 		cv.put(COLUMN_WIDGET_LAST_DATE, widg.getLastUsedFormated());
 		
 		

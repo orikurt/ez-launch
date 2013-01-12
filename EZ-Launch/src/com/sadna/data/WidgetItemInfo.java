@@ -33,7 +33,7 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	private Date lastUsed;
 
 	public WidgetItemInfo(String name, String label) {
-		this(name,label,0);
+		this(name,label,1);
 	}
 	
 	public WidgetItemInfo(String name, String label,double score,ItemState itemState,Date lastUsed) {
