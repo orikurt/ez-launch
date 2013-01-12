@@ -274,14 +274,14 @@ public class StatisticsService extends Service{
 		ComponentName comp;
 		String runningName;
 		List< RunningTaskInfo > runningTasksInfo = activityManager.getRunningTasks(MAX_TASKS);
-		for (RunningTaskInfo runningTask : runningTasksInfo){
-			comp = runningTask.baseActivity;
-			runningName = comp.getPackageName();
-			if (runningName.equals(name)){
-				isRunning = true;
-				break;
-			}
-		}
+		if (runningTasksInfo == null) return;
+		RunningTaskInfo runningTask = runningTasksInfo.get(0);
+		if (runningTask == null) return;
+		comp = runningTask.baseActivity;
+		runningName = comp.getPackageName();
+		if (runningName.equals(name))
+			isRunning = true;
+
 		
 		if (lastUsed != null){
 			if (lastUsed.equals(name)){
