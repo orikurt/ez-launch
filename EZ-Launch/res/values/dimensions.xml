@@ -2,6 +2,6 @@
 <resources>
 	<dimen name="widgetColumnWidth">60dip</dimen>
     <dimen name="widgetHorizontalSpacing">6dip</dimen>
-    <dimen name="widgetVerticalSpacing">6dip</dimen>
+    <dimen name="widgetVerticalSpacing">2dip</dimen>
     <dimen name="widgetThumbnailHeight">94dip</dimen>
 </resources>
