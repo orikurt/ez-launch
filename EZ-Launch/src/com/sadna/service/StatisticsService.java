@@ -328,6 +328,7 @@ public class StatisticsService extends Service{
 			}
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
+				screenLocked = true;
 				h.removeCallbacksAndMessages(null);
 				h.postDelayed(timerRunnable, UPDATE_DELAY);
 			}
