@@ -41,6 +41,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	public static final String TAG = "sadna.ContactRemoteViewsFactory";
 	private Context mContext;
 	private int mAppWidgetId;
+	private int[] mAppWidgetIds;
 	private Snapshot mData = null;
 	//private int mDefWidth;
 	//private Bitmap mFallbackImage;
@@ -51,12 +52,14 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		mContext = context;
 		mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
-
+		mAppWidgetIds = Preferences.getAllWidgetIds(context);
 		if (dm == null) {
 			dm = new DataManager(mContext);
 		}
-		//mData = dm.getSelectedSnapshot();
-		mData = dm.getSelectedSnapshotFiltered();
+		int id = getSnapshotID();
+		mData = dm.getSelectedSnapshotFiltered(id);
+
+
 	}
 	@Override
 	public void onCreate() {
@@ -75,6 +78,19 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			mFallbackImage.recycle();
 			mFallbackImage = null;
 		}*/
+	}
+
+	private int getSnapshotID() {
+		mAppWidgetIds = Preferences.getAllWidgetIds(mContext);
+		if (mAppWidgetIds == null) {
+			Log.d(TAG, "mAppWidgetIds is null");
+			return -1;
+		}
+		for (int i=0; i<mAppWidgetIds.length; i++) {
+			if (mAppWidgetIds[i] == mAppWidgetId)
+				return i;
+		}
+		return -1;
 	}
 
 	public int getCount() {
@@ -181,11 +197,13 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		}
 
 		//mData = dm.getSelectedSnapshot();
-		mData = dm.getSelectedSnapshotFiltered();
+		int id = getSnapshotID();
+		mData = dm.getSelectedSnapshotFiltered(id);
+		Log.d(TAG, "id="+id);
 		if (mData == null) {
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
-			mData = dm.getSelectedSnapshotFiltered(new Snapshot(snapshotInfo, getInstalledAppsInfo()));
+			mData = dm.getSelectedSnapshotFiltered(new Snapshot(snapshotInfo, getInstalledAppsInfo()), id);
 			mData.remove(mData.size()-1);
 			mData.add(new ConfigurationItemInfo());
 		}
