@@ -429,9 +429,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Collections.sort(filtered);
 		Collections.sort(must);
 
-		filtered.addAll(must);
-		filtered.add(APPLICATION_LIMIT - 1,new ConfigurationItemInfo());
-		return filtered;
+		must.addAll(filtered);
+		//must.add(APPLICATION_LIMIT ,new ConfigurationItemInfo());
+		return must;
 	}
 	
 	public Snapshot getSelectedSnapshotFiltered(int id){

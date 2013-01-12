@@ -199,4 +199,16 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 		dest.writeParcelable(snapInfo, 0);
 		dest.writeList(collection);
 	}
+
+	@Override 
+	public String toString(){
+		StringBuilder sb =new StringBuilder(); 
+		sb.append(snapInfo.getSnapshotName() + "\n");
+		sb.append("( ");
+		for (IWidgetItemInfo wid : collection) {
+			sb.append(wid.getPackageName() + " , ");
+		}
+		sb.append(" )");
+		return sb.toString();
+	}
 }
