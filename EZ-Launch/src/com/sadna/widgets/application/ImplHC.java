@@ -21,9 +21,8 @@ import com.sadna.service.StatisticsService;
 
 @SuppressLint("NewApi")
 public class ImplHC implements ContactWidget.WidgetImplementation {
-	public static final String TAG = "boombuler.ImplHC";
+	public static final String TAG = "EZ_Launch.ImplHC";
 	private ContactWidget mWidget;
-	//private Snapshot snap;
 	
 	public static final String EXTRA_DEFAULT_WIDTH = "EXTRA_DEFAULT_WIDTH";
 
@@ -109,7 +108,6 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 		final String action = intent.getAction();
 		if (TextUtils.equals(action, LauncherIntent.Action.ACTION_ITEM_CLICK)) {
 			int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-			//Uri uri = Uri.parse(intent.getStringExtra(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS));
 			
 			Intent launchIntent = intent.getParcelableExtra(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT);
 			launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
