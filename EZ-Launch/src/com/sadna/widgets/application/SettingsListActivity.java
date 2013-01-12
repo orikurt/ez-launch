@@ -65,8 +65,8 @@ public class SettingsListActivity extends PreferenceActivity{
 	}	
 
 	@Override
-	public void onStop(){
-		super.onStop();
+	public void onPause(){
+		super.onPause();
 		dm.setSelectedSnapshot(snap);
 		dm.saveSnapshot(snap);
 	}
