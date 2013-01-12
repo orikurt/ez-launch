@@ -13,10 +13,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
+import com.sadna.UI.SettingsActivity;
 import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.R;
-import com.sadna.widgets.application.SettingsActivity;
 
 public class ConfigurationItemInfo implements IWidgetItemInfo{
 

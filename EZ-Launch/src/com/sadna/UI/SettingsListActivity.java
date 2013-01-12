@@ -1,8 +1,11 @@
-package com.sadna.widgets.application;
+package com.sadna.UI;
 
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 import com.sadna.utils.LazyAdapter;
+import com.sadna.widgets.application.R;
+import com.sadna.widgets.application.R.layout;
+
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.View;
