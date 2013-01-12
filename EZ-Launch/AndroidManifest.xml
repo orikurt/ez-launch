@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.sadna.widgets.application"
-      android:versionCode="53"
-      android:versionName="0.5.3 Beta">
+      android:versionCode="54"
+      android:versionName="0.5.4 Beta">
 
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.GET_TASKS" />
 	
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17" />
     
     <application android:icon="@drawable/icon" android:label="@string/app_name">
    		<provider
@@ -19,6 +19,13 @@
             />
 		<!-- Broadcast Receiver that will process AppWidget updates -->
 		
+		<activity android:name="com.sadna.UI.MainActivity" android:label="@string/app_name">
+		    <intent-filter>
+		        <action android:name="android.intent.action.MAIN" />
+		        <category android:name="android.intent.category.LAUNCHER" />
+		    </intent-filter>
+		</activity>
+
 		<receiver android:name=".sizes.ContactWidget_4_4" android:label="@string/widget4x4">
 			<intent-filter>
 				<action   
@@ -36,12 +43,12 @@
 				android:value="true" />
 		</receiver>		
 
-		<activity android:name=".SettingsActivity">
+		<activity android:name="com.sadna.UI.SettingsActivity">
 			<intent-filter>
 				<action android:name="com.sadna.widgets.application.PREFS" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".SettingsListActivity">
+		<activity android:name="com.sadna.UI.SettingsListActivity">
 			<intent-filter>
 				<action android:name=".SettingsListActivity" />
 			</intent-filter>
