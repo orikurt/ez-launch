@@ -74,13 +74,12 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	@Override
-	protected void onDestroy() {
-
+	public void onPause(){
+		super.onPause();
+		
 		// Send update intent
 		Intent updateService = new Intent(com.sadna.service.StatisticsService.SERVICE_UPDATE);
 		sendBroadcast(updateService);
-		
-		super.onDestroy();
 	}
 	
 	/************************* Preparing Functions ****************************/
