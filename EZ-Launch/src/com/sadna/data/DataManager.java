@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -78,6 +79,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private Context mContext;
 
+	private ApplicationListCahce appListCache = null;
 	
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -396,33 +398,72 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		if (s == null) {
 			return null;
 		}
+		if (appListCache == null) {
+			appListCache = new ApplicationListCahce();
+		}
+		if (!appListCache.isValid()) {
+			appListCache.setSnap(generateList(s));
+		}
+		return appListCache.getSplitlist(id);
+	}
+
+	private Snapshot generateList(Snapshot s) {
 		Snapshot filtered = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
+		Snapshot must = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
 		
 		IWidgetItemInfo itemCopy;
 		
 		for (IWidgetItemInfo item: s){
-			if ((item.getItemState() == ItemState.MUST) && filtered.size()<APPLICATION_LIMIT){
-				itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
+			itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
+			if (item.getItemState() == ItemState.MUST){
+				must.add(itemCopy);
+			}else if (item.getItemState() == ItemState.AUTO) {
 				filtered.add(itemCopy);
 			}
 		}
 		
-		if (filtered.size() < APPLICATION_LIMIT){
-			for (IWidgetItemInfo item: s){
-				if ((item.getItemState() == ItemState.AUTO) && filtered.size()<APPLICATION_LIMIT){
-					itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
-					filtered.add(itemCopy);
-				}
-			}
-		}
+		
+		
+		
 		//filtered.add(new ConfigurationItemInfo());
 		Collections.sort(filtered);
-		filtered.add(new ConfigurationItemInfo());
+		Collections.sort(must);
+
+		must.addAll(filtered);
+		must.add(APPLICATION_LIMIT,new ConfigurationItemInfo());
 		return filtered;
 	}
 	
 	public Snapshot getSelectedSnapshotFiltered(int id){
 		return getSelectedSnapshotFiltered(getSelectedSnapshot(),id);
+	}
+	
+	class ApplicationListCahce{
+		private static final int TRESHOLD = 7;
+		Date date;
+		private Snapshot snap;
+		
+		boolean isValid(){
+			if (snap == null) {
+				return false;
+			}
+			long diff = (new Date()).getTime() - date.getTime();
+			long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+			return (seconds < TRESHOLD);
+		}
+
+		public Snapshot getSplitlist(int id) {
+			return new Snapshot(snap.getSnapshotInfo() ,snap.subList(id * APPLICATION_LIMIT, (id + 1) * APPLICATION_LIMIT));
+		}
+
+		public Snapshot getSnap() {
+			return snap;
+		}
+
+		public void setSnap(Snapshot snap) {
+			date = new Date();
+			this.snap = snap;
+		}
 	}
 
 
