@@ -68,5 +68,6 @@ public class SettingsListActivity extends PreferenceActivity{
 	public void onStop(){
 		super.onStop();
 		dm.setSelectedSnapshot(snap);
+		dm.saveSnapshot(snap);
 	}
 }
