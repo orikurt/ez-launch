@@ -94,7 +94,6 @@ public class StatisticsService extends Service{
 		d.start();
 		h = new Handler(d.getLooper());
 		h.postDelayed(timerRunnable, UPDATE_DELAY);
-		Toast.makeText(this, R.string.statistics_service_created, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Created");
 	}
 
