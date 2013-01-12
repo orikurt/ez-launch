@@ -392,7 +392,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	@Override
-	public Snapshot getSelectedSnapshotFiltered(Snapshot s) {
+	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id) {
 		if (s == null) {
 			return null;
 		}
@@ -421,8 +421,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return filtered;
 	}
 	
-	public Snapshot getSelectedSnapshotFiltered(){
-		return getSelectedSnapshotFiltered(getSelectedSnapshot());
+	public Snapshot getSelectedSnapshotFiltered(int id){
+		return getSelectedSnapshotFiltered(getSelectedSnapshot(),id);
 	}
 
 
