@@ -48,7 +48,7 @@ public class StatisticsService extends Service{
 	private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
 	private static final String SERVICE_ALARM_UNLOCK = "sadna.service_alarm_unlock";
 	private static final int MAX_TASKS = 25;
-	private static final long UPDATE_DELAY = 15000; 
+	private static final long UPDATE_DELAY = 7500; 
 	
 
 	Snapshot		currSnapshot;
