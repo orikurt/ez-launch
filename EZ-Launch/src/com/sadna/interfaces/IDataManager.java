@@ -12,6 +12,9 @@ public interface IDataManager {
 	public List<Snapshot> loadAllSnapshots();
 	public Snapshot loadSnapshot(String snapName);
 	
+	public boolean deleteSnapshot(String snapName);
+	public boolean deleteWidgetItemInfo(String widgPack);
+	
 	public boolean setSelectedSnapshot(Snapshot snap);
 	public Snapshot getSelectedSnapshot();
 	public Snapshot getSelectedSnapshotFiltered(int id);
