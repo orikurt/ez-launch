@@ -191,23 +191,53 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return true;
 	}
 	//field 
-	private String getInsertOrReplaceQuery2(String table,String fields[], String values[]){
-		StringBuilder res = new StringBuilder();
-		res.append("INSERT OR REPLACE INTO ");
-		res.append(table);
-		res.append("( ");
-		for (int i = 0; i < fields.length - 1; i++) {
-			res.append(fields[i] + ",");	
-		}
-		res.append(fields[fields.length - 1]);
-		res.append(") VALUES( ");
-		for (int i = 0; i < values.length - 1; i++) {
-			res.append("\"" + values[i]+ "\"" + ",");	
-		}
-		res.append("\"" + values[values.length-1]+ "\"");
-		res.append(");");
-		return res.toString();
+
+	@Override
+	public boolean deleteSnapshot(String snapName) {
+		
+		SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+
+		//First we have to remove all dependencies
+		String whereClause = KEY_SNAPSHOT_REF + " = ?";
+		String[] whereArgs = {snapName};
+ 
+		db.delete(TABLE_WIDGET_TO_SNAPSHOT, whereClause, whereArgs);
+
+		
+		// now Delete form Snapshot Tabel
+		whereClause = KEY_SNAPSHOT_NAME + " = ?";
+		db.delete(TABLE_SNAPSHOT_INFO, whereClause, whereArgs);
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		db.close();
+		
+		
+		return true;
 	}
+
+	@Override
+	public boolean deleteWidgetItemInfo(String widgPack) {
+		SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+
+		//First we have to remove all dependencies
+		String whereClause = KEY_WIDGET_REF + " = ?";
+		String[] whereArgs = {widgPack};
+ 
+		db.delete(TABLE_WIDGET_TO_SNAPSHOT, whereClause, whereArgs);
+
+		
+		// now Delete form Snapshot Tabel
+		whereClause = KEY_WIDGET_NAME + " = ?";
+		db.delete(TABLE_WIDGET_INFO, whereClause, whereArgs);
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		db.close();
+
+		return true;
+	}
+
 
 	@Override
 	public List<Snapshot> loadAllSnapshots() {
@@ -320,7 +350,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			FROM widgetInfoTable, snapshotInfoTable, widgetToSnapshotTable
 			WHERE packageName = packageNameREF AND snapshotName = snapshotNameREF AND snapshotName = 'Snapshot 0';
 		 ***/
-		// TODO Auto-generated method stub
+
 		
 		String loadQuery = getBaseSelectWithJoin() + " AND " + KEY_SNAPSHOT_NAME + " = " + "\"" + snapName + "\"" + ";";
 		SQLiteDatabase db = getReadableDatabase();
@@ -469,4 +499,24 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 
+
+	
+//	private String getInsertOrReplaceQuery2(String table,String fields[], String values[]){
+//		StringBuilder res = new StringBuilder();
+//		res.append("INSERT OR REPLACE INTO ");
+//		res.append(table);
+//		res.append("( ");
+//		for (int i = 0; i < fields.length - 1; i++) {
+//			res.append(fields[i] + ",");	
+//		}
+//		res.append(fields[fields.length - 1]);
+//		res.append(") VALUES( ");
+//		for (int i = 0; i < values.length - 1; i++) {
+//			res.append("\"" + values[i]+ "\"" + ",");	
+//		}
+//		res.append("\"" + values[values.length-1]+ "\"");
+//		res.append(");");
+//		return res.toString();
+//	}
+	
 }
