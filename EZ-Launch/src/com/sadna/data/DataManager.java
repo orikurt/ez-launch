@@ -224,7 +224,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		//First we have to remove all dependencies
 		String whereClause = KEY_WIDGET_REF + " = ?";
 		String[] whereArgs = {widgPack};
- 
 		db.delete(TABLE_WIDGET_TO_SNAPSHOT, whereClause, whereArgs);
 
 		
@@ -234,6 +233,13 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		db.setTransactionSuccessful();
 		db.endTransaction();
 		db.close();
+		
+		//delete from loaded snapshot
+		Snapshot snapRef = getSelectedSnapshot();
+		IWidgetItemInfo item = snapRef.getItemByName(widgPack);
+		if (item != null) {
+			snapRef.remove(item);
+		}
 
 		return true;
 	}
