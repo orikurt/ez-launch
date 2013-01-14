@@ -17,6 +17,10 @@ public interface IDataManager {
 	
 	public boolean setSelectedSnapshot(Snapshot snap);
 	public Snapshot getSelectedSnapshot();
+	
+	public int getApplicationLimit();
+	public boolean setApplicationLimit(int limit);
+	
 	public Snapshot getSelectedSnapshotFiltered(int id);
 	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id);
 	public List<Snapshot> loadSnapshots(List<String> snapshotsNameList);

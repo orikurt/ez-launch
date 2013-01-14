@@ -29,7 +29,7 @@ import com.sadna.service.StatisticsService;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
-	private static final int APPLICATION_LIMIT = 16;
+	private static final int APPLICATION_LIMIT_DEFUALT = 16;
 
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
 
@@ -74,6 +74,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	// Shared Preferences
 	private static SharedPreferences sharedPreferences;
 	private static final String SELECTED_SNAPSHOT = "SelectedSnapshot";
+	private static final String SELECTED_APPLICATION_LIMIT = "SelectedApplicationLimit";
 
 	private static Snapshot selectedSnapshot = null;
 
@@ -489,8 +490,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 
 		public Snapshot getSplitlist(int id) {
-			int start = Math.min(id * APPLICATION_LIMIT,snap.size() - 1);
-			int end = Math.min(((id + 1) * APPLICATION_LIMIT),snap.size());
+			int start = Math.min(id * getApplicationLimit(),snap.size() - 1);
+			int end = Math.min(((id + 1) * getApplicationLimit()),snap.size());
 			return new Snapshot(snap.getSnapshotInfo() ,snap.subList(start, end));
 		}
 
@@ -502,6 +503,29 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			date = new Date();
 			this.snap = snap;
 		}
+	}
+
+	@Override
+	public int getApplicationLimit() {
+		int limit = sharedPreferences.getInt(SELECTED_APPLICATION_LIMIT, 0);
+		if (limit == 0) {
+			setApplicationLimit(APPLICATION_LIMIT_DEFUALT);
+			return APPLICATION_LIMIT_DEFUALT;
+		} else {
+			return limit;
+		}		
+	}
+
+	@Override
+	public boolean setApplicationLimit(int limit) {
+		if (limit < 0) {
+			return false;
+		}
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putInt(SELECTED_APPLICATION_LIMIT, limit);
+		editor.commit();
+		return true;
+		
 	}
 
 
