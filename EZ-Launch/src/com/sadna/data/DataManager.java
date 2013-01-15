@@ -469,11 +469,13 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Snapshot filtered = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
 		Snapshot must = new Snapshot(new SnapshotInfo("FilteredSelectedSnapshot", new Date()), new ArrayList<IWidgetItemInfo>());
 
+		boolean shouldValidate = false;
 		IWidgetItemInfo itemCopy;
 
 		for (IWidgetItemInfo item: s){
 			itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
 			if (item.getBitmap(mContext) == null) {
+				shouldValidate = true;
 				continue;
 			}
 			if (item.getItemState() == ItemState.MUST){
@@ -492,6 +494,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 		must.addAll(filtered);
 		//must.add(APPLICATION_LIMIT ,new ConfigurationItemInfo());
+		if (shouldValidate) {
+			validateIntegrity();
+		}
 		return must;
 	}
 
