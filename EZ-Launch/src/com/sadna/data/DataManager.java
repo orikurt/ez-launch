@@ -444,7 +444,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	@Override
-	public synchronized Snapshot getSelectedSnapshotFiltered(Snapshot s,int id) {
+	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id) {
 		if (s == null) {
 			return null;
 		}
@@ -493,7 +493,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Date date;
 		private Snapshot snap;
 
-		synchronized boolean isValid(){
+		boolean isValid(){
 			if (snap == null) {
 				return false;
 			}
@@ -502,7 +502,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return (seconds < TRESHOLD);
 		}
 
-		public synchronized Snapshot getSplitlist(int id) {
+		public Snapshot getSplitlist(int id) {
 			int start = Math.min(id * getApplicationLimit(),snap.size() - 1);
 			int end = Math.min(((id + 1) * getApplicationLimit()),snap.size());
 			if (id < 0 ) {
@@ -512,11 +512,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return new Snapshot(snap.getSnapshotInfo() ,snap.subList(start, end));
 		}
 
-		public synchronized Snapshot getSnap() {
+		public Snapshot getSnap() {
 			return snap;
 		}
 
-		public synchronized void setSnap(Snapshot snap) {
+		public void setSnap(Snapshot snap) {
 			List<IWidgetItemInfo>  removeList = new ArrayList<IWidgetItemInfo>();
 			for (IWidgetItemInfo iWidgetItemInfo : snap) {
 				if (!isPackageExists(iWidgetItemInfo.getPackageName())) {
