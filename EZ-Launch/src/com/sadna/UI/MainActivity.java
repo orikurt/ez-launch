@@ -1,5 +1,6 @@
 package com.sadna.UI;
 
+import com.sadna.service.StatisticsService;
 import com.sadna.widgets.application.Preferences;
 import com.sadna.widgets.application.R;
 
@@ -16,6 +17,14 @@ public class MainActivity extends Activity {
 	int[] widgets;
 	Context c;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// Start Statistics Service
+		startService(new Intent(this, StatisticsService.class));
+	}
+	
 	@Override
 	protected void onStart() {
 		super.onStart();

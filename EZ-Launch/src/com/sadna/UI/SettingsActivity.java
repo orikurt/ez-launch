@@ -28,6 +28,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -88,6 +89,7 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		// Send update intent
 		Intent updateService = new Intent(com.sadna.service.StatisticsService.SERVICE_UPDATE);
+		Log.d(LOG_TAG, "Send SERVICE_UPDATE");
 		sendBroadcast(updateService);
 	}
 	
@@ -327,8 +329,8 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-			Intent fixIntent = new Intent(preference.getContext(), SettingsNumPickrActivity.class);
-			startActivity(fixIntent);
+			Intent NumPickrIntent = new Intent(preference.getContext(), SettingsNumPickrActivity.class);
+			startActivity(NumPickrIntent);
 			return false;
 		}
 	}

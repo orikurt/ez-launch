@@ -244,6 +244,12 @@ public class StatisticsService extends Service{
 	public class SystemIntentsReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			
+			if (intent.getAction().equals(SERVICE_UPDATE)){
+				Log.d(LOG_TAG, "Got SERVICE_UPDATE");
+				updateReservedSnapshot();
+				notifyWidget();
+			}
 
 			if (intent.getAction().equals(Intent.ACTION_MAIN) && intent.hasCategory(Intent.CATEGORY_HOME)){
 				Log.d(LOG_TAG, "Home button pressed; notifying widget");
@@ -285,10 +291,7 @@ public class StatisticsService extends Service{
 				notifyWidget();
 			}
 			
-			if (intent.getAction().equals(SERVICE_UPDATE)){
-				updateReservedSnapshot();
-				notifyWidget();
-			}
+
 		}
 	}
 
