@@ -82,7 +82,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private Context mContext;
 
-	private ApplicationListCahce appListCache = null;
+	private ApplicationListCache appListCache = null;
 
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -444,12 +444,12 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	@Override
-	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id) {
+	public synchronized Snapshot getSelectedSnapshotFiltered(Snapshot s,int id) {
 		if (s == null) {
 			return null;
 		}
 		if (appListCache == null) {
-			appListCache = new ApplicationListCahce();
+			appListCache = new ApplicationListCache();
 		}
 		if (!appListCache.isValid()) {
 			appListCache.setSnap(generateList(s));
@@ -488,7 +488,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return getSelectedSnapshotFiltered(getSelectedSnapshot(),id);
 	}
 
-	class ApplicationListCahce{
+	class ApplicationListCache{
 		private static final int TRESHOLD = 7;
 		Date date;
 		private Snapshot snap;
