@@ -21,6 +21,11 @@ public interface IDataManager {
 	public int getApplicationLimit();
 	public boolean setApplicationLimit(int limit);
 	
+	public void validateIntegrity();
+	
+	public String getDefaultLauncher();
+	public void setDefaultLauncher(String pack);
+	
 	public Snapshot getSelectedSnapshotFiltered(int id);
 	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id);
 	public List<Snapshot> loadSnapshots(List<String> snapshotsNameList);

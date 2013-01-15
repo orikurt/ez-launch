@@ -31,6 +31,12 @@ import com.sadna.service.StatisticsService;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
+	private static final String DEFAULT_LAUNCHER_FALLBACK = "com.sec.android.app.launcher";
+
+	private static final String BAD_LAUNCHER = "BadDefaultSnapshot";
+
+	private static final String SETTINGS_DEFAULT_LAUNCHER = "SettingsDefaultLauncher";
+
 	private static final int APPLICATION_LIMIT_DEFUALT = 16;
 
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
@@ -436,7 +442,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		for (ResolveInfo resolveInfo : pkgAppsList) {
 			String itemLabel = resolveInfo.loadLabel(mContext.getPackageManager()).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
-			if (itemPkgName.equals("com.sec.android.app.launcher"))
+			if (itemPkgName.equals(this.getDefaultLauncher()))
 				continue;
 			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
 			result.add(itemInfo);
@@ -519,21 +525,26 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 
 		public void setSnap(Snapshot snap) {
-			List<IWidgetItemInfo>  removeList = new ArrayList<IWidgetItemInfo>();
-			for (IWidgetItemInfo iWidgetItemInfo : snap) {
-				if (!isPackageExists(iWidgetItemInfo.getPackageName())) {
-					deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
-					removeList.add(iWidgetItemInfo);
-				}
-			}
-			for (IWidgetItemInfo iWidgetItemInfo : removeList) {
-				snap.remove(iWidgetItemInfo);
-			}
-			
 			date = new Date();
 			this.snap = snap;
 		}
 	}
+	
+	public void validateIntegrity(){
+		Snapshot snap = getSelectedSnapshot();
+		List<IWidgetItemInfo>  removeList = new ArrayList<IWidgetItemInfo>();
+		for (IWidgetItemInfo iWidgetItemInfo : snap) {
+			if (!isPackageExists(iWidgetItemInfo.getPackageName())) {
+				removeList.add(iWidgetItemInfo);
+			}
+		}
+		for (IWidgetItemInfo iWidgetItemInfo : removeList) {
+			deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
+			snap.remove(iWidgetItemInfo);
+		}
+		setSelectedSnapshot(snap);
+	}
+	
 
 	@Override
 	public int getApplicationLimit() {
@@ -556,6 +567,22 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		editor.commit();
 		return true;
 
+	}
+
+	@Override
+	public String getDefaultLauncher() {
+		String selected = sharedPreferences.getString(SETTINGS_DEFAULT_LAUNCHER,BAD_LAUNCHER);
+		if (selected.toString().equals(BAD_LAUNCHER)) {
+			return DEFAULT_LAUNCHER_FALLBACK;
+		} 
+		return selected;
+	}
+
+	@Override
+	public void setDefaultLauncher(String pack) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString(SETTINGS_DEFAULT_LAUNCHER, pack);
+		editor.commit();
 	}
 
 
