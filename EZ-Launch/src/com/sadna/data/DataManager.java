@@ -473,6 +473,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 		for (IWidgetItemInfo item: s){
 			itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
+			if (item.getBitmap(mContext) == null) {
+				continue;
+			}
 			if (item.getItemState() == ItemState.MUST){
 				must.add(itemCopy);
 			}else if (item.getItemState() == ItemState.AUTO) {

@@ -204,8 +204,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 			mData = dm.getSelectedSnapshotFiltered(new Snapshot(snapshotInfo, getInstalledAppsInfo()), id);
-			mData.remove(mData.size()-1);
-			mData.add(new ConfigurationItemInfo());
+//			mData.remove(mData.size()-1);
+//			mData.add(new ConfigurationItemInfo());
 		}
 
 		/*
