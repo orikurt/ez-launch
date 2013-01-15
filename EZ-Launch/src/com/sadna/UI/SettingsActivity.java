@@ -77,6 +77,7 @@ public class SettingsActivity extends PreferenceActivity {
 		prepareLoadScreenshotPref();
 		prepareSaveSnapshotPref();
 		prepareFixPref();
+		prepareNumPickrPref();
 		prepareHelpBtn();
 		prepareAboutBtn();
 	}
@@ -114,10 +115,11 @@ public class SettingsActivity extends PreferenceActivity {
 		FixPreference.setOnPreferenceClickListener(new onFixPreferenceClickListener());
 	}
 	
-	private void prepareIconNumber() {
-		NumberPreference = findPreference(Preferences.ICONNUMBER);
-		NumberPreference.setKey(String.format(Preferences.ICONNUMBER, widgetID));
-		NumberPreference.setOnPreferenceClickListener(new onNumberSelectionClickListener());
+	@SuppressLint("NewApi")
+	private void prepareNumPickrPref() {
+		FixPreference = findPreference(Preferences.ICONNUMBER);
+		FixPreference.setKey(String.format(Preferences.ICONNUMBER, widgetID));
+		FixPreference.setOnPreferenceClickListener(new onNumPickrClickListener());
 	}
 	
 	private void prepareAboutBtn() {
@@ -321,14 +323,12 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 	
-	public class onNumberSelectionClickListener implements OnPreferenceClickListener {
+	public class onNumPickrClickListener implements OnPreferenceClickListener {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-//			SetNumberOf sn = new SetNumberOf();
-//			sn.show(getFragmentManager(), "I have no Idea");
-			// here you have to do the shit that starts the activity 
-			
+			Intent fixIntent = new Intent(preference.getContext(), SettingsNumPickrActivity.class);
+			startActivity(fixIntent);
 			return false;
 		}
 	}
