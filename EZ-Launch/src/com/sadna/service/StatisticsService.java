@@ -182,7 +182,7 @@ public class StatisticsService extends Service{
 			intent.setComponent(recentTask.origActivity);
 		}
 		name = packageManager.resolveActivity(intent, 0).activityInfo.packageName;
-		if (name.equals("com.sec.android.app.launcher")){
+		if (name.equals(defaultLauncher)){
 			return;
 		}
 //			recentTask = recentTasksInfo.get(1);
