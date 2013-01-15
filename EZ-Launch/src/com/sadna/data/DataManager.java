@@ -493,7 +493,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Date date;
 		private Snapshot snap;
 
-		boolean isValid(){
+		synchronized boolean isValid(){
 			if (snap == null) {
 				return false;
 			}
@@ -502,17 +502,17 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return (seconds < TRESHOLD);
 		}
 
-		public Snapshot getSplitlist(int id) {
+		public synchronized Snapshot getSplitlist(int id) {
 			int start = Math.min(id * getApplicationLimit(),snap.size() - 1);
 			int end = Math.min(((id + 1) * getApplicationLimit()),snap.size());
 			return new Snapshot(snap.getSnapshotInfo() ,snap.subList(start, end));
 		}
 
-		public Snapshot getSnap() {
+		public synchronized Snapshot getSnap() {
 			return snap;
 		}
 
-		public void setSnap(Snapshot snap) {
+		public synchronized void setSnap(Snapshot snap) {
 			for (IWidgetItemInfo iWidgetItemInfo : snap) {
 				if (!isPackageExists(iWidgetItemInfo.getPackageName())) {
 					deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
