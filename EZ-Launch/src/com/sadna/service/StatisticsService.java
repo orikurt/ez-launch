@@ -48,8 +48,7 @@ public class StatisticsService extends Service{
 	private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
 	private static final String SERVICE_ALARM_UNLOCK = "sadna.service_alarm_unlock";
 	private static final int MAX_TASKS = 25;
-	private static final long UPDATE_DELAY = 7500; 
-	
+	private static final long UPDATE_DELAY = 7500;
 
 	Snapshot		currSnapshot;
 	IDataManager	dataManager;
@@ -70,7 +69,7 @@ public class StatisticsService extends Service{
 
 	Runnable timerRunnable = new Runnable(){
 		public void run(){
-			Log.d(LOG_TAG, "timerRunnable started!");
+			//Log.d(LOG_TAG, "timerRunnable started!");
 			synchronized (syncObj) {
 				h.removeCallbacksAndMessages(null);
 				scoreUpdate();
@@ -111,7 +110,7 @@ public class StatisticsService extends Service{
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// Notify the user about Starting.
-		Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Started");
 
 		// Initialize all private fields
@@ -122,8 +121,6 @@ public class StatisticsService extends Service{
 			systemIntentsReceiver = new SystemIntentsReceiver();
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
-		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_ADDED));
-		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_PACKAGE_REMOVED));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER_LAUNCH));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_UPDATE));
 
@@ -153,7 +150,7 @@ public class StatisticsService extends Service{
 
 		// Save snapshot to DB
 		//currSnapshot.normalizeScores();
-		Collections.sort(currSnapshot);
+		//Collections.sort(currSnapshot);
 		dataManager.saveSnapshot(currSnapshot);
 		dataManager.setSelectedSnapshot(currSnapshot);
 		
@@ -161,84 +158,6 @@ public class StatisticsService extends Service{
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
 		sendBroadcast(updateWidget);
 	}
-
-	private List<IWidgetItemInfo> getInstalledAppsInfo() {
-		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
-		
-		Context context = getApplicationContext();
-
-		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		final List<ResolveInfo> pkgAppsList = context.getPackageManager().queryIntentActivities(mainIntent, 0);
-		
-		for (ResolveInfo resolveInfo : pkgAppsList) {
-			String itemLabel = resolveInfo.loadLabel(packageManager).toString();
-			String itemPkgName = resolveInfo.activityInfo.packageName;
-			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
-			result.add(itemInfo);
-		}
-
-		return result;
-	}
-
-	private void updateWithRunningTasks() {
-		// get the info from the currently running task
-		List< RunningTaskInfo > tasksInfo = activityManager.getRunningTasks(MAX_TASKS);
-		double i = currSnapshot.size() - tasksInfo.size();
-		for (RunningTaskInfo taskInfo : tasksInfo) {
-			ComponentName componentInfo = taskInfo.baseActivity;
-			String pkgName = componentInfo.getPackageName();
-			IWidgetItemInfo itemInfo = currSnapshot.getItemByName(pkgName);
-			if (itemInfo != null) {
-				itemInfo.setScore( Double.isNaN(itemInfo.getScore()) ? i : itemInfo.getScore()+i);
-				Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(itemInfo.getScore()));
-			}
-
-			i--;
-		}
-		currSnapshot.normalizeScores();
-	}
-
-	@SuppressLint("NewApi")
-	private void updateWithRecentTasks() {
-		// get the info from the currently running task
-		List<RecentTaskInfo> tasksInfo = activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
-		double i = currSnapshot.size() - tasksInfo.size();
-
-		for (RecentTaskInfo taskInfo : tasksInfo) {
-
-			IWidgetItemInfo itemInfo = null;
-
-			// Trying desperately to find package name
-			String pkgName = null;
-			ComponentName compName = null;
-
-			// First shot
-			pkgName = taskInfo.baseIntent.getPackage();
-			if (pkgName != null) {
-				Log.d(LOG_TAG, "pkgName is not null!");
-				itemInfo = currSnapshot.getItemByName(pkgName);
-			}
-			// Second shot
-			else if ((compName = taskInfo.origActivity) != null) {
-				Log.d(LOG_TAG, "compName is not null!");
-				pkgName = compName.getPackageName();
-				if (pkgName != null) {
-					itemInfo = currSnapshot.getItemByName(pkgName);
-				}
-			}
-
-			if (itemInfo == null)
-				// We don't Have package name
-				continue;
-
-			itemInfo.setScore(itemInfo.getScore()+i);
-			i--;
-		}
-		currSnapshot.normalizeScores();
-	}
-	
-	
 	
 	private void scoreUpdate(){
 		List<RecentTaskInfo> recentTasksInfo = activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
@@ -301,7 +220,17 @@ public class StatisticsService extends Service{
 	
 	public void increaseScore(String name, double score){
 		IWidgetItemInfo itemInfo = currSnapshot.getItemByName(name);
-		if (itemInfo == null) return;
+		if (itemInfo == null){
+			ApplicationInfo appInfo;
+			try {
+				appInfo = packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA);
+			} catch (NameNotFoundException e) {
+				return;
+			}
+			String label = packageManager.getApplicationLabel(appInfo).toString();
+			itemInfo = new WidgetItemInfo(name, label);
+			Log.d(LOG_TAG, "Added " + name);
+		}
 		itemInfo.setScore(itemInfo.getScore() + score);
 		itemInfo.setLastUse(new Date());
 		Log.d(LOG_TAG, name + " score increased by " + Double.toString(score));
@@ -341,27 +270,6 @@ public class StatisticsService extends Service{
 //				}
 				screenLocked = true;
 				h.removeCallbacksAndMessages(null);
-				notifyWidget();
-			}
-
-			if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
-				int pkgId = Integer.parseInt(Intent.EXTRA_UID);
-				String name = packageManager.getNameForUid(pkgId);
-				ApplicationInfo info;
-
-				try {
-					info = packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA);
-				} catch (NameNotFoundException e) {
-					return;
-				}
-
-				String label = packageManager.getApplicationLabel(info).toString();
-				IWidgetItemInfo newItem = new WidgetItemInfo(name, label);
-				currSnapshot.add(newItem);
-				Collections.sort(currSnapshot);
-			}
-
-			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
 				notifyWidget();
 			}
 			
