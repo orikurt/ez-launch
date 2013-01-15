@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<NumberPicker xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/numberPicker"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
 
-</NumberPicker>
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberPicker"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="71dp"
+        android:text="@string/save_button"/>
+
+</RelativeLayout>
