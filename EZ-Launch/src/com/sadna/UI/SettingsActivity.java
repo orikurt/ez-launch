@@ -329,8 +329,11 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-			Intent NumPickrIntent = new Intent(preference.getContext(), SettingsNumPickrActivity.class);
-			startActivity(NumPickrIntent);
+			SettingsNumPickrDialog numPickrDialog = new SettingsNumPickrDialog();
+			numPickrDialog.show(getFragmentManager(), "check");
+			
+			//Intent NumPickrIntent = new Intent(preference.getContext(), SettingsNumPickrActivity.class);
+			//startActivity(NumPickrIntent);
 			return false;
 		}
 	}
