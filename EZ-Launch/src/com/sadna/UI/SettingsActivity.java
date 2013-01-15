@@ -17,6 +17,8 @@ import com.sadna.widgets.application.R.xml;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 	private ListPreference loadSnapshot; 
 	private Preference FixPreference;
+	private Preference NumberPreference;
 	private Preference HelpPref;
 	private Preference AboutPref;
 	private Preference SaveSnapshotPref;
@@ -109,6 +112,12 @@ public class SettingsActivity extends PreferenceActivity {
 		FixPreference = findPreference(Preferences.FIX);
 		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
 		FixPreference.setOnPreferenceClickListener(new onFixPreferenceClickListener());
+	}
+	
+	private void prepareIconNumber() {
+		NumberPreference = findPreference(Preferences.ICONNUMBER);
+		NumberPreference.setKey(String.format(Preferences.ICONNUMBER, widgetID));
+		NumberPreference.setOnPreferenceClickListener(new onNumberSelectionClickListener());
 	}
 	
 	private void prepareAboutBtn() {
@@ -199,6 +208,27 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 	
+	public class SetNumberOf extends DialogFragment {
+	    @Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        // Use the Builder class for convenient dialog construction
+	        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+	        builder.setMessage("test")
+	               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       // FIRE ZE MISSILES!
+	                   }
+	               })
+	               .setNegativeButton("No", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       // User cancelled the dialog
+	                   }
+	               });
+	        // Create the AlertDialog object and return it
+	        return builder.create();
+	    }
+	}
+	
 	
 	public class SavePreferenceClickListener implements OnPreferenceClickListener {
 
@@ -287,6 +317,18 @@ public class SettingsActivity extends PreferenceActivity {
 		public boolean onPreferenceClick(Preference preference) {
 			Intent fixIntent = new Intent(preference.getContext(), SettingsListActivity.class);
 			startActivity(fixIntent);
+			return false;
+		}
+	}
+	
+	public class onNumberSelectionClickListener implements OnPreferenceClickListener {
+
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+//			SetNumberOf sn = new SetNumberOf();
+//			sn.show(getFragmentManager(), "I have no Idea");
+			// here you have to do the shit that starts the activity 
+			
 			return false;
 		}
 	}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
  Copyright (C) 2010 Florian Sundermann
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +13,20 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- -->
+-->
 <resources>
+
     <!-- English -->
     <string name="app_name">EZ Launch</string>
     <string name="widget4x4">EZ Launch Widget</string>
-    
     <string name="namekind">Name to display</string>
     <string name="givenname">given name</string>
     <string name="familyname">family name</string>
     <string name="displayname">display name</string>
     <string name="alias">nickname</string>
-    <string-array name="empty_array"/>
-    
+
+    <string-array name="empty_array" />
+
     <string name="loading">Loading EZ-Launch...</string>
     <string name="save">Save Snapshot</string>
     <string name="select_contact_group">Contact group</string>
@@ -43,47 +44,45 @@
     <string name="pref_grp_general">General</string>
     <string name="help">Help</string>
     <string name="help_summary">Troubleshoot Widget</string>
-    <string name="okbtn">Ok</string>
-	<string name="helptext">EZ-Launch will display apps on your home screen, depending on your usage.\n\n*Use snapshots to save and load apps formation.\n\n*Use fixed apps to check which apps should alwys appear on your homescreen, and which apps should never appear.</string>
-	<string name="about">About</string>
-	<string name="abouttext">EZ-Launch is an application that provides a better, nicer and safer arrangement for your homescreen. \n\nFor any questions or feedback please contact our development team at noamrab@gmail.com</string>
-	<string name="columncount">Columns</string>
-	<string name="background_alpha">Background alpha</string>
-	<string name="launcher_too_old">Sorry, your launcher is to old, please update it!</string>
-	<string name="needs_froyo">This feature is only available on android 2.2 and above</string>
-	
-	<string name="behavior">Behavior</string>
-	
-	<string name="quickcontactbar">show QuickContactBar</string>
-	<string name="directdial">direct dial</string>
-	<string name="showcontact">show contact</string>
-	<string name="onclick">Click action</string>
-	<string name="sendsms">Send SMS</string>
-	
-	<string name="textalign">Name position</string>
-	<string name="align_center">Center (below the picture)</string>
-	<string name="align_left">Left of the picture</string>
-	<string name="align_right">Right of the picture</string>
-	
-	<string name="picksnap">Pick from saved home screens</string>
-	<string name="loadSnapshot">Load Snapshot</string>
-	
-	<!-- SERVICE STRINGS -->
-	<string name="statistics_service_created">EZ-Launch Created</string>
-	<string name="statistics_service_started">EZ-Launch Started</string>
-	<string name="statistics_service_stopped">EZ-Launch Stopped</string>
-	<string name="button_text">Save</string>
-	<string name="fixAppsOnScreen">Fixed Apps</string>
-	<string name="pickApps">Pick apps to persist to home screen</string>
-	<string name="selectApps">Select Apps</string>
-	<string name="saveText">Save Current Widget State to Data Base</string>
-	<string name="saveAsk">Save Current Snapshot?</string>
-	<string name="cancelbtn">Cancel</string>
-	<string name="configuration">Configuration</string>
-	
-	<!-- UI STRINGS -->
-	<string name="insert_widget">To start launching easily,\n
+    <string name="okbtn">OK</string>
+    <string name="helptext">EZ-Launch will display apps on your home screen, depending on your usage.\n\n*Use snapshots to save and load apps formation.\n\n*Use fixed apps to check which apps should alwys appear on your homescreen, and which apps should never appear.</string>
+    <string name="about">About</string>
+    <string name="abouttext">EZ-Launch is an application that provides a better, nicer and safer arrangement for your homescreen. \n\nFor any questions or feedback please contact our development team at noamrab@gmail.com</string>
+    <string name="columncount">Columns</string>
+    <string name="background_alpha">Background alpha</string>
+    <string name="launcher_too_old">Sorry, your launcher is to old, please update it!</string>
+    <string name="needs_froyo">This feature is only available on android 2.2 and above</string>
+    <string name="behavior">Behavior</string>
+    <string name="quickcontactbar">show QuickContactBar</string>
+    <string name="directdial">direct dial</string>
+    <string name="showcontact">show contact</string>
+    <string name="onclick">Click action</string>
+    <string name="sendsms">Send SMS</string>
+    <string name="textalign">Name position</string>
+    <string name="align_center">Center (below the picture)</string>
+    <string name="align_left">Left of the picture</string>
+    <string name="align_right">Right of the picture</string>
+    <string name="picksnap">Pick from saved home screens</string>
+    <string name="loadSnapshot">Load Snapshot</string>
+
+    <!-- SERVICE STRINGS -->
+    <string name="statistics_service_created">EZ-Launch Created</string>
+    <string name="statistics_service_started">EZ-Launch Started</string>
+    <string name="statistics_service_stopped">EZ-Launch Stopped</string>
+    <string name="button_text">Save</string>
+    <string name="fixAppsOnScreen">Fixed Apps</string>
+    <string name="appsPerScreen">Number of Icons on Screen</string>
+    <string name="pickApps">Pick apps to persist to home screen</string>
+    <string name="appsPerScreenDescription">Set the number of icons to be showns</string>
+    <string name="selectApps">Select Apps</string>
+    <string name="saveText">Save Current Widget State to Data Base</string>
+    <string name="saveAsk">Save Current Snapshot?</string>
+    <string name="cancelbtn">Cancel</string>
+    <string name="configuration">Configuration</string>
+
+    <!-- UI STRINGS -->
+    <string name="insert_widget">To start launching easily,\n
 	    please add EZ-Launch widgets\n
 	    to your Homescreen.</string>
-	
+
 </resources>
