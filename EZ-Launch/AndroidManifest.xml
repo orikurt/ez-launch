@@ -53,9 +53,10 @@
 				<action android:name=".SettingsListActivity" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.sadna.UI.SettingsNumPickrActivity">
+		<activity android:name="com.sadna.UI.SettingsNumPickrDialog"
+		   			 android:theme="@android:style/Theme.Holo.Dialog" >
 			<intent-filter>
-				<action android:name=".SettingsNumPickrActivity" />
+				<action android:name=".SettingsNumPickrDialog" />
 			</intent-filter>
 		</activity>
 		
