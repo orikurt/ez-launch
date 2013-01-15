@@ -57,6 +57,7 @@ public class StatisticsService extends Service{
 
 	PackageManager	packageManager;
 	ActivityManager	activityManager;
+	String defaultLauncher;
 
 	// Intent related globals
 	private Date lastUnlock;
@@ -137,6 +138,8 @@ public class StatisticsService extends Service{
 
 		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 		packageManager = getPackageManager();
+		defaultLauncher = resolveDefaultLauncher();
+		dataManager.setDefaultLauncher(defaultLauncher);
 
 		screenLocked = false;
 		lastUnlock = new Date();
@@ -308,6 +311,17 @@ public class StatisticsService extends Service{
 			// User changed the current snapshot
 			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
 			currSnapshot = newCurrSnapshot;
+		}
+	}
+	
+	public String resolveDefaultLauncher(){
+		final Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		final ResolveInfo res = packageManager.resolveActivity(intent, 0);
+		if ((res.activityInfo == null) || res.activityInfo.packageName.equals("android")){
+			return null;
+		} else{
+			return res.activityInfo.packageName;
 		}
 	}
 }
