@@ -25,5 +25,4 @@ public interface IDataManager {
 	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id);
 	public List<Snapshot> loadSnapshots(List<String> snapshotsNameList);
 	
-
 }
