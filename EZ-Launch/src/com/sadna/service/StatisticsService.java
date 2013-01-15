@@ -123,6 +123,10 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER_LAUNCH));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_UPDATE));
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+		filter.addDataScheme("package");
+		registerReceiver(systemIntentsReceiver, filter);
 
 		return START_STICKY;
 	}
@@ -271,6 +275,11 @@ public class StatisticsService extends Service{
 //				}
 				screenLocked = true;
 				h.removeCallbacksAndMessages(null);
+				notifyWidget();
+			}
+			
+			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
+				Log.d(LOG_TAG, "A package was removed, notifying widget");
 				notifyWidget();
 			}
 			

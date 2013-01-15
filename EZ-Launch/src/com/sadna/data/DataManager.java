@@ -436,6 +436,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		for (ResolveInfo resolveInfo : pkgAppsList) {
 			String itemLabel = resolveInfo.loadLabel(mContext.getPackageManager()).toString();
 			String itemPkgName = resolveInfo.activityInfo.packageName;
+			if (itemPkgName.equals("com.sec.android.app.launcher"))
+				continue;
 			IWidgetItemInfo itemInfo = new WidgetItemInfo(itemPkgName, itemLabel);
 			result.add(itemInfo);
 		}
