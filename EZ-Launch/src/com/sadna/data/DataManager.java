@@ -517,12 +517,17 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 
 		public synchronized void setSnap(Snapshot snap) {
+			List<IWidgetItemInfo>  removeList = new ArrayList<IWidgetItemInfo>();
 			for (IWidgetItemInfo iWidgetItemInfo : snap) {
 				if (!isPackageExists(iWidgetItemInfo.getPackageName())) {
 					deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
-					snap.remove(iWidgetItemInfo);
+					removeList.add(iWidgetItemInfo);
 				}
 			}
+			for (IWidgetItemInfo iWidgetItemInfo : removeList) {
+				snap.remove(iWidgetItemInfo);
+			}
+			
 			date = new Date();
 			this.snap = snap;
 		}
