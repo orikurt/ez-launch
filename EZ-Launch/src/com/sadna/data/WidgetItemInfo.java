@@ -103,7 +103,11 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	}
 	@Override
 	public Intent getLaunchIntent(Context c) {
-		return c.getPackageManager().getLaunchIntentForPackage(getPackageName());
+		Intent ret = c.getPackageManager().getLaunchIntentForPackage(getPackageName());
+		if (ret == null) {
+			return new Intent();
+		}
+		return ret;
 	}
 	
 	@Override
