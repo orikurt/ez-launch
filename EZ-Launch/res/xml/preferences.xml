@@ -29,6 +29,12 @@
   	      	android:summary="@string/pickApps" 
         	android:persistent = "true"
   	      />
+  	  <Preference
+  	        android:key="iconNumber-%d"
+  	      	android:title="@string/appsPerScreen"
+  	      	android:summary="@string/appsPerScreenDescription" 
+        	android:persistent = "true"
+  	      />
   	   
   	  
   	  <!-- MultiSelectListPreference

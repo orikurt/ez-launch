@@ -43,7 +43,7 @@ public class Preferences {
     
     public static final String HELP = "help-%d";
     public static final String FIX = "fixApps-%d";
-
+    public static final String ICONNUMBER = "iconNumber-%d";
     public static final String BGIMAGE = "BGImage-%d";
     public static final int BG_BLACK = 0;
     public static final int BG_WHITE = 1;
