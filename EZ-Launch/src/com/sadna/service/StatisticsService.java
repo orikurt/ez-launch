@@ -279,7 +279,9 @@ public class StatisticsService extends Service{
 			}
 			
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
-				Log.d(LOG_TAG, "A package was removed, notifying widget");
+				String name = intent.getDataString();
+				dataManager.deleteWidgetItemInfo(name);
+				Log.d(LOG_TAG, name + " was removed");
 				notifyWidget();
 			}
 			
