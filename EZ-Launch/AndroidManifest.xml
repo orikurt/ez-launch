@@ -53,6 +53,11 @@
 				<action android:name=".SettingsListActivity" />
 			</intent-filter>
 		</activity>
+		<activity android:name="com.sadna.UI.SettingsNumPickrActivity">
+			<intent-filter>
+				<action android:name=".SettingsNumPickrActivity" />
+			</intent-filter>
+		</activity>
 		
 		<!-- SERVICE COMPONENTS -->
 		<service android:name="com.sadna.service.StatisticsService">
