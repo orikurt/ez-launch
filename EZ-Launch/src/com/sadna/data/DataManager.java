@@ -16,8 +16,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -323,16 +321,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return null;
 	}
 
-	public boolean isPackageExists(String targetPackage){
-		List<ApplicationInfo> packages;
-		PackageManager pm;
-		pm = mContext.getPackageManager();        
-		packages = pm.getInstalledApplications(0);
-		for (ApplicationInfo packageInfo : packages) {
-			if(packageInfo.packageName.equals(targetPackage)) return true;
-		}        
-		return false;
-	}
+
 
 	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score, ItemState itemState,Date lastUsed) {
 		if (packageName.equalsIgnoreCase(ConfigurationItemInfo.COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION)) {
@@ -537,16 +526,17 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			this.snap = snap;
 		}
 	}
-	
+
 	public void validateIntegrity(){
 		Snapshot snap = getSelectedSnapshot();
-		List<IWidgetItemInfo>  removeList = new ArrayList<IWidgetItemInfo>();
-		for (IWidgetItemInfo iWidgetItemInfo : snap) {
-			if (!isPackageExists(iWidgetItemInfo.getPackageName())) {
-				removeList.add(iWidgetItemInfo);
-			}
-		}
-		for (IWidgetItemInfo iWidgetItemInfo : removeList) {
+
+		Date currDate = new Date();
+		ISnapshotInfo snapshotInfo = new SnapshotInfo(StatisticsService.RESERVED_SNAPSHOT, currDate);
+		Snapshot tempSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+		
+		tempSnapshot.removeAll(snap);
+		
+		for (IWidgetItemInfo iWidgetItemInfo : tempSnapshot) {
 			deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
 			snap.remove(iWidgetItemInfo);
 		}

@@ -1,18 +1,16 @@
 package com.sadna.UI;
 
-import com.sadna.data.DataManager;
-import com.sadna.widgets.application.R;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.NumberPicker;
+
+import com.sadna.data.DataManager;
+import com.sadna.widgets.application.R;
 
 public class SettingsNumPickrDialog extends Activity {
 
@@ -47,6 +45,16 @@ public class SettingsNumPickrDialog extends Activity {
 			public void onClick(View v) {  
 
 				dm.setApplicationLimit(numberPK.getValue());
+				finish();
+			}
+		});
+		
+		final Button btnCancel = (Button) findViewById(R.id.buttonCancel);
+		// Perform action on click
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {  
+
+				dm.setApplicationLimit(dm.getApplicationLimit());
 				finish();
 			}
 		});
