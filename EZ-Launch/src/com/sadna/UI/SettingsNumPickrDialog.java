@@ -38,6 +38,7 @@ public class SettingsNumPickrDialog extends Activity {
 
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		numberPK.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
 		// button
 		final Button btn = (Button) findViewById(R.id.button);
