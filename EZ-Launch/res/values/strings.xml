@@ -47,7 +47,7 @@
     <string name="okbtn">OK</string>
     <string name="helptext">EZ-Launch will display apps on your home screen, depending on your usage.\n\n*Use snapshots to save and load apps formation.\n\n*Use fixed apps to check which apps should alwys appear on your homescreen, and which apps should never appear.</string>
     <string name="about">About</string>
-    <string name="abouttext">EZ-Launch is an application that provides a better, nicer and safer arrangement for your homescreen. \n\nFor any questions or feedback please contact our development team at noamrab@gmail.com</string>
+    <string name="abouttext">EZ-Launch is an application that provides a better, nicer and safer arrangement for your homescreen. \n\nFor any questions or feedback please contact our development team at EZLaunch@gmail.com</string>
     <string name="columncount">Columns</string>
     <string name="background_alpha">Background alpha</string>
     <string name="launcher_too_old">Sorry, your launcher is to old, please update it!</string>
