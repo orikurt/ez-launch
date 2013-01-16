@@ -140,6 +140,7 @@ public class StatisticsService extends Service{
 		packageManager = getPackageManager();
 		defaultLauncher = resolveDefaultLauncher();
 		dataManager.setDefaultLauncher(defaultLauncher);
+		dataManager.validateIntegrity();
 
 		screenLocked = false;
 		lastUnlock = new Date();
