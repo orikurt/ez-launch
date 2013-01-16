@@ -467,6 +467,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				shouldValidate = true;
 				continue;
 			}
+			if (item.getPackageName().equals(getDefaultLauncher())) {
+				continue;
+			}
 			if (item.getItemState() == ItemState.MUST){
 				must.add(itemCopy);
 			}else if (item.getItemState() == ItemState.AUTO) {
