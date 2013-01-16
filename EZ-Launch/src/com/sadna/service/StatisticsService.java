@@ -1,42 +1,33 @@
 package com.sadna.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.sadna.data.DataManager;
-import com.sadna.data.Snapshot;
-import com.sadna.data.SnapshotInfo;
-import com.sadna.data.WidgetItemInfo;
-import com.sadna.interfaces.IDataManager;
-import com.sadna.interfaces.ISnapshotInfo;
-import com.sadna.interfaces.IWidgetItemInfo;
-import com.sadna.widgets.application.R;
-
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Service;
-
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-
-
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
+import com.sadna.data.WidgetItemInfo;
+import com.sadna.interfaces.IDataManager;
+import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.widgets.application.R;
 
 public class StatisticsService extends Service{
 	String LOG_TAG = "StatisticsService";
@@ -45,8 +36,8 @@ public class StatisticsService extends Service{
 	public static final String SERVICE_UPDATE = "com.sadna.widgets.application.SERVICE_UPDATE";
 	public static final String RESERVED_SNAPSHOT = "Default Snapshot";
 	private static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
-	private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
-	private static final String SERVICE_ALARM_UNLOCK = "sadna.service_alarm_unlock";
+	//private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
+	//private static final String SERVICE_ALARM_UNLOCK = "sadna.service_alarm_unlock";
 	private static final int MAX_TASKS = 25;
 	private static final long UPDATE_DELAY = 7500;
 
@@ -88,8 +79,9 @@ public class StatisticsService extends Service{
 
 	@Override
 	public void onCreate() {
-		// Notify the user about Creating.
 		super.onCreate();
+		// Notify the user about Creating.
+		initFields();
 		d = new HandlerThread("Looper");
 		d.start();
 		h = new Handler(d.getLooper());
@@ -99,6 +91,7 @@ public class StatisticsService extends Service{
 
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		if (h != null)
 			h.removeCallbacksAndMessages(null);
 		if (d != null)
@@ -110,12 +103,10 @@ public class StatisticsService extends Service{
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		super.onStartCommand(intent, flags, startId);
 		// Notify the user about Starting.
 		//Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Started");
-
-		// Initialize all private fields
-		initFields();
 
 		// Register to ACTION_SCREEN_OFF;
 		if (systemIntentsReceiver == null)
@@ -134,11 +125,20 @@ public class StatisticsService extends Service{
 
 	public void initFields() {
 
-		dataManager = new DataManager(this.getApplicationContext());
-
-		activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-		packageManager = getPackageManager();
-		defaultLauncher = resolveDefaultLauncher();
+		if (dataManager == null) {
+			dataManager = new DataManager(this.getApplicationContext());
+		}
+		if (activityManager == null) {
+			activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);	
+		}
+		if (packageManager == null) {
+			packageManager = getPackageManager();	
+		}
+		if (defaultLauncher == null) {
+			defaultLauncher = resolveDefaultLauncher();
+		}
+		
+		
 		dataManager.setDefaultLauncher(defaultLauncher);
 		dataManager.validateIntegrity();
 
@@ -227,6 +227,18 @@ public class StatisticsService extends Service{
 	}
 	
 	public void increaseScore(String name, double score){
+		/*WTF ?! who called this before init ?! 
+		 * Pleaes make sure you understand the flow before removing those checks.. */
+		if (dataManager == null) {
+			dataManager = new DataManager(getApplicationContext());
+		}
+		if (currSnapshot == null) {
+			currSnapshot = dataManager.getSelectedSnapshot();
+		}
+		if (packageManager == null) {
+			packageManager = getPackageManager();
+		}
+		
 		IWidgetItemInfo itemInfo = currSnapshot.getItemByName(name);
 		if (itemInfo == null){
 			ApplicationInfo appInfo;
@@ -248,7 +260,6 @@ public class StatisticsService extends Service{
 	public class SystemIntentsReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			
 			if (intent.getAction().equals(SERVICE_UPDATE)){
 				Log.d(LOG_TAG, "Got SERVICE_UPDATE");
 				updateReservedSnapshot();

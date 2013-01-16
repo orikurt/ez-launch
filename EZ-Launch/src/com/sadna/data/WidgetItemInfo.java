@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
+import android.media.audiofx.Equalizer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -186,4 +187,17 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		// TODO Auto-generated method stub
 		return df.format(getLastUse());
 	}
+	
+	@Override 
+	public boolean equals(Object o){
+		try {
+			return ((IWidgetItemInfo)o).getPackageName().equalsIgnoreCase(getPackageName());
+		} catch (ClassCastException e) {
+			return false;
+		}
+	}
+	@Override
+    public int hashCode() {
+        return getPackageName().hashCode();
+    }
 }
