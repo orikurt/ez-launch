@@ -118,6 +118,7 @@ public class StatisticsService extends Service{
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER_LAUNCH));
+		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_NOTIFIER_BLACK_LIST));
 		registerReceiver(systemIntentsReceiver, new IntentFilter(SERVICE_UPDATE));
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);

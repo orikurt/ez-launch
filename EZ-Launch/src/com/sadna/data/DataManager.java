@@ -531,19 +531,19 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	public void validateIntegrity(){
-		Snapshot snap = getSelectedSnapshot();
-
+		Snapshot snap = getSelectedSnapshot().getCopy();
+		Snapshot snapMain = getSelectedSnapshot();
 		Date currDate = new Date();
 		ISnapshotInfo snapshotInfo = new SnapshotInfo(StatisticsService.RESERVED_SNAPSHOT, currDate);
 		Snapshot tempSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		
-		tempSnapshot.removeAll(snap);
+		snap.removeAll(tempSnapshot);
 		
-		for (IWidgetItemInfo iWidgetItemInfo : tempSnapshot) {
+		for (IWidgetItemInfo iWidgetItemInfo : snap) {
 			deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
-			snap.remove(iWidgetItemInfo);
+			snapMain.remove(iWidgetItemInfo);
 		}
-		setSelectedSnapshot(snap);
+		setSelectedSnapshot(snapMain);
 	}
 	
 
