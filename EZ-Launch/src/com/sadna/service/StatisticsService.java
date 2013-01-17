@@ -57,7 +57,7 @@ public class StatisticsService extends Service{
 	private boolean lastRunning;
 	private HandlerThread d;
 	private Handler h;
-	Object syncObj = new Object();
+	private static Object syncObj = new Object();
 
 	Runnable timerRunnable = new Runnable(){
 		public void run(){
@@ -92,10 +92,12 @@ public class StatisticsService extends Service{
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (h != null)
-			h.removeCallbacksAndMessages(null);
-		if (d != null)
-			d.quit();
+		synchronized (syncObj) {
+			if (h != null)
+				h.removeCallbacksAndMessages(null);
+			if (d != null)
+				d.quit();
+		}
 		// Notify the user about destroying.
 		Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Destroyed");
@@ -282,9 +284,12 @@ public class StatisticsService extends Service{
 			}
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
-				screenLocked = false;
-				h.removeCallbacksAndMessages(null);
-				h.postDelayed(timerRunnable, UPDATE_DELAY);
+				
+				synchronized (syncObj) {
+					screenLocked = false;
+					h.removeCallbacksAndMessages(null);
+					h.postDelayed(timerRunnable, UPDATE_DELAY);
+				}
 			}
 
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
@@ -294,9 +299,11 @@ public class StatisticsService extends Service{
 //					updateWithRunningTasks();
 //					notifyWidget();
 //				}
-				screenLocked = true;
-				h.removeCallbacksAndMessages(null);
-				notifyWidget();
+				synchronized (syncObj) {
+					screenLocked = true;
+					h.removeCallbacksAndMessages(null);
+					notifyWidget();
+				}
 			}
 			
 			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
