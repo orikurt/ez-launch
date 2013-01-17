@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 import com.sadna.data.WidgetItemInfo;
+import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IDataManager;
 import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.widgets.application.R;
@@ -35,11 +36,12 @@ public class StatisticsService extends Service{
 	public static final String SNAPSHOT_UPDATE = "com.sadna.widgets.application.SNAPSHOT_UPDATE";
 	public static final String SERVICE_UPDATE = "com.sadna.widgets.application.SERVICE_UPDATE";
 	public static final String RESERVED_SNAPSHOT = "Default Snapshot";
-	private static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
+	public static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
 	//private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
 	//private static final String SERVICE_ALARM_UNLOCK = "sadna.service_alarm_unlock";
 	private static final int MAX_TASKS = 25;
 	private static final long UPDATE_DELAY = 7500;
+	public static final String SERVICE_NOTIFIER_BLACK_LIST = "sadna.service_notifier_black_list";
 
 	Snapshot		currSnapshot;
 	IDataManager	dataManager;
@@ -268,12 +270,12 @@ public class StatisticsService extends Service{
 				notifyWidget();
 			}
 
-			if (intent.getAction().equals(Intent.ACTION_MAIN) && intent.hasCategory(Intent.CATEGORY_HOME)){
+			else if (intent.getAction().equals(Intent.ACTION_MAIN) && intent.hasCategory(Intent.CATEGORY_HOME)){
 				Log.d(LOG_TAG, "Home button pressed; notifying widget");
 				notifyWidget();
 			}
 			
-			if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
+			else if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
 				String pkgName = intent.getStringExtra("name");
 				if (pkgName != null){ 
 					IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
@@ -282,7 +284,16 @@ public class StatisticsService extends Service{
 					Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
 				}
 			}
-			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+			else if (intent.getAction().equals(SERVICE_NOTIFIER_BLACK_LIST)){
+				String pkgName = intent.getStringExtra("name");
+				if (pkgName != null){ 
+					IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
+					item.setScore(0);
+					item.setItemState(ItemState.NOT_ALLOWED);
+					Log.d(LOG_TAG, pkgName + "Added to black List");
+				}
+			}
+			else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				lastUnlock = new Date();
 				
 				synchronized (syncObj) {
@@ -292,7 +303,7 @@ public class StatisticsService extends Service{
 				}
 			}
 
-			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+			else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
 //				Date now = new Date();
 //				if ((now.getTime() - lastUnlock.getTime()) > /*1000*/0){
 //					//updateWithRecentTasks();
@@ -306,7 +317,7 @@ public class StatisticsService extends Service{
 				}
 			}
 			
-			if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
+			else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
 				String name = intent.getDataString();
 				dataManager.deleteWidgetItemInfo(name);
 				Log.d(LOG_TAG, name + " was removed");

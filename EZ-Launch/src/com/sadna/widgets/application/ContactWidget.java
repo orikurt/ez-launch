@@ -38,7 +38,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 	// Tag for logging
 	private static final String TAG = "sadna.ContactWidget";
 
-	private static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
+	
 
 	private WidgetImplementation mImpl;
 	Snapshot snap;
@@ -167,10 +167,23 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public void onClick(Context context, int appWidgetId, Rect targetRect, Intent LaunchIntent) {
 		//Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(uri.toString());
-		context.startActivity(LaunchIntent);
-		Intent serviceIntent = new Intent(SERVICE_NOTIFIER_LAUNCH);
-		serviceIntent.putExtra("name", LaunchIntent.getPackage());
-		context.sendBroadcast(serviceIntent);
+		try {
+			context.startActivity(LaunchIntent);
+			Intent serviceIntent = new Intent(StatisticsService.SERVICE_NOTIFIER_LAUNCH);
+			serviceIntent.putExtra("name", LaunchIntent.getPackage());
+			context.sendBroadcast(serviceIntent);
+		}catch (ActivityNotFoundException e) {
+			Intent serviceIntent = new Intent(StatisticsService.SERVICE_NOTIFIER_BLACK_LIST);
+			serviceIntent.putExtra("name", LaunchIntent.getPackage());
+			context.sendBroadcast(serviceIntent);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
+		
 		/*
 		try
 		{
