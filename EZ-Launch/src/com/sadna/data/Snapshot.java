@@ -12,7 +12,7 @@ import android.os.Parcelable;
 import com.sadna.interfaces.ISnapshotInfo;
 import com.sadna.interfaces.IWidgetItemInfo;
 
-public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
+public class Snapshot implements List<IWidgetItemInfo>, Parcelable  {
 
 	private ISnapshotInfo snapInfo;
 	private List<IWidgetItemInfo> collection;
@@ -20,6 +20,14 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 	public Snapshot(ISnapshotInfo snapshotInfo,List<IWidgetItemInfo> lst){
 		snapInfo = snapshotInfo;
 		collection = lst;
+	}
+	public Snapshot getCopy()
+	{
+		Snapshot snap = new Snapshot(this.getSnapshotInfo(),new ArrayList<IWidgetItemInfo>());
+		for (IWidgetItemInfo iWidgetItemInfo : collection) {
+			snap.add(iWidgetItemInfo);
+		}
+		return snap;
 	}
 
 	public Snapshot(Parcel in) {
@@ -211,4 +219,6 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable {
 		sb.append(" )");
 		return sb.toString();
 	}
+	
+
 }
