@@ -4,4 +4,5 @@
     <dimen name="widgetHorizontalSpacing">6dip</dimen>
     <dimen name="widgetVerticalSpacing">2dip</dimen>
     <dimen name="widgetThumbnailHeight">94dip</dimen>
+    <dimen name="widgetImageHeight">48dip</dimen>
 </resources>
