@@ -413,6 +413,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Date currDate = new Date();
 		ISnapshotInfo snapshotInfo = new SnapshotInfo(StatisticsService.RESERVED_SNAPSHOT, currDate);
 		Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
+		currSnapshot.removeDuplicateEntries();
 		this.saveSnapshot(currSnapshot);
 		this.setSelectedSnapshot(currSnapshot);
 		return currSnapshot;
