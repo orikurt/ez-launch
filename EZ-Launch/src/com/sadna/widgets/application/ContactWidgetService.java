@@ -103,36 +103,36 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 
 	@Override
 	public RemoteViews getViewAt(int position) {
-		Log.d(TAG, "get item at position: "+ position);
+//		Log.d(TAG, "get item at position: "+ position);
 		// position will always range from 0 to getCount() - 1.
 		IWidgetItemInfo item = mData.get(position);
 
-		boolean isICS = Preferences.getBGImage(mContext, mAppWidgetId) == Preferences.BG_ICS;
-		int textVisibility = Preferences.getShowName(mContext, mAppWidgetId) ? View.VISIBLE : View.GONE;		
-		int itemresid = R.layout.gridviewitem_hc;
-		if (isICS) {
-			itemresid = R.layout.gridviewitem_ics;
-		} else {
-			if (textVisibility == View.VISIBLE) {
-				switch(Preferences.getTextAlign(mContext, mAppWidgetId)) {
-				case Preferences.ALIGN_RIGHT:
-					itemresid = R.layout.gridviewitem_txt_right; break;
-				case Preferences.ALIGN_LEFT:
-					itemresid = R.layout.gridviewitem_txt_left; break;
-				}
-			}
-		}
+//		boolean isICS = Preferences.getBGImage(mContext, mAppWidgetId) == Preferences.BG_ICS;
+//		int textVisibility = Preferences.getShowName(mContext, mAppWidgetId) ? View.VISIBLE : View.GONE;		
+//		int itemresid = R.layout.gridviewitem_hc;
+//		if (isICS) {
+			int itemresid = R.layout.gridviewitem_ics;
+//		} else {
+//			if (textVisibility == View.VISIBLE) {
+//				switch(Preferences.getTextAlign(mContext, mAppWidgetId)) {
+//				case Preferences.ALIGN_RIGHT:
+//					itemresid = R.layout.gridviewitem_txt_right; break;
+//				case Preferences.ALIGN_LEFT:
+//					itemresid = R.layout.gridviewitem_txt_left; break;
+//				}
+//			}
+//		}
 		// We construct a remote views item based on our widget item xml file, and set the
 		// text based on the position.
 		RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemresid);
 
-		if (textVisibility == View.VISIBLE) {
+//		if (textVisibility == View.VISIBLE) {
 			rv.setTextViewText(R.id.displayname, item.getLabel());			
-		} else {
-			rv.setViewVisibility(R.id.displayname, textVisibility);
+//		} else {
+//			rv.setViewVisibility(R.id.displayname, textVisibility);
 //			if (isICS) 
 //				rv.setViewVisibility(R.id.label_overlay, textVisibility);
-		}
+//		}
 
 		rv.setImageViewBitmap(R.id.photo, item.getBitmap(mContext.getApplicationContext()));
 
