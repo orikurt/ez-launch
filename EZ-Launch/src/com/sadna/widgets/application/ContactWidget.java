@@ -4,6 +4,7 @@ package com.sadna.widgets.application;
 import java.util.Set;
 
 import com.sadna.data.Snapshot;
+import com.sadna.data.WidgetItemInfo;
 import com.sadna.service.StatisticsService;
 
 
@@ -167,15 +168,17 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public void onClick(Context context, int appWidgetId, Rect targetRect, Intent LaunchIntent) {
 		//Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(uri.toString());
+		
+		if (LaunchIntent.getCategories().contains(WidgetItemInfo.BLACK_LIST_APP_INTENT)) {
+			addToBlackList(context, LaunchIntent);
+		}
 		try {
 			context.startActivity(LaunchIntent);
 			Intent serviceIntent = new Intent(StatisticsService.SERVICE_NOTIFIER_LAUNCH);
 			serviceIntent.putExtra("name", LaunchIntent.getPackage());
 			context.sendBroadcast(serviceIntent);
 		}catch (ActivityNotFoundException e) {
-			Intent serviceIntent = new Intent(StatisticsService.SERVICE_NOTIFIER_BLACK_LIST);
-			serviceIntent.putExtra("name", LaunchIntent.getPackage());
-			context.sendBroadcast(serviceIntent);
+			addToBlackList(context, LaunchIntent);
 
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -206,6 +209,12 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			Log.d(TAG, "FAILED: " + expt.getMessage());
 		}
 		 */
+	}
+
+	private void addToBlackList(Context context, Intent LaunchIntent) {
+		Intent serviceIntent = new Intent(StatisticsService.SERVICE_NOTIFIER_BLACK_LIST);
+		serviceIntent.putExtra("name", LaunchIntent.getPackage());
+		context.sendBroadcast(serviceIntent);
 	}
 
 	public static int getICSWidth(Context context) {
