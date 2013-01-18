@@ -209,9 +209,9 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 					DataProvider.DataProviderColumns.contacturi.ordinal());
 		}
 		itemViews.setViewVisibility(R.id.displayname, textVisibility);
-		if (isICS)
-			itemViews.setViewVisibility(R.id.label_overlay, textVisibility);
-		else if (textVisibility == View.VISIBLE &&
+//		if (isICS)
+//			itemViews.setViewVisibility(R.id.label_overlay, textVisibility);
+		/*else */if (textVisibility == View.VISIBLE &&
         	Preferences.getBGImage(context, appWidgetId) == Preferences.BG_WHITE) {
     			itemViews.setTextColor(R.id.displayname, Color.BLACK);
         }

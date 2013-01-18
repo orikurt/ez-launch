@@ -130,8 +130,8 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			rv.setTextViewText(R.id.displayname, item.getLabel());			
 		} else {
 			rv.setViewVisibility(R.id.displayname, textVisibility);
-			if (isICS) 
-				rv.setViewVisibility(R.id.label_overlay, textVisibility);
+//			if (isICS) 
+//				rv.setViewVisibility(R.id.label_overlay, textVisibility);
 		}
 
 		rv.setImageViewBitmap(R.id.photo, item.getBitmap(mContext.getApplicationContext()));
