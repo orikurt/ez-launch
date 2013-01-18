@@ -43,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity {
 	public IDataManager DM;
 
 	private ListPreference loadSnapshot; 
+	private ListPreference deleteSnapshot;
 	private Preference FixPreference;
 	private Preference NumberPreference;
 	private Preference HelpPref;
@@ -77,12 +78,14 @@ public class SettingsActivity extends PreferenceActivity {
 		
 		prepareLoadScreenshotPref();
 		prepareSaveSnapshotPref();
+		prepareDeleteSnapshotPref();
 		prepareFixPref();
 		prepareNumPickrPref();
 		prepareHelpBtn();
 		prepareAboutBtn();
 	}
 	
+
 	@Override
 	public void onPause(){
 		super.onPause();
@@ -98,11 +101,21 @@ public class SettingsActivity extends PreferenceActivity {
 		// TODO Auto-generated method stub
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
-		setListPreferenceData();
-		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener());
-		loadSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener());
+		setListPreferenceData(loadSnapshot);
+		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener(true));
+		loadSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener(true));
 	}
-	
+
+	private void prepareDeleteSnapshotPref() {
+		
+		deleteSnapshot = (ListPreference)findPreference(Preferences.DELETE);
+		deleteSnapshot.setKey(String.format(Preferences.DELETE, widgetID));
+		// TODO Auto-generated method stub
+		setListPreferenceData(deleteSnapshot);
+		deleteSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener(false));
+		deleteSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener(false));
+	}
+
 	private void prepareSaveSnapshotPref() {
 
 		SaveSnapshotPref = findPreference(Preferences.SAVE);
@@ -140,15 +153,15 @@ public class SettingsActivity extends PreferenceActivity {
 
 	}
 	
-	private void setListPreferenceData() {
+	private void setListPreferenceData(ListPreference Pref) {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
 		snapShots = DM.loadAllSnapshots();
 		
 		if (snapShots == null) {
 			// Should consider display a message to the user... "no snapshots available"
-			loadSnapshot.setEntries(new CharSequence[0]);
-			loadSnapshot.setEntryValues(new CharSequence[0]);
+			Pref.setEntries(new CharSequence[0]);
+			Pref.setEntryValues(new CharSequence[0]);
 			return;
 		}
 
@@ -162,8 +175,8 @@ public class SettingsActivity extends PreferenceActivity {
 				Titles.add(snap.getSnapshotInfo().getSnapshotName());
 			}
 		}
-		loadSnapshot.setEntries(Titles.toArray(new CharSequence[Titles.size()]));
-		loadSnapshot.setEntryValues(Titles.toArray(new CharSequence[Titles.size()]));
+		Pref.setEntries(Titles.toArray(new CharSequence[Titles.size()]));
+		Pref.setEntryValues(Titles.toArray(new CharSequence[Titles.size()]));
 
 	}
 
@@ -254,7 +267,8 @@ public class SettingsActivity extends PreferenceActivity {
 				return false;
 			}
 			DM.saveSnapshot(snap);
-			setListPreferenceData();
+			setListPreferenceData(deleteSnapshot);
+			setListPreferenceData(loadSnapshot);
 			return true;
 		}
 		
@@ -296,21 +310,47 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	public class onLoadPreferenceClickListener implements OnPreferenceClickListener {
+		boolean isLoad;
+		public onLoadPreferenceClickListener(boolean bool)
+		{
+			isLoad = bool;
+		}
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
-			setListPreferenceData();
+			if (isLoad)
+			{
+			setListPreferenceData(loadSnapshot);
+			}
+			else 
+			{
+				setListPreferenceData(deleteSnapshot);
+			}
 			return true;
 		}
 	}
 	
 	public class onLoadPreferenceChangeListener implements OnPreferenceChangeListener {
 
+		boolean isLoad;
+		
+		public onLoadPreferenceChangeListener(boolean bool)
+		{
+			isLoad = bool;
+		}
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
+			
 			String snapName = newValue.toString();
-			Snapshot SnapToLoad = DM.loadSnapshot(snapName);
-			DM.setSelectedSnapshot(SnapToLoad);			
+			if (isLoad)
+			{
+				Snapshot SnapToLoad = DM.loadSnapshot(snapName);
+				DM.setSelectedSnapshot(SnapToLoad);
+			}
+			else
+			{
+				DM.deleteSnapshot(snapName);
+			}
 			return false;
 		}
 	}
