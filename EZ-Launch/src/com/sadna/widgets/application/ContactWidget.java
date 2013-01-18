@@ -171,6 +171,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		
 		if (LaunchIntent.getCategories().contains(WidgetItemInfo.BLACK_LIST_APP_INTENT)) {
 			addToBlackList(context, LaunchIntent);
+			return;
 		}
 		try {
 			context.startActivity(LaunchIntent);
