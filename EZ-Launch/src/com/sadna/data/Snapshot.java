@@ -2,6 +2,7 @@ package com.sadna.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -37,6 +38,11 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable  {
 			in.readList(collection, WidgetItemInfo.class.getClassLoader());
 		}
 
+	}
+	
+	public void removeDuplicateEntries()
+	{
+		collection = new ArrayList<IWidgetItemInfo>(new HashSet<IWidgetItemInfo>(collection));
 	}
 
 	public ISnapshotInfo getSnapshotInfo() {
