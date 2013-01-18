@@ -22,6 +22,8 @@ import com.sadna.interfaces.IWidgetItemInfo;
 
 public class WidgetItemInfo implements IWidgetItemInfo{
 
+	public static final String BLACK_LIST_APP_INTENT = "BlackListAppIntent";
+
 	public static final String LAUNCH_INTENT = "com.sadna.data.LAUNCH_INTENT";
 	
 	//private Drawable image;
@@ -106,7 +108,10 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	public Intent getLaunchIntent(Context c) {
 		Intent ret = c.getPackageManager().getLaunchIntentForPackage(getPackageName());
 		if (ret == null) {
-			return new Intent();
+			Intent intent = new Intent();
+			intent.addCategory(BLACK_LIST_APP_INTENT);
+			intent.setPackage(getPackageName());
+			return intent;
 		}
 		return ret;
 	}
