@@ -52,6 +52,7 @@ public class Preferences {
     
     public static final String LOAD_SNAPSHOT = "LoadSnap-%d";
     public static final String SAVE = "SaveSnap-%d";
+    public static final String DELETE = "DeleteSnap-%d";
 
     public static final int ALIGN_LEFT = 1;
     public static final int ALIGN_CENTER = 0;

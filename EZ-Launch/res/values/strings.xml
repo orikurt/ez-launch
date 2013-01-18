@@ -85,5 +85,7 @@
 	    please add EZ-Launch widgets\n
 	    to your Homescreen.</string>
 	<string name="save_button">Save</string>
+	<string name="dialog_delete">Pick a snapshot to delete from the database</string>
+	<string name="DeleteSnapshot">Delete Snapshot</string>
 
 </resources>
