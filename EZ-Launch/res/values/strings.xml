@@ -73,7 +73,7 @@
     <string name="fixAppsOnScreen">Fixed Apps</string>
     <string name="appsPerScreen">Number of Icons on Screen</string>
     <string name="pickApps">Pick apps to persist to home screen</string>
-    <string name="appsPerScreenDescription">Set the number of icons to be showns</string>
+    <string name="appsPerScreenDescription">Set the number of icons to be shown</string>
     <string name="selectApps">Select Apps</string>
     <string name="saveText">Save Current Widget State to Data Base</string>
     <string name="saveAsk">Save Current Snapshot?</string>
