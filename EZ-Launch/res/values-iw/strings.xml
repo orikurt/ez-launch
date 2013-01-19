@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2010 Florian Sundermann
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<resources>
+
+    <!-- English -->
+    <string name="app_name">EZ Launch</string>
+    <string name="widget4x4">EZ Launch Widget</string>
+    <string name="namekind">Name to display</string>
+    <string name="givenname">given name</string>
+    <string name="familyname">family name</string>
+    <string name="displayname">display name</string>
+    <string name="alias">nickname</string>
+
+    <string-array name="empty_array" />
+
+    <string name="loading">טוען</string>
+    <string name="save">שמור תמונת מצב</string>
+    <string name="select_contact_group">Contact group</string>
+    <string name="allcontacts">All Contacts *</string>
+    <string name="starred">Favorites *</string>
+    <string name="displayLabel">Widget label</string>
+    <string name="black">Black</string>
+    <string name="white">White</string>
+    <string name="transparent">Transparent</string>
+    <string name="ics_style">Ice Cream Sandwich</string>
+    <string name="background">Style</string>
+    <string name="showName">Show contact name</string>
+    <string name="pref_grp_data">מידע</string>
+    <string name="pref_grp_layout">Layout</string>
+    <string name="pref_grp_general">General</string>
+    <string name="help">עזרה</string>
+    <string name="help_summary">Troubleshoot Widget</string>
+    <string name="okbtn">OK</string>
+    <string name="helptext">EZ-Launch מציג אפליקציות על מסך הבית בהתאם לשימוש שלכם\n\n*קבע אפליקציות - תוכלו להשתמש באפשרות זו על מנת לקבוע אילו אפליקציות תמיד יופיעו, אילו אפליקציות לא יופיעו לעולם, ואילו אפליקציות יופיעו בהתאם לשימוש שלכם</string>
+    <string name="about">אודות</string>
+    <string name="abouttext">EZ-Launch היא אפליקציה המספקת סידור טוב יותר, נוח יותר ובטוח יותר למסך הבית שלכם.\n\n*לכל שאלה או תגובה, תוכלו לפנות אלינו במייל: noamrab@gmail.com</string>
+    <string name="columncount">Columns</string>
+    <string name="background_alpha">Background alpha</string>
+    <string name="launcher_too_old">Sorry, your launcher is to old, please update it!</string>
+    <string name="needs_froyo">This feature is only available on android 2.2 and above</string>
+    <string name="behavior">התנהגות</string>
+    <string name="quickcontactbar">show QuickContactBar</string>
+    <string name="directdial">direct dial</string>
+    <string name="showcontact">show contact</string>
+    <string name="onclick">Click action</string>
+    <string name="sendsms">Send SMS</string>
+    <string name="textalign">Name position</string>
+    <string name="align_center">Center (below the picture)</string>
+    <string name="align_left">Left of the picture</string>
+    <string name="align_right">Right of the picture</string>
+    <string name="picksnap">בחר תמונת מצב לטעינה</string>
+    <string name="loadSnapshot">טען תמונת מצב</string>
+
+    <!-- SERVICE STRINGS -->
+    <string name="statistics_service_created">EZ-Launch Created</string>
+    <string name="statistics_service_started">EZ-Launch Started</string>
+    <string name="statistics_service_stopped">EZ-Launch Stopped</string>
+    <string name="button_text">שמור</string>
+    <string name="fixAppsOnScreen">קבע אפליקציות</string>
+    <string name="appsPerScreen">מספר אפליקציות</string>
+    <string name="pickApps">בחר אפליקציות שיהיו קבועות על המסך</string>
+    <string name="appsPerScreenDescription">קבע את מספר האפליקציות שיוצגו</string>
+    <string name="selectApps">בחר אפליקציות</string>
+    <string name="saveText">Save Current Widget State to Data Base</string>
+    <string name="saveAsk">Save Current Snapshot?</string>
+    <string name="cancelbtn">בטל</string>
+    <string name="configuration">הגדרות</string>
+
+    <!-- UI STRINGS -->
+    <string name="insert_widget">בשביל להשתמש באפליקציות בקלות, הוסיפו את הווידג'ט של EZ-Launch למסך הבית שלכם.</string>
+	<string name="save_button">שמור</string>
+	<string name="dialog_delete">בחר תמונת מצב למחיקה</string>
+	<string name="DeleteSnapshot">מחק תמונת מצב</string>
+
+</resources>
