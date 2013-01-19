@@ -658,7 +658,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_DAYS, null);
 		if (valList == null) {
 			Calendar cal = Calendar.getInstance();
-			cal.getFirstDayOfWeek();
 			switch (cal.getFirstDayOfWeek()) {
 			case Calendar.SATURDAY:
 				return new int[]{Calendar.SATURDAY ,Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY};
