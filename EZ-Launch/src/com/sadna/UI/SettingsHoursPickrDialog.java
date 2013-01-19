@@ -37,7 +37,7 @@ public class SettingsHoursPickrDialog  extends Activity {
 
 		// add RangeSeekBar to pre-defined layout
 		setContentView(R.layout.settings_time_pickr);
-		ViewGroup PrefLayout = (ViewGroup) findViewById(R.id.linearLayout);
+		ViewGroup PrefLayout = (ViewGroup) findViewById(R.id.rangeSeekContainer);
 		PrefLayout.addView(seekBar);
 		
 /*
