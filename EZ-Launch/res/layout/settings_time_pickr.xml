@@ -5,6 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+                <DigitalClock
+                    android:id="@+id/digitalClockLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="DigitalClock" />
+
+                <DigitalClock
+                    android:id="@+id/digitalClockRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="DigitalClock" />
+
+    </RelativeLayout>
+
 
     <FrameLayout
         android:id="@+id/rangeSeekContainer"
@@ -32,5 +55,7 @@
             android:layout_weight="1"
             android:text="Cancel" />
     </LinearLayout>
+
+
 
 </LinearLayout>
