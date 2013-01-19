@@ -253,7 +253,7 @@ public class StatisticsService extends Service{
 				return;
 			}
 			String label = packageManager.getApplicationLabel(appInfo).toString();
-			itemInfo = new WidgetItemInfo(name, label);
+			itemInfo = new WidgetItemInfo(name, label,dataManager.getAvaregeScore());
 			dataManager.getSelectedSnapshot().add(itemInfo);
 			Log.d(LOG_TAG, "Added " + name);
 		}
