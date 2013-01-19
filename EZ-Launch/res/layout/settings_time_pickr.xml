@@ -5,35 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-                <DigitalClock
-                    android:id="@+id/digitalClockLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:text="DigitalClock" />
+        <TextView
+            android:id="@+id/clockLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="3dip"
+            android:text="DigitalClock"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <DigitalClock
-                    android:id="@+id/digitalClockRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:text="DigitalClock" />
-
+        <TextView
+            android:id="@+id/clockRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="3dip"
+            android:text="DigitalClock"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
-
 
     <FrameLayout
         android:id="@+id/rangeSeekContainer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -55,7 +56,5 @@
             android:layout_weight="1"
             android:text="Cancel" />
     </LinearLayout>
-
-
 
 </LinearLayout>
