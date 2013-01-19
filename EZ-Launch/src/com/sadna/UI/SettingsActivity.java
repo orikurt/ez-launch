@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.List;
 
 
+import com.sadna.UI.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 
@@ -36,10 +37,12 @@ import android.preference.SwitchPreference;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
 
 @SuppressLint("NewApi")
 public class SettingsActivity extends PreferenceActivity {
@@ -78,7 +81,7 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 		});
 		v.addFooterView(goButton);
-		
+				
 		
 		// Prepare
 		DM = new DataManager(this);
