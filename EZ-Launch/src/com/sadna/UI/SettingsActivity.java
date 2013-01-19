@@ -50,7 +50,8 @@ public class SettingsActivity extends PreferenceActivity {
 	//private ListPreference loadSnapshot; 
 	//private ListPreference deleteSnapshot;
 	private SwitchPreference ProfilingSwitch;
-	private MultiSelectListPreference ProfilingPref;
+	private MultiSelectListPreference ProfilingDays;
+	private Preference ProfilingHours;
 	private Preference FixPreference;
 	//private Preference NumberPreference;
 	private Preference HelpPref;
@@ -87,7 +88,8 @@ public class SettingsActivity extends PreferenceActivity {
 		prepareSaveSnapshotPref();
 		prepareDeleteSnapshotPref();*/
 		prepareSwitchPref();
-		prepareProfPref();
+		prepareProfDays();
+		prepareProfHours();
 		prepareFixPref();
 		prepareNumPickrPref();
 		prepareHelpBtn();
@@ -109,13 +111,11 @@ public class SettingsActivity extends PreferenceActivity {
 	private void prepareSwitchPref() {
 		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
 		ProfilingSwitch.setChecked(DM.getProfolingState());
-		ProfilingSwitch.setKey(String.format(Preferences.PROF_ENABLE, widgetID));
 		ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
 	}
 	
-	private void prepareProfPref() {
-		ProfilingPref = (MultiSelectListPreference) findPreference(Preferences.PROF);
-		ProfilingPref.setKey(String.format(Preferences.PROF, widgetID));
+	private void prepareProfDays() {
+		ProfilingDays = (MultiSelectListPreference) findPreference(Preferences.PROF_DAYS);
 		Calendar cal = Calendar.getInstance();
 		CharSequence[] entries, entryValues;
 		
@@ -183,8 +183,8 @@ public class SettingsActivity extends PreferenceActivity {
 				String.valueOf(Calendar.SUNDAY)
 				};
 		}
-		ProfilingPref.setEntries(entries);
-		ProfilingPref.setEntryValues(entryValues);
+		ProfilingDays.setEntries(entries);
+		ProfilingDays.setEntryValues(entryValues);
 		
 		// Get working days from DB
 		Set<String> values = new HashSet<String>();
@@ -192,12 +192,15 @@ public class SettingsActivity extends PreferenceActivity {
 		for (int dayID : workingDays) {
 			values.add(String.valueOf(dayID));
 		}
-		ProfilingPref.setValues(values);
+		ProfilingDays.setValues(values);
 		
 		// Change listener
-		ProfilingPref.setOnPreferenceChangeListener(new onProfDaysChangeListener());
+		ProfilingDays.setOnPreferenceChangeListener(new onProfDaysChangeListener());
 	}
 
+	private void prepareProfHours() {
+		ProfilingHours = findPreference(Preferences.PROF_HOURS);
+	}
 	
 	/*private void prepareLoadScreenshotPref() {
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
@@ -298,7 +301,8 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			DM.setProfolingState((Boolean) newValue);
-			ProfilingPref.setEnabled((Boolean) newValue);
+			ProfilingDays.setEnabled((Boolean) newValue);
+			ProfilingHours.setEnabled((Boolean) newValue);
 			return true;
 		}
 	}

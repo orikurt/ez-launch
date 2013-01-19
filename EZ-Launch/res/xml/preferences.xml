@@ -22,7 +22,7 @@
 	
 	<PreferenceCategory android:title="@string/profiling">
 		<SwitchPreference
-			android:key="prof_enable-%d"
+			android:key="prof_enable"
 			android:title="@string/switch_title"
   	      	android:switchTextOff="@string/prof_off"
   	      	android:switchTextOn="@string/prof_on"
@@ -32,10 +32,17 @@
 			/>
 		
 		<MultiSelectListPreference
-  	        android:key="prof-%d"
+  	        android:key="prof_days"
   	      	android:title="@string/days_title"
   	      	android:summary="@string/days_summary"
 			/>
+		
+		<Preference
+		    android:key="prof_hours"
+  	      	android:title="@string/hours_title"
+  	      	android:summary="@string/hours_summary"
+			/>
+		    
 	</PreferenceCategory>
 	
 		

@@ -88,15 +88,17 @@
 	<string name="dialog_delete">Pick a snapshot to delete from the database</string>
 	<string name="DeleteSnapshot">Delete Snapshot</string>
 	
-	<string name="profiling">Profiling</string>
-	<string name="days_title">Working days</string>
-	<string name="days_summary">Select weekdays for your WORK profile</string>
-	<string name="switch_title">Enable Profiling</string>
+	<string name="profiling">Work Profile</string>
+	<string name="switch_title">Enable Profile</string>
 	<string name="prof_off">Off</string>
 	<string name="prof_on">On</string>
-	<string name="prof_sum_off">Profiling Disabled</string>
-	<string name="prof_sum_on">Profiling Enabled</string>
-	
+	<string name="prof_sum_off">Profile Disabled</string>
+	<string name="prof_sum_on">Profile Enabled</string>
+	<string name="days_title">Working days</string>
+	<string name="days_summary">Select days for your Work profile</string>
+	<string name="hours_title">Working Hours</string>
+	<string name="hours_summary">Set hours for your Work profile</string>
+		
 	<string name="sunday">Sunday</string>
 	<string name="monday">Monday</string>
 	<string name="tuesday">Tuesday</string>
