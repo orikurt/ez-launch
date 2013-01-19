@@ -123,8 +123,7 @@ public class SettingsActivity extends PreferenceActivity {
 		entryValues[5] = String.valueOf(Calendar.FRIDAY);
 		entryValues[6] = String.valueOf(Calendar.SATURDAY);
 		ProfilingPref.setEntryValues(entryValues);
-		
-		ProfilingPref.setDefaultValue(false);
+
 		ProfilingPref.setOnPreferenceChangeListener(new onProfDaysChangeListener());
 	}
 
@@ -247,7 +246,7 @@ public class SettingsActivity extends PreferenceActivity {
 				i++;
 			}
 			DM.setWorkingDays(temp);
-			return false;
+			return true;
 		}
 
 	}
