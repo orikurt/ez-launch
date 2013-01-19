@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" 
     android:text="Set Working Hours">
-    
+
+<!--    
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
@@ -44,5 +45,5 @@
         android:layout_alignLeft="@+id/timePicker1"
         android:layout_below="@+id/timePicker1"
         android:layout_marginTop="26dp" />
-
+-->
 </RelativeLayout>
