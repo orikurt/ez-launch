@@ -235,13 +235,11 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
-			ArrayList<Integer> newValues = new ArrayList<Integer>();
+			int[] temp = new int[((HashSet<String>)newValue).size()];
+			int i = 0;
 			for (String day : (HashSet<String>)newValue) {
-				newValues.add(Integer.parseInt(day));
-			}
-			int[] temp = new int[newValues.size()];
-			for (int i = 0; i < newValues.size(); i++) {
-				temp[i] = newValues.get(i);
+				temp[i] = Integer.parseInt(day);
+				i++;
 			}
 			DM.setWorkingDays(temp);
 			return false;
