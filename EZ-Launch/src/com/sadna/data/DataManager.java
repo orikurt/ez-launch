@@ -4,14 +4,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,7 +49,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private static final String APPLICATION_SHARED_PREFRENCES = "ApplicationSharedPrefrences";
 
-	private static final String BAD_SNAPSHOT = "Bad_SnapshotXXXERROR";
+	//private static final String BAD_SNAPSHOT = "Bad_SnapshotXXXERROR";
 
 	public static final String DATE_FORMAT = "YYYY-MM-DD HH:MM:SS".toLowerCase(Locale.getDefault());
 
@@ -92,7 +89,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	// Shared Preferences
 	private static SharedPreferences sharedPreferences;
-	private static final String SELECTED_SNAPSHOT = "SelectedSnapshot";
+	//private static final String SELECTED_SNAPSHOT = "SelectedSnapshot";
 	private static final String SELECTED_APPLICATION_LIMIT = "SelectedApplicationLimit";
 
 	private static Snapshot selectedSnapshot = null;
