@@ -740,6 +740,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	@Override
 	public double getAvaregeScore() {
 		Snapshot temp = getSelectedSnapshotFiltered(0);
+		if (temp.size() == 0) {
+			return 1;
+		}
 		double sum = 0;
 		for (IWidgetItemInfo iWidgetItemInfo : temp) {
 			sum += iWidgetItemInfo.getScore();
