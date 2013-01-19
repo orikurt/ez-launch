@@ -316,6 +316,7 @@ public class StatisticsService extends Service{
 					h.removeCallbacksAndMessages(null);
 					notifyWidget();
 				}
+				dataManager.saveSnapshot(dataManager.getSelectedSnapshot());
 			}
 			
 			else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
