@@ -43,7 +43,7 @@ public class StatisticsService extends Service{
 	private static final long UPDATE_DELAY = 7500;
 	public static final String SERVICE_NOTIFIER_BLACK_LIST = "sadna.service_notifier_black_list";
 
-	Snapshot		currSnapshot;
+	//Snapshot		currSnapshot;
 	IDataManager	dataManager;
 
 	SystemIntentsReceiver systemIntentsReceiver;
@@ -154,7 +154,7 @@ public class StatisticsService extends Service{
 
 		// Get current snapshot
 
-		currSnapshot = dataManager.getSelectedSnapshot();
+		//currSnapshot = dataManager.getSelectedSnapshot();
 
 	}
 
@@ -164,8 +164,8 @@ public class StatisticsService extends Service{
 		// Save snapshot to DB
 		//currSnapshot.normalizeScores();
 		//Collections.sort(currSnapshot);
-		dataManager.saveSnapshot(currSnapshot);
-		dataManager.setSelectedSnapshot(currSnapshot);
+		//dataManager.saveSnapshot(currSnapshot);
+		//dataManager.setSelectedSnapshot(dataManager.getSelectedSnapshot());
 		
 		// Send update intent
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
@@ -237,14 +237,14 @@ public class StatisticsService extends Service{
 		if (dataManager == null) {
 			dataManager = new DataManager(getApplicationContext());
 		}
-		if (currSnapshot == null) {
-			currSnapshot = dataManager.getSelectedSnapshot();
-		}
+//		if (currSnapshot == null) {
+//			currSnapshot = dataManager.getSelectedSnapshot();
+//		}
 		if (packageManager == null) {
 			packageManager = getPackageManager();
 		}
 		
-		IWidgetItemInfo itemInfo = currSnapshot.getItemByName(name);
+		IWidgetItemInfo itemInfo = dataManager.getSelectedSnapshot().getItemByName(name);
 		if (itemInfo == null){
 			ApplicationInfo appInfo;
 			try {
@@ -254,7 +254,7 @@ public class StatisticsService extends Service{
 			}
 			String label = packageManager.getApplicationLabel(appInfo).toString();
 			itemInfo = new WidgetItemInfo(name, label);
-			currSnapshot.add(itemInfo);
+			dataManager.getSelectedSnapshot().add(itemInfo);
 			Log.d(LOG_TAG, "Added " + name);
 		}
 		itemInfo.setScore(itemInfo.getScore() + score);
@@ -267,7 +267,7 @@ public class StatisticsService extends Service{
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(SERVICE_UPDATE)){
 				Log.d(LOG_TAG, "Got SERVICE_UPDATE");
-				updateReservedSnapshot();
+				//updateReservedSnapshot();
 				notifyWidget();
 			}
 
@@ -279,7 +279,7 @@ public class StatisticsService extends Service{
 			else if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
 				String pkgName = intent.getStringExtra("name");
 				if (pkgName != null){ 
-					IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
+					IWidgetItemInfo item = dataManager.getSelectedSnapshot().getItemByName(pkgName);
 					item.setScore(item.getScore()+0.25);
 					item.setLastUse(new Date());
 					Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
@@ -288,7 +288,7 @@ public class StatisticsService extends Service{
 			else if (intent.getAction().equals(SERVICE_NOTIFIER_BLACK_LIST)){
 				String pkgName = intent.getStringExtra("name");
 				if (pkgName != null){ 
-					IWidgetItemInfo item = currSnapshot.getItemByName(pkgName);
+					IWidgetItemInfo item = dataManager.getSelectedSnapshot().getItemByName(pkgName);
 					item.setScore(0);
 					item.setItemState(ItemState.NOT_ALLOWED);
 					Log.d(LOG_TAG, pkgName + " Added to black List");
@@ -329,21 +329,21 @@ public class StatisticsService extends Service{
 		}
 	}
 
-	public void updateReservedSnapshot() {
-
-		Snapshot newCurrSnapshot = dataManager.getSelectedSnapshot();
-		if (newCurrSnapshot == null) {
-			return;
-		}
-
-		String newName = newCurrSnapshot.getSnapshotInfo().getSnapshotName();
-		if ((newName != null) && (!newName.equalsIgnoreCase(RESERVED_SNAPSHOT))) {
-
-			// User changed the current snapshot
-			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
-			currSnapshot = newCurrSnapshot;
-		}
-	}
+//	public void updateReservedSnapshot() {
+//
+//		Snapshot newCurrSnapshot = dataManager.getSelectedSnapshot();
+//		if (newCurrSnapshot == null) {
+//			return;
+//		}
+//
+//		String newName = newCurrSnapshot.getSnapshotInfo().getSnapshotName();
+//		if ((newName != null) && (!newName.equalsIgnoreCase(RESERVED_SNAPSHOT))) {
+//
+//			// User changed the current snapshot
+//			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
+//			currSnapshot = newCurrSnapshot;
+//		}
+//	}
 	
 	public String resolveDefaultLauncher(){
 		final Intent intent = new Intent(Intent.ACTION_MAIN);
