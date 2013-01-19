@@ -1,6 +1,8 @@
 package com.sadna.UI;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
 
 import java.util.List;
 
@@ -105,13 +107,25 @@ public class SettingsActivity extends PreferenceActivity {
 	/************************* Preparing Functions ****************************/
 	private void prepareSwitchPref() {
 		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
-		ProfilingSwitch.setChecked(true); // TODO: from DB
+		ProfilingSwitch.setChecked(DM.getProfolingState());
+		ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
 	}
 	
 	private void prepareProfPref() {
 		ProfilingPref = (MultiSelectListPreference) findPreference(Preferences.PROF);
+		
+		CharSequence[] entryValues = new CharSequence[7];
+		entryValues[0] = String.valueOf(Calendar.SUNDAY);
+		entryValues[1] = String.valueOf(Calendar.MONDAY);
+		entryValues[2] = String.valueOf(Calendar.TUESDAY);
+		entryValues[3] = String.valueOf(Calendar.WEDNESDAY);		
+		entryValues[4] = String.valueOf(Calendar.THURSDAY);
+		entryValues[5] = String.valueOf(Calendar.FRIDAY);
+		entryValues[6] = String.valueOf(Calendar.SATURDAY);
+		ProfilingPref.setEntryValues(entryValues);
+		
 		ProfilingPref.setDefaultValue(false);
-		//ProfilingPref.setOnPreferenceClickListener(new ProfilingPrefClickListener());
+		ProfilingPref.setOnPreferenceChangeListener(new onProfDaysChangeListener());
 	}
 
 	
@@ -208,8 +222,30 @@ public class SettingsActivity extends PreferenceActivity {
 			return false;
 		}
 	}*/
+	
+	public class onProfSwitchChangeListener implements OnPreferenceChangeListener {
 
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue) {
+			DM.setProfolingState((Boolean) newValue);
+			return false;
+		}
+	}
+	public class onProfDaysChangeListener implements OnPreferenceChangeListener {
 
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue) {
+			List newValues = new ArrayList<Integer>();
+			for (String day : (HashSet<String>)newValue) {
+				newValues.add(Integer.parseInt(day));
+			}
+			int[] temp = new int[newValues.size()];
+			newValues.toArray(temp);
+			DM.setWorkingDays(temp);
+			return false;
+		}
+
+	}
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
 
 		private final Context fContext;
