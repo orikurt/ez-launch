@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -46,7 +47,7 @@ public class SettingsActivity extends PreferenceActivity {
 	//private ListPreference loadSnapshot; 
 	//private ListPreference deleteSnapshot;
 	private SwitchPreference ProfilingSwitch;
-	private Preference ProfilingPref;
+	private MultiSelectListPreference ProfilingPref;
 	private Preference FixPreference;
 	//private Preference NumberPreference;
 	private Preference HelpPref;
@@ -108,8 +109,9 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	private void prepareProfPref() {
-		ProfilingPref = findPreference(Preferences.PROF);
-		ProfilingPref.setOnPreferenceClickListener(new ProfilingPrefClickListener());
+		ProfilingPref = (MultiSelectListPreference) findPreference(Preferences.PROF);
+		ProfilingPref.setDefaultValue(false);
+		//ProfilingPref.setOnPreferenceClickListener(new ProfilingPrefClickListener());
 	}
 
 	
@@ -197,7 +199,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 	/************************* End of Preparing Functions ****************************/
 
-	public class ProfilingPrefClickListener implements OnPreferenceClickListener {
+	/*public class ProfilingPrefClickListener implements OnPreferenceClickListener {
 
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
@@ -205,7 +207,7 @@ public class SettingsActivity extends PreferenceActivity {
 			startActivity(NumPickrIntent);
 			return false;
 		}
-	}
+	}*/
 
 
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
