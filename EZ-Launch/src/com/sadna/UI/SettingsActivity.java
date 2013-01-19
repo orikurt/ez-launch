@@ -200,6 +200,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 	private void prepareProfHours() {
 		ProfilingHours = findPreference(Preferences.PROF_HOURS);
+		ProfilingHours.setOnPreferenceClickListener(new onHoursPickrClickListener());
 	}
 	
 	/*private void prepareLoadScreenshotPref() {
@@ -306,6 +307,17 @@ public class SettingsActivity extends PreferenceActivity {
 			return true;
 		}
 	}
+	
+	public class onHoursPickrClickListener implements OnPreferenceClickListener {
+
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			Intent HoursPickrIntent = new Intent(preference.getContext(), SettingsHoursPickrDialog.class);
+			startActivity(HoursPickrIntent);
+			return false;
+		}
+	}
+	
 	public class onProfDaysChangeListener implements OnPreferenceChangeListener {
 
 		@Override

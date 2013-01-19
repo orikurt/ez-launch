@@ -59,10 +59,10 @@
 				<action android:name=".SettingsNumPickrDialog" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.sadna.UI.SettingsDaysPickrDialog"
+		<activity android:name="com.sadna.UI.SettingsHoursPickrDialog"
 		   			 android:theme="@android:style/Theme.Holo.Dialog" >
 			<intent-filter>
-				<action android:name=".SettingsDaysPickrDialog" />
+				<action android:name=".SettingsHoursPickrDialog" />
 			</intent-filter>
 		</activity>
 		
