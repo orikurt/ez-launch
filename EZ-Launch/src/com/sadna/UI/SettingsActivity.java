@@ -3,6 +3,7 @@ package com.sadna.UI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Set;
 
 import java.util.List;
 
@@ -107,23 +108,90 @@ public class SettingsActivity extends PreferenceActivity {
 	/************************* Preparing Functions ****************************/
 	private void prepareSwitchPref() {
 		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
-		ProfilingSwitch.setChecked(DM.getProfolingState());
 		ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
 	}
 	
 	private void prepareProfPref() {
 		ProfilingPref = (MultiSelectListPreference) findPreference(Preferences.PROF);
+		Calendar cal = Calendar.getInstance();
+		CharSequence[] entries, entryValues;
 		
-		CharSequence[] entryValues = new CharSequence[7];
-		entryValues[0] = String.valueOf(Calendar.SUNDAY);
-		entryValues[1] = String.valueOf(Calendar.MONDAY);
-		entryValues[2] = String.valueOf(Calendar.TUESDAY);
-		entryValues[3] = String.valueOf(Calendar.WEDNESDAY);		
-		entryValues[4] = String.valueOf(Calendar.THURSDAY);
-		entryValues[5] = String.valueOf(Calendar.FRIDAY);
-		entryValues[6] = String.valueOf(Calendar.SATURDAY);
+		// Build Preference
+		switch (cal.getFirstDayOfWeek()) {
+		case Calendar.SATURDAY:
+			entries = new CharSequence[]{
+					getString(R.string.saturday),
+					getString(R.string.sunday),
+					getString(R.string.monday),
+					getString(R.string.tuesday),
+					getString(R.string.wednesday),
+					getString(R.string.thursday),
+					getString(R.string.friday)
+					};
+			entryValues = new CharSequence[]{
+					String.valueOf(Calendar.SATURDAY),
+					String.valueOf(Calendar.SUNDAY),
+					String.valueOf(Calendar.MONDAY),
+					String.valueOf(Calendar.TUESDAY),
+					String.valueOf(Calendar.WEDNESDAY),
+					String.valueOf(Calendar.THURSDAY),
+					String.valueOf(Calendar.FRIDAY)
+					};
+			break;
+			
+		case Calendar.SUNDAY:
+			entries = new CharSequence[]{
+					getString(R.string.sunday),
+					getString(R.string.monday),
+					getString(R.string.tuesday),
+					getString(R.string.wednesday),
+					getString(R.string.thursday),
+					getString(R.string.friday),
+					getString(R.string.saturday)
+					};
+			entryValues = new CharSequence[]{
+					String.valueOf(Calendar.SUNDAY),
+					String.valueOf(Calendar.MONDAY),
+					String.valueOf(Calendar.TUESDAY),
+					String.valueOf(Calendar.WEDNESDAY),
+					String.valueOf(Calendar.THURSDAY),
+					String.valueOf(Calendar.FRIDAY),
+					String.valueOf(Calendar.SATURDAY)
+					};
+			break;
+			
+		default:
+			entries = new CharSequence[]{
+					getString(R.string.monday),
+					getString(R.string.tuesday),
+					getString(R.string.wednesday),
+					getString(R.string.thursday),
+					getString(R.string.friday),
+					getString(R.string.saturday),
+					getString(R.string.sunday)
+					};
+			entryValues = new CharSequence[]{
+				String.valueOf(Calendar.MONDAY),
+				String.valueOf(Calendar.TUESDAY),
+				String.valueOf(Calendar.WEDNESDAY),
+				String.valueOf(Calendar.THURSDAY),
+				String.valueOf(Calendar.FRIDAY),
+				String.valueOf(Calendar.SATURDAY),
+				String.valueOf(Calendar.SUNDAY)
+				};
+		}
+		ProfilingPref.setEntries(entries);
 		ProfilingPref.setEntryValues(entryValues);
-
+		
+		// Get working days from DB
+		Set<String> values = new HashSet<String>();
+		int[] workingDays = DM.getWorkingDays();
+		for (int dayID : workingDays) {
+			values.add(String.valueOf(dayID));
+		}
+		ProfilingPref.setValues(values);
+		
+		// Change listener
 		ProfilingPref.setOnPreferenceChangeListener(new onProfDaysChangeListener());
 	}
 
@@ -227,7 +295,7 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			DM.setProfolingState((Boolean) newValue);
-			return false;
+			return true;
 		}
 	}
 	public class onProfDaysChangeListener implements OnPreferenceChangeListener {
