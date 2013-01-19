@@ -59,6 +59,12 @@
 				<action android:name=".SettingsNumPickrDialog" />
 			</intent-filter>
 		</activity>
+		<activity android:name="com.sadna.UI.SettingsDaysPickrDialog"
+		   			 android:theme="@android:style/Theme.Holo.Dialog" >
+			<intent-filter>
+				<action android:name=".SettingsDaysPickrDialog" />
+			</intent-filter>
+		</activity>
 		
 		<!-- SERVICE COMPONENTS -->
 		<service android:name="com.sadna.service.StatisticsService">
