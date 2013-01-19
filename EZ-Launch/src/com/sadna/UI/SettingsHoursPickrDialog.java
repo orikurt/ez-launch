@@ -1,16 +1,11 @@
 package com.sadna.UI;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.NumberPicker;
-import android.widget.TimePicker;
 
 import com.sadna.UI.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.sadna.data.DataManager;
