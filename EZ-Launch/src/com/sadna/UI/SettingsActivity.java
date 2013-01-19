@@ -295,6 +295,7 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			DM.setProfolingState((Boolean) newValue);
+			ProfilingPref.setEnabled((Boolean) newValue);
 			return true;
 		}
 	}

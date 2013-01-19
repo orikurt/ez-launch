@@ -34,7 +34,6 @@
   	        android:key="prof-%d"
   	      	android:title="@string/days_title"
   	      	android:summary="@string/days_summary"
-        	android:persistent = "true"
 			/>
 	</PreferenceCategory>
 	
