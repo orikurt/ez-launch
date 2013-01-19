@@ -111,7 +111,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 //		int textVisibility = Preferences.getShowName(mContext, mAppWidgetId) ? View.VISIBLE : View.GONE;		
 //		int itemresid = R.layout.gridviewitem_hc;
 //		if (isICS) {
-			int itemresid = R.layout.gridviewitem_ics;
+		int itemresid = R.layout.gridviewitem_ics;
 //		} else {
 //			if (textVisibility == View.VISIBLE) {
 //				switch(Preferences.getTextAlign(mContext, mAppWidgetId)) {
