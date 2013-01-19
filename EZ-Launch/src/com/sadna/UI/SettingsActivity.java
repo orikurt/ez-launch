@@ -108,11 +108,14 @@ public class SettingsActivity extends PreferenceActivity {
 	/************************* Preparing Functions ****************************/
 	private void prepareSwitchPref() {
 		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
+		ProfilingSwitch.setChecked(DM.getProfolingState());
+		ProfilingSwitch.setKey(String.format(Preferences.PROF_ENABLE, widgetID));
 		ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
 	}
 	
 	private void prepareProfPref() {
 		ProfilingPref = (MultiSelectListPreference) findPreference(Preferences.PROF);
+		ProfilingPref.setKey(String.format(Preferences.PROF, widgetID));
 		Calendar cal = Calendar.getInstance();
 		CharSequence[] entries, entryValues;
 		
