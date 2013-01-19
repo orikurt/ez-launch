@@ -4,12 +4,18 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import android.content.ContentValues;
@@ -28,6 +34,12 @@ import com.sadna.interfaces.IWidgetItemInfo;
 import com.sadna.service.StatisticsService;
 
 public class DataManager extends SQLiteOpenHelper implements IDataManager {
+
+	private static final String SETTINGS_WORKING_HOURS = "SettingsWorkingHours";
+
+	private static final String SETTINGS_WORKING_DAYS = "SettingsWorkingDays";
+
+	private static final String SETTINGS_PROFILING_STATE = "SettingsProfilingState";
 
 	private static final String DEFAULT_LAUNCHER_FALLBACK = "com.sec.android.app.launcher";
 
@@ -383,12 +395,16 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			throw new NullPointerException();
 		}
 		selectedSnapshot = snap;
+		selectedSnapshot.getSnapshotInfo().setSnapshotName(getProperSnapshoName());
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString(SELECTED_SNAPSHOT, snap.getSnapshotInfo().getSnapshotName());
 		editor.commit();
 		return true;
 	}
 
+	private String getProperSnapshoName(){
+		return String.format(StatisticsService.RESERVED_SNAPSHOT, "Workday Noon");
+	}
 
 	@Override
 	public Snapshot getSelectedSnapshot() {
@@ -585,6 +601,99 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putString(SETTINGS_DEFAULT_LAUNCHER, pack);
 		editor.commit();
+	}
+
+	@Override
+	public void setProfolingState(boolean state) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(SETTINGS_PROFILING_STATE, state);
+		editor.commit();
+	}
+
+	@Override
+	public boolean getProfolingState() {
+		return sharedPreferences.getBoolean(SETTINGS_PROFILING_STATE,true);
+	}
+
+	@Override
+	public void setWorkingDays(int[] workingDays) {
+		if (workingDays == null) {
+			return;
+		}
+		Set<String> valList = new TreeSet<String>();
+		for (int day : workingDays) {
+			valList.add(Integer.toString(day));
+		}
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putStringSet(SETTINGS_WORKING_DAYS, valList);
+		editor.commit();
+	}
+
+	@Override
+	public int[] getWorkingDays() {
+		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_DAYS, null);
+		if (valList == null) {
+			Calendar cal = Calendar.getInstance();
+			cal.getFirstDayOfWeek();
+			switch (cal.getFirstDayOfWeek()) {
+			case Calendar.SATURDAY:
+				return new int[]{Calendar.SATURDAY ,Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY};
+			case Calendar.SUNDAY:
+				return new int[]{Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY};
+			case Calendar.MONDAY:
+				return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
+			default:
+				return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
+			}
+		}
+		int[] retArr = new int[valList.size()];
+		int i=0;
+		for (String day : valList) {
+			retArr[i] = Integer.parseInt(day);
+			i++;
+		}
+		return retArr;
+	}
+
+	@Override
+	public void setWorkingHours(int startHours,int startMinutes,int endHours,int endMinutes) {
+		// TODO Auto-generated method stub
+		Set<String> valList = new TreeSet<String>();
+
+		valList.add(Integer.toString(startHours));
+		valList.add(Integer.toString(startMinutes));
+		valList.add(Integer.toString(endHours));
+		valList.add(Integer.toString(endMinutes));
+
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putStringSet(SETTINGS_WORKING_HOURS, valList);
+		editor.commit();
+	}
+
+	@Override
+	public int[] getWorkingHours() {
+		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_HOURS, null);
+		if (valList == null) {
+			Calendar cal = Calendar.getInstance();
+			cal.getFirstDayOfWeek();
+			switch (cal.getFirstDayOfWeek()) {
+			case Calendar.SATURDAY:
+				return new int[]{Calendar.SATURDAY ,Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY};
+			case Calendar.SUNDAY:
+				return new int[]{Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY};
+			case Calendar.MONDAY:
+				return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
+			default:
+				return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
+			}
+		}
+		int[] retArr = new int[valList.size()];
+		int i=0;
+		for (String day : valList) {
+			retArr[i] = Integer.parseInt(day);
+			i++;
+		}
+		return retArr;
 	}
 
 
