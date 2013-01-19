@@ -28,6 +28,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.SwitchPreference;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,13 +43,15 @@ public class SettingsActivity extends PreferenceActivity {
 	private List<Snapshot> snapShots;
 	public IDataManager DM;
 
-	private ListPreference loadSnapshot; 
-	private ListPreference deleteSnapshot;
+	//private ListPreference loadSnapshot; 
+	//private ListPreference deleteSnapshot;
+	private SwitchPreference ProfilingSwitch;
+	private Preference ProfilingPref;
 	private Preference FixPreference;
-	private Preference NumberPreference;
+	//private Preference NumberPreference;
 	private Preference HelpPref;
 	private Preference AboutPref;
-	private Preference SaveSnapshotPref;
+	//private Preference SaveSnapshotPref;
 	private int widgetID;
 	
 	private final String LOG_TAG = "SettingsActivity";
@@ -76,9 +79,11 @@ public class SettingsActivity extends PreferenceActivity {
 		DM = new DataManager(this);
 		snapShots = DM.loadAllSnapshots();
 		
-		prepareLoadScreenshotPref();
+		/*prepareLoadScreenshotPref();
 		prepareSaveSnapshotPref();
-		prepareDeleteSnapshotPref();
+		prepareDeleteSnapshotPref();*/
+		prepareSwitchPref();
+		prepareProfPref();
 		prepareFixPref();
 		prepareNumPickrPref();
 		prepareHelpBtn();
@@ -97,8 +102,18 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	/************************* Preparing Functions ****************************/
-	private void prepareLoadScreenshotPref() {
-		// TODO Auto-generated method stub
+	private void prepareSwitchPref() {
+		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
+		ProfilingSwitch.setChecked(true); // TODO: from DB
+	}
+	
+	private void prepareProfPref() {
+		ProfilingPref = findPreference(Preferences.PROF);
+		ProfilingPref.setOnPreferenceClickListener(new ProfilingPrefClickListener());
+	}
+
+	
+	/*private void prepareLoadScreenshotPref() {
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
 		setListPreferenceData(loadSnapshot);
@@ -121,7 +136,7 @@ public class SettingsActivity extends PreferenceActivity {
 		SaveSnapshotPref = findPreference(Preferences.SAVE);
 		SaveSnapshotPref.setKey(String.format(Preferences.SAVE, widgetID));
 		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
-	}
+	}*/
 	
 	@SuppressLint("NewApi")
 	private void prepareFixPref() {
@@ -182,6 +197,15 @@ public class SettingsActivity extends PreferenceActivity {
 
 	/************************* End of Preparing Functions ****************************/
 
+	public class ProfilingPrefClickListener implements OnPreferenceClickListener {
+
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			Intent NumPickrIntent = new Intent(preference.getContext(), SettingsDaysPickrDialog.class);
+			startActivity(NumPickrIntent);
+			return false;
+		}
+	}
 
 
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
@@ -225,7 +249,7 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 	
-	public class SetNumberOf extends DialogFragment {
+	public static class SetNumberOf extends DialogFragment {
 	    @Override
 	    public Dialog onCreateDialog(Bundle savedInstanceState) {
 	        // Use the Builder class for convenient dialog construction
@@ -247,7 +271,7 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	
-	public class SavePreferenceClickListener implements OnPreferenceClickListener {
+	/*public class SavePreferenceClickListener implements OnPreferenceClickListener {
 
 		private final Context fContext;
 
@@ -353,7 +377,7 @@ public class SettingsActivity extends PreferenceActivity {
 			}
 			return false;
 		}
-	}
+	}*/
 	
 	public class onFixPreferenceClickListener implements OnPreferenceClickListener {
 

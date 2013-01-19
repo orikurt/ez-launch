@@ -1,91 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:title="@string/pref_grp_data">
-	  
-	  <ListPreference 
-	      android:key="LoadSnap-%d"
-	      android:summary="@string/picksnap"
-	      android:defaultValue="0"
-	      android:title="@string/loadSnapshot" />
-	    		
-  		<Preference 
-	      android:key="SaveSnap-%d"
-	      android:summary="@string/saveText"
-	      android:title="@string/save" />
-  		
-  		 <ListPreference 
-	      android:key="DeleteSnap-%d"
-	      android:defaultValue="0"
-	      android:title="@string/DeleteSnapshot" />
-  		
-  </PreferenceCategory>
-	  
   
-
-
-  
-  
-  <PreferenceCategory android:title="@string/behavior">
-
-  	  <Preference
+     
+	<PreferenceCategory android:title="@string/behavior">
+		<Preference
   	        android:key="fixApps-%d"
   	      	android:title="@string/fixAppsOnScreen"
   	      	android:summary="@string/pickApps" 
         	android:persistent = "true"
-  	      />
-  	  <Preference
-  	        android:key="iconNumber-%d"
+			/>
+  	  
+		<Preference
+			android:key="iconNumber-%d"
   	      	android:title="@string/appsPerScreen"
   	      	android:summary="@string/appsPerScreenDescription" 
         	android:persistent = "true"
-  	      />
-  	   
+			/>
+	</PreferenceCategory>
   	  
-  	  <!-- MultiSelectListPreference
-  	      	android:key="fixApps-%d"
-  	      	android:title="@string/fixAppsOnScreen"
-  	      	android:summary="@string/pickApps" 
+	
+	<PreferenceCategory android:title="@string/profiling">
+		<SwitchPreference
+			android:key="prof_enable-%d"
+  	      	android:switchTextOff="@string/prof_off"
+  	      	android:switchTextOn="@string/prof_on"
+  	      	android:summaryOff="@string/prof_sum_off"
+  	      	android:summaryOn="@string/prof_sum_on" 
         	android:persistent = "true"
-        	android:defaultValue="@array/empty_array"/-->
-  	      	
-  	      	 
-  	  
-  </PreferenceCategory>
-  
- <!-- <PreferenceCategory android:title="@string/pref_grp_layout">
-	  
-	  <ListPreference
-	  		android:key="BGImage-%d"
-	  		android:summary="@string/black"
-	  		android:title="@string/background" />		  		
-  
-  </PreferenceCategory>
-  --> 
-  		  	
-  <PreferenceCategory android:title="@string/pref_grp_general">
+			/>
+		
+		<Preference
+  	        android:key="prof-%d"
+  	      	android:title="@string/days_title"
+  	      	android:summary="@string/days_summary" 
+        	android:persistent = "true"
+			/>
+	</PreferenceCategory>
+	
+		
+	<!-- PreferenceCategory android:title="@string/pref_grp_data">
+		<ListPreference 
+			android:key="LoadSnap-%d"
+			android:summary="@string/picksnap"
+			android:defaultValue="0"
+			android:title="@string/loadSnapshot"
+			/>
+	    		
+  		<Preference 
+		    android:key="SaveSnap-%d"
+		    android:summary="@string/saveText"
+		    android:title="@string/save"
+		    />
   		
-      <Preference 
+		<ListPreference 
+			android:key="DeleteSnap-%d"
+			android:defaultValue="0"
+			android:title="@string/DeleteSnapshot"
+			/>	
+	</PreferenceCategory-->
+
+  		  	
+	<PreferenceCategory android:title="@string/pref_grp_general">
+		<Preference 
 		    android:title="@string/help" 
-		    android:key="help-%d"/>
-		    
-		<!--android:dialogMessage="@string/helptext" 
-		    android:dialogTitle="@string/help_summary"
-		    android:negativeButtonText="Forgetabout'it"
-		    android:positiveButtonText="OK"/>
-		 -->
-		           
+		    android:key="help-%d"
+		    />  
 		
 		<Preference 
 		    android:title="@string/about" 
-		    android:key="ABOUT" />  		
-  
-  </PreferenceCategory>
-  
-  <!-- <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/button_text"
-    />
- -->
+		    android:key="ABOUT"
+			/>  		
+	</PreferenceCategory>
+
 </PreferenceScreen>

@@ -87,5 +87,13 @@
 	<string name="save_button">Save</string>
 	<string name="dialog_delete">Pick a snapshot to delete from the database</string>
 	<string name="DeleteSnapshot">Delete Snapshot</string>
+	
+	<string name="profiling">Profiling</string>
+	<string name="days_title">Working days</string>
+	<string name="days_summary">Select your working days</string>
+	<string name="prof_off">Off</string>
+	<string name="prof_on">On</string>
+	<string name="prof_sum_off">Profiling Disabled</string>
+	<string name="prof_sum_on">Profiling Enabled</string> 
 
 </resources>
