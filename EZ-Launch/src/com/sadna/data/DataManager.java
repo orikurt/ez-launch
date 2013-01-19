@@ -674,23 +674,12 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	public int[] getWorkingHours() {
 		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_HOURS, null);
 		if (valList == null) {
-			Calendar cal = Calendar.getInstance();
-			cal.getFirstDayOfWeek();
-			switch (cal.getFirstDayOfWeek()) {
-			case Calendar.SATURDAY:
-				return new int[]{Calendar.SATURDAY ,Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY};
-			case Calendar.SUNDAY:
-				return new int[]{Calendar.SUNDAY ,Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY};
-			case Calendar.MONDAY:
-				return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
-			default:
-				return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
-			}
+			return new int[]{8,0,18,0};
 		}
 		int[] retArr = new int[valList.size()];
 		int i=0;
-		for (String day : valList) {
-			retArr[i] = Integer.parseInt(day);
+		for (String time : valList) {
+			retArr[i] = Integer.parseInt(time);
 			i++;
 		}
 		return retArr;
