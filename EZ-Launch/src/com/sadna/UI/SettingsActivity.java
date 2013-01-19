@@ -235,6 +235,11 @@ public class SettingsActivity extends PreferenceActivity {
 
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
+			
+			if (newValue.getClass() != HashSet.class) {
+				return false;
+			}
+			
 			int[] temp = new int[((HashSet<String>)newValue).size()];
 			int i = 0;
 			for (String day : (HashSet<String>)newValue) {

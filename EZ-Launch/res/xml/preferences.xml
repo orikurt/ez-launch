@@ -35,7 +35,6 @@
   	      	android:title="@string/days_title"
   	      	android:summary="@string/days_summary" 
   	      	android:entries="@array/Days"
-  	      	android:entryValues="@array/Days"
         	android:persistent = "true"
 			/>
 	</PreferenceCategory>
