@@ -90,7 +90,8 @@
 	
 	<string name="profiling">Profiling</string>
 	<string name="days_title">Working days</string>
-	<string name="days_summary">Select your working days</string>
+	<string name="days_summary">Select weekdays for your WORK profile</string>
+	<string name="switch_title">Enable Profiling</string>
 	<string name="prof_off">Off</string>
 	<string name="prof_on">On</string>
 	<string name="prof_sum_off">Profiling Disabled</string>

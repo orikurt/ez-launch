@@ -23,6 +23,7 @@
 	<PreferenceCategory android:title="@string/profiling">
 		<SwitchPreference
 			android:key="prof_enable-%d"
+			android:title="@string/switch_title"
   	      	android:switchTextOff="@string/prof_off"
   	      	android:switchTextOn="@string/prof_on"
   	      	android:summaryOff="@string/prof_sum_off"
