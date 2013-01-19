@@ -30,4 +30,15 @@ public interface IDataManager {
 	public Snapshot getSelectedSnapshotFiltered(Snapshot s,int id);
 	public List<Snapshot> loadSnapshots(List<String> snapshotsNameList);
 	
+	
+	public void setProfolingState(boolean state);
+	public boolean getProfolingState();
+	
+	public void setWorkingDays(int[] workingDays);
+	public int[] getWorkingDays();
+	
+	
+	public void setWorkingHours(int startHours,int startMinutes,int endHours,int endMinutes);
+	public int[] getWorkingHours();
+	
 }
