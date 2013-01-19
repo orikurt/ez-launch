@@ -442,12 +442,14 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 //			return generateValidSnapshot();
 //		} else {
 			//Snapshot ret = loadSnapshot(selected);
-			Snapshot ret = loadSnapshot(getProperSnapshotName()); 
-			if (ret == null) {
+			selectedSnapshot = loadSnapshot(getProperSnapshotName()); 
+			if (selectedSnapshot == null) {
 				// the Db has a corrupted snapshot ! generating a new one
-				return generateValidSnapshot();
+				selectedSnapshot = generateValidSnapshot();
+				return selectedSnapshot;
+				
 			}
-			return ret;
+			return selectedSnapshot;
 //		}		
 	}
 
@@ -733,6 +735,16 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	{
 	    final Date now = new Date();
 	    return now.after(s) && now.before(e);
+	}
+
+	@Override
+	public double getAvaregeScore() {
+		Snapshot temp = getSelectedSnapshotFiltered(0);
+		double sum = 0;
+		for (IWidgetItemInfo iWidgetItemInfo : temp) {
+			sum += iWidgetItemInfo.getScore();
+		}
+		return sum/temp.size();
 	}
 
 

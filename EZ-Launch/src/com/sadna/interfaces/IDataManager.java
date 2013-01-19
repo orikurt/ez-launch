@@ -41,4 +41,6 @@ public interface IDataManager {
 	public void setWorkingHours(int startHours,int startMinutes,int endHours,int endMinutes);
 	public int[] getWorkingHours();
 	
+	public double getAvaregeScore();
+	
 }
