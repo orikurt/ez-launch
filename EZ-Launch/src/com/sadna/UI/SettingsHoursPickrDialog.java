@@ -24,7 +24,7 @@ public class SettingsHoursPickrDialog  extends Activity {
 		final DataManager dm = new DataManager(this.getBaseContext());
 
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.settings_time_pickr);
+		setContentView(R.layout.settings_time_pickr);
 		
 		RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(0, 23, this);
 		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
@@ -36,7 +36,6 @@ public class SettingsHoursPickrDialog  extends Activity {
 		});
 
 		// add RangeSeekBar to layout
-		setContentView(R.layout.settings_time_pickr);
 		ViewGroup PrefLayout = (ViewGroup) findViewById(R.id.rangeSeekContainer);
 		PrefLayout.addView(seekBar);
 		
