@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -395,46 +396,70 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			throw new NullPointerException();
 		}
 		selectedSnapshot = snap;
-		selectedSnapshot.getSnapshotInfo().setSnapshotName(getProperSnapshoName());
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putString(SELECTED_SNAPSHOT, snap.getSnapshotInfo().getSnapshotName());
-		editor.commit();
+		selectedSnapshot.getSnapshotInfo().setSnapshotName(getProperSnapshotName());
+//		SharedPreferences.Editor editor = sharedPreferences.edit();
+//		editor.putString(SELECTED_SNAPSHOT, snap.getSnapshotInfo().getSnapshotName());
+//		editor.commit();
 		return true;
 	}
 
-	private String getProperSnapshoName(){
-		return String.format(StatisticsService.RESERVED_SNAPSHOT, "Workday Noon");
+	private String getProperSnapshotName(){
+		if (!getProfolingState()) {
+			return String.format(StatisticsService.RESERVED_SNAPSHOT, "Profiling Off");
+		}
+		Calendar cal = Calendar.getInstance();
+		int today = cal.get(Calendar.DAY_OF_WEEK);
+		
+		if (isWorkingDay(today)) {
+			if (isNowBetweenDateTime(dateFromHourMin(getWorkingHours()[0], getWorkingHours()[1]), dateFromHourMin(getWorkingHours()[2], getWorkingHours()[3]))) {
+				return String.format(StatisticsService.RESERVED_SNAPSHOT, "Working day Work hours");	
+			}
+			return String.format(StatisticsService.RESERVED_SNAPSHOT, "Working day off work");
+		}
+		return String.format(StatisticsService.RESERVED_SNAPSHOT, "Weekend");
 	}
 
 	@Override
 	public Snapshot getSelectedSnapshot() {
 		if (selectedSnapshot != null) {
-			return selectedSnapshot;
+			String properSnapshotName = getProperSnapshotName();
+			if (selectedSnapshot.getSnapshotInfo().getSnapshotName().equals(properSnapshotName)) {
+				return selectedSnapshot;	
+			}
+			saveSnapshot(selectedSnapshot);
+			Snapshot selectedSnapshotTemp = loadSnapshot(properSnapshotName);
+			if (selectedSnapshotTemp != null) {
+				selectedSnapshot = selectedSnapshotTemp;
+			}else{
+				selectedSnapshot.getSnapshotInfo().setSnapshotName(properSnapshotName);
+			}
+			
+			
 		}
-		String selected = sharedPreferences.getString(SELECTED_SNAPSHOT,BAD_SNAPSHOT);
-		if (selected.toString().equals(BAD_SNAPSHOT)) {
-			// DB is empty - Generate first snapshot
-			return generateValidSnapshot();
-		} else {
-			Snapshot ret = loadSnapshot(selected);
+//		String selected = sharedPreferences.getString(SELECTED_SNAPSHOT,BAD_SNAPSHOT);
+//		if (selected.toString().equals(BAD_SNAPSHOT)) {
+//			// DB is empty - Generate first snapshot
+//			return generateValidSnapshot();
+//		} else {
+			//Snapshot ret = loadSnapshot(selected);
+			Snapshot ret = loadSnapshot(getProperSnapshotName()); 
 			if (ret == null) {
 				// the Db has a corrupted snapshot ! generating a new one
 				return generateValidSnapshot();
 			}
 			return ret;
-		}		
+//		}		
 	}
 
 	private Snapshot generateValidSnapshot() {
 		Date currDate = new Date();
-		ISnapshotInfo snapshotInfo = new SnapshotInfo(StatisticsService.RESERVED_SNAPSHOT, currDate);
+		ISnapshotInfo snapshotInfo = new SnapshotInfo(getProperSnapshotName(), currDate);
 		Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
 		currSnapshot.removeDuplicateEntries();
 		this.saveSnapshot(currSnapshot);
 		this.setSelectedSnapshot(currSnapshot);
 		return currSnapshot;
 	}
-
 
 	private List<IWidgetItemInfo> getInstalledAppsInfo() {
 		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
@@ -686,6 +711,29 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 
+	private Date dateFromHourMin(int hours,int minutes)
+	{
+		final GregorianCalendar gc = new GregorianCalendar();
+		gc.set(Calendar.HOUR_OF_DAY, hours);
+		gc.set(Calendar.MINUTE, minutes);
+		gc.set(Calendar.SECOND, 0);
+		gc.set(Calendar.MILLISECOND, 0);
+		return gc.getTime();
+	}
+	boolean isWorkingDay(int day){
+		int[] days = getWorkingDays();
+		for (int i : days) {
+			if (i == day) {
+				return true;
+			}
+		}
+		return false;
+	}
+	boolean isNowBetweenDateTime(final Date s, final Date e)
+	{
+	    final Date now = new Date();
+	    return now.after(s) && now.before(e);
+	}
 
 
 	//	private String getInsertOrReplaceQuery2(String table,String fields[], String values[]){
