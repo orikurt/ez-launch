@@ -35,34 +35,25 @@ public class SettingsHoursPickrDialog  extends Activity {
 		        }
 		});
 
-		// add RangeSeekBar to pre-defined layout
+		// add RangeSeekBar to layout
 		setContentView(R.layout.settings_time_pickr);
 		ViewGroup PrefLayout = (ViewGroup) findViewById(R.id.rangeSeekContainer);
 		PrefLayout.addView(seekBar);
 		
-/*
-		// TimePicker
-		final TimePicker timePK = (TimePicker) findViewById(R.id.timePicker1);
-
-		
-		// button
-		final Button btn = (Button) findViewById(R.id.button);
-		// Perform action on click
+		final Button btn = (Button) findViewById(R.id.buttonSave);
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
-
+				// Save to DB
 				finish();
 			}
 		});
 		
 		final Button btnCancel = (Button) findViewById(R.id.buttonCancel);
-		// Perform action on click
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
-
 				finish();
 			}
 		});
-*/
+
 	}
 }
