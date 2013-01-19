@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.sadna.UI.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.sadna.data.DataManager;
@@ -20,13 +21,16 @@ public class SettingsHoursPickrDialog  extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_time_pickr);
-		
-		RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(0, 23, this);
-		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
+		final TextView leftText = (TextView) findViewById(R.id.clockLeft);
+		final TextView rightText = (TextView) findViewById(R.id.clockRight);
+		RangeSeekBar<Double> seekBar = new RangeSeekBar<Double>(0.0, 23.5, this);
+		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Double>() {
 		        @Override
-		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Double minValue, Double maxValue) {
 		                // handle changed range values
-		                Log.i("LOG", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+		                Log.d("LOG", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
+		                leftText.setText(minValue.toString());
+		                rightText.setText(minValue.toString());
 		        }
 		});
 
