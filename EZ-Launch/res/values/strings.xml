@@ -27,7 +27,7 @@
 
     <string-array name="empty_array" />
 
-    <string name="loading">Loading EZ-Launch...</string>
+    <string name="loading">Loading EZ-Launch</string>
     <string name="save">Save Snapshot</string>
     <string name="select_contact_group">Contact group</string>
     <string name="allcontacts">All Contacts *</string>
