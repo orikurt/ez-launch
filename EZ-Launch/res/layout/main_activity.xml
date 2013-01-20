@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+	>
+
+    <TextView
+	    android:id="@+id/displayname"
+	    android:layout_height="fill_parent"
+	    android:layout_width="fill_parent"
+	    android:textColor="#f0f0f0" 
+	    android:gravity="center"             
+	    android:minLines="3" 
+	    android:maxLines="3" 
+	    android:text="@string/insert_widget" 
+	    android:textStyle="bold" 
+	    android:textSize="20dp" 
+	    android:focusable="false" 
+	    android:layout_marginLeft="1dp" 
+	    android:layout_marginRight="1dp"/>
+    
+</LinearLayout>

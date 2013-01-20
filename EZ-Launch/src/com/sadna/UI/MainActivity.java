@@ -44,6 +44,6 @@ public class MainActivity extends Activity {
 		}
 		
 		// Widget doesn't exist - Tell user to put widgets
-		setContentView(R.layout.main);
+		setContentView(R.layout.main_activity);
 	}
 }
