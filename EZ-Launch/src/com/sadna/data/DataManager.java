@@ -557,7 +557,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			int end = Math.min(((id + 1) * getApplicationLimit()),snap.size());
 			if (id < 0 ) {
 				start = 0;
-				end = getApplicationLimit();
+				end = Math.min(getApplicationLimit(),snap.size());
 			}
 			return new Snapshot(snap.getSnapshotInfo() ,snap.subList(start, end));
 		}
