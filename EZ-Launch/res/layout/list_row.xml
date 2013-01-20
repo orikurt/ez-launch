@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_selector"
@@ -22,7 +23,9 @@
             android:id="@+id/APP_list_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:src="@drawable/rihanna" />
+            android:src="@drawable/rihanna"
+            tools:ignore="ContentDescription" />
+
     </LinearLayout>
 
     <!-- Title Of Song -->
@@ -34,10 +37,13 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Rihanna Love the way lie"
-        android:textColor="#040404"
-        android:textSize="15dp"
+        android:textColor="#f7f7f7"
+        android:textSize="15sp"
         android:textStyle="bold"
-        android:typeface="sans" />
+        android:typeface="sans"
+        tools:ignore="HardcodedText" />
+    <!-- android:textColor="#040404" -->
+
 
     <!-- Artist Name -->
 
@@ -64,7 +70,8 @@
             android:layout_marginBottom="2dp"
             android:background="@null"
             android:padding="10dp"
-            android:src="@drawable/arrowleft" />
+            android:src="@drawable/arrowleft"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/arrowRight"
@@ -74,7 +81,8 @@
             android:layout_marginBottom="2dp"
             android:background="@null"
             android:padding="10dp"
-            android:src="@drawable/arrowright" />
+            android:src="@drawable/arrowright"
+            tools:ignore="ContentDescription" />
 
         <ViewFlipper
             android:id="@+id/viewFlipper1"
