@@ -11,22 +11,22 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/clockLeft"
+            android:id="@+id/clockRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="3dip"
+            android:layout_marginRight="10dip"
             android:text="DigitalClock"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/clockRight"
+            android:id="@+id/clockLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="3dip"
+            android:layout_marginLeft="10dip"
             android:text="DigitalClock"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
@@ -34,7 +34,8 @@
     <FrameLayout
         android:id="@+id/rangeSeekContainer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" 
+        android:layout_margin="5dip"/>
 
     <LinearLayout
         android:id="@+id/linearLayout2"

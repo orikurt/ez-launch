@@ -408,7 +408,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		int today = cal.get(Calendar.DAY_OF_WEEK);
 		
 		if (isWorkingDay(today)) {
-			if (isNowBetweenDateTime(dateFromHourMin(getWorkingHours()[0], getWorkingHours()[1]), dateFromHourMin(getWorkingHours()[2], getWorkingHours()[3]))) {
+			int[] a = getWorkingHours();
+			if (isNowBetweenDateTime(dateFromHourMin(a[0]), dateFromHourMin(a[1]))) {
 				return String.format(StatisticsService.RESERVED_SNAPSHOT, "Working day Work hours");	
 			}
 			return String.format(StatisticsService.RESERVED_SNAPSHOT, "Working day off work");
@@ -679,13 +680,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	@Override
-	public void setWorkingHours(int startHours,int startMinutes,int endHours,int endMinutes) {
+	public void setWorkingHours(int startMinutes,int endMinutes) {
 		// TODO Auto-generated method stub
 		Set<String> valList = new TreeSet<String>();
 
-		valList.add(Integer.toString(startHours));
 		valList.add(Integer.toString(startMinutes));
-		valList.add(Integer.toString(endHours));
 		valList.add(Integer.toString(endMinutes));
 
 		SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -696,22 +695,28 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	@Override
 	public int[] getWorkingHours() {
 		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_HOURS, null);
-		if (valList == null) {
-			return new int[]{8,0,18,0};
+		if ((valList == null) || (valList.size() != 2)) {
+			return new int[]{(8*60),(18*60)};
 		}
-		int[] retArr = new int[valList.size()];
-		int i=0;
+		int[] retArr = new int[2];
+		List<Integer> l = new ArrayList<Integer>();
 		for (String time : valList) {
-			retArr[i] = Integer.parseInt(time);
-			i++;
+			l.add(Integer.parseInt(time));
+		}
+		Collections.sort(l);
+		for (int i = 0; i < retArr.length; i++) {
+			retArr[i] = l.get(i);
 		}
 		return retArr;
 	}
 
 
-	private Date dateFromHourMin(int hours,int minutes)
+	private Date dateFromHourMin(int m)
 	{
 		final GregorianCalendar gc = new GregorianCalendar();
+		int hours  = (int) TimeUnit.MINUTES.toHours(m);
+		int minutes = m - (hours * 60); 
+		
 		gc.set(Calendar.HOUR_OF_DAY, hours);
 		gc.set(Calendar.MINUTE, minutes);
 		gc.set(Calendar.SECOND, 0);
