@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -29,27 +30,13 @@ public class SettingsListActivity extends PreferenceActivity{
 		this.setTitle(R.string.fixAppsOnScreen);
 
 		dm = new DataManager(getApplicationContext());
-		//appList = new ArrayList<IWidgetItemInfo>();
-
-		
-		//String xml = parser.getXmlFromUrl(URL); // getting XML from URL
-		//Document doc = parser.getDomElement(xml); // getting DOM element
-		
-		//NodeList nl = doc.getElementsByTagName(KEY_SONG);
-		// looping through all song nodes <song>
+	
 		snap = dm.getSelectedSnapshot();
-//		for (IWidgetItemInfo wi : snap) {
-//			
-//
-//			// adding HashList to ArrayList
-//			appList.add(wi);
-//		}
 
 		
 
 		list=(ListView)findViewById(android.R.id.list);
-		//list=(ListView)findViewById(R.id.list);
-		
+	
 		// Getting adapter by passing xml data ArrayList
         adapter=new LazyAdapter(this, snap);        
         list.setAdapter(adapter);
@@ -61,16 +48,28 @@ public class SettingsListActivity extends PreferenceActivity{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-							
 
 			}
 		});		
-	}	
+        
+        
+		final Button btn = (Button) findViewById(R.id.cancel_button);
+		btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {  
+				finish();
+			}
+		});
+		
+		// ok_button
+		final Button btnCancel = (Button) findViewById(R.id.ok_button);
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {  
 
-	@Override
-	public void onPause(){
-		super.onPause();
-		dm.setSelectedSnapshot(snap);
-		dm.saveSnapshot(snap);
-	}
+				//dm.setApplicationLimit(numberPK.getValue());
+				dm.saveSnapshot(snap);
+				finish();
+			}
+		});
+
+	}	
 }
