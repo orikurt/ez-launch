@@ -28,14 +28,14 @@ public class SettingsHoursPickrDialog  extends Activity {
 		final TextView rightText = (TextView) findViewById(R.id.clockRight);
 
 
-		final RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(0, (24*60)-1, this);
+		final RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(0, (24*6)-1, this);
 
 		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 			@Override
 			public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 				// handle changed range values
-				leftText.setText(formatTime(minValue));
-				rightText.setText(formatTime(maxValue));
+				leftText.setText(formatTime(minValue*10));
+				rightText.setText(formatTime(maxValue*10));
 			}
 		});
 
@@ -46,16 +46,16 @@ public class SettingsHoursPickrDialog  extends Activity {
 		int[] hours = dm.getWorkingHours();
 		if (hours.length == 2) {
 
-			seekBar.setSelectedMinValue(hours[0]);
-			seekBar.setSelectedMaxValue(hours[1]);
+			seekBar.setSelectedMinValue(hours[0]/10);
+			seekBar.setSelectedMaxValue(hours[1]/10);
 			leftText.setText(formatTime(hours[0]));
 			rightText.setText(formatTime(hours[1]));
 		}
 		final Button btn = (Button) findViewById(R.id.buttonSave);
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
-				Integer selectedMinValue = seekBar.getSelectedMinValue();
-				Integer selectedMaxValue = seekBar.getSelectedMaxValue();
+				Integer selectedMinValue = seekBar.getSelectedMinValue() * 10;
+				Integer selectedMaxValue = seekBar.getSelectedMaxValue() * 10;
 				dm.setWorkingHours( selectedMinValue, selectedMaxValue);
 				finish();
 			}
