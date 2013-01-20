@@ -11,7 +11,13 @@
         android:divider="#404040"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_selector" />
-
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="?android:attr/dividerVertical"
+		android:layout_alignBottom="@android:id/list"/>
+	
     <LinearLayout
         android:id="@+id/linearLayout1"
         style="?android:attr/buttonBarStyle"
