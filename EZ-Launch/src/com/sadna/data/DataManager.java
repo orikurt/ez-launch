@@ -539,7 +539,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	}
 
 	class ApplicationListCache{
-		private static final int TRESHOLD = 7;
+		private static final int TRESHOLD = 12;
 		Date date;
 		private Snapshot snap;
 
