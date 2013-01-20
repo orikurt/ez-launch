@@ -30,14 +30,14 @@ public class SettingsNumPickrDialog extends Activity {
 		numberPK.setWrapSelectorWheel(true);
 		numberPK.setValue(dm.getApplicationLimit());
 
-	/*	//Hide keyboard
+		//Hide keyboard
 		InputMethodManager imm = (InputMethodManager)getSystemService(
 				Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(numberPK.getWindowToken(), 0);
 
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		numberPK.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);*/
+		numberPK.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
 		// cancel_button
 		final Button btn = (Button) findViewById(R.id.cancel_button);
