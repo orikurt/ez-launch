@@ -1,8 +1,10 @@
 package com.sadna.UI;
 
+import java.util.concurrent.TimeUnit;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,35 +25,59 @@ public class SettingsHoursPickrDialog  extends Activity {
 		setContentView(R.layout.settings_time_pickr);
 		final TextView leftText = (TextView) findViewById(R.id.clockLeft);
 		final TextView rightText = (TextView) findViewById(R.id.clockRight);
-		RangeSeekBar<Double> seekBar = new RangeSeekBar<Double>(0.0, 23.5, this);
-		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Double>() {
-		        @Override
-		        public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Double minValue, Double maxValue) {
-		                // handle changed range values
-		                Log.d("LOG", "User selected new range values: MIN=" + minValue + ", MAX=" + maxValue);
-		                leftText.setText(minValue.toString());
-		                rightText.setText(minValue.toString());
-		        }
+
+
+		final RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(0, (24*60)-1, this);
+
+		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
+			@Override
+			public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+				// handle changed range values
+				leftText.setText(formatTime(minValue));
+				rightText.setText(formatTime(maxValue));
+			}
 		});
 
 		// add RangeSeekBar to layout
 		ViewGroup PrefLayout = (ViewGroup) findViewById(R.id.rangeSeekContainer);
 		PrefLayout.addView(seekBar);
-		
+
+		int[] hours = dm.getWorkingHours();
+		if (hours.length == 2) {
+
+			seekBar.setSelectedMinValue(hours[0]);
+			seekBar.setSelectedMaxValue(hours[1]);
+			leftText.setText(formatTime(hours[0]));
+			rightText.setText(formatTime(hours[1]));
+		}
 		final Button btn = (Button) findViewById(R.id.buttonSave);
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
-				// Save to DB
+				Integer selectedMinValue = seekBar.getSelectedMinValue();
+				Integer selectedMaxValue = seekBar.getSelectedMaxValue();
+				dm.setWorkingHours( selectedMinValue, selectedMaxValue);
 				finish();
 			}
 		});
-		
+
 		final Button btnCancel = (Button) findViewById(R.id.buttonCancel);
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
 				finish();
 			}
 		});
+
+	}
+
+	@SuppressLint("DefaultLocale")
+	private String formatTime(int d) {
+		// TODO Auto-generated method stub
+
+
+		int hours  = (int) TimeUnit.MINUTES.toHours(d);
+		int minutes = d - (hours * 60); 
+
+		return String.format("%02d:%02d", hours,minutes);
 
 	}
 }
