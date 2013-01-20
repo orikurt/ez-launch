@@ -7,17 +7,11 @@ import com.sadna.widgets.application.R;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
-
-	int[] widgets;
-	Context c;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +26,6 @@ public class MainActivity extends Activity {
 	    }
 		
 		// Start Statistics Service
-	    Log.d("MOR", "Start Statistics Service");
 		startService(new Intent(this, StatisticsService.class));
 	}
 	
@@ -40,13 +33,17 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 
-		c = this.getBaseContext();
-		widgets = Preferences.getAllWidgetIds(c);
+		// Check for widgets on screen
+		Context c = this.getBaseContext();
+		int[] widgets = Preferences.getAllWidgetIds(c);
 		if (widgets.length != 0) {
+			
+			// Widget exists - Start settings activity
 			startActivity(new Intent(this.getBaseContext(), SettingsActivity.class));
 			finish();
 		}
+		
+		// Widget doesn't exist - Tell user to put widgets
 		setContentView(R.layout.main);
 	}
-
 }
