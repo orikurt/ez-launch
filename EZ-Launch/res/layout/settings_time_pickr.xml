@@ -36,21 +36,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:layout_margin="5dip"/>
-
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="?android:attr/dividerVertical" />
+	
     <LinearLayout
         android:id="@+id/linearLayout2"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp" >
 
         <Button
             android:id="@+id/buttonCancel"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel" />
         <Button
             android:id="@+id/buttonSave"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
