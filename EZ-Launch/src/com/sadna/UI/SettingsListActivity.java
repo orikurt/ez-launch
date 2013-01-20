@@ -32,7 +32,7 @@ public class SettingsListActivity extends PreferenceActivity{
 	
 		snap = dm.getSelectedSnapshot();
 
-		
+		dm.saveSnapshot(snap);
 
 		list=(ListView)findViewById(android.R.id.list);
 	
@@ -55,6 +55,7 @@ public class SettingsListActivity extends PreferenceActivity{
 		final Button btn = (Button) findViewById(R.id.cancel_button);
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
+				dm.setSelectedSnapshot(dm.loadSnapshot(snap.getSnapshotInfo().getSnapshotName()));
 				finish();
 			}
 		});
