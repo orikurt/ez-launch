@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:text="  Set Number of Icons:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
+        android:text="Set Number of Icons:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <NumberPicker
+        android:id="@+id/numberPicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+    
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="?android:attr/dividerVertical" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="3dp" >
+        android:layout_gravity="fill_horizontal">
 
         <Button
-            android:id="@+id/buttonCancel"
+            android:id="@+id/button1"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/button"
-        	style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:id="@+id/button2"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/ok" />
-
     </LinearLayout>
 
-    <NumberPicker
-        android:id="@+id/numberPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center" />
-
-</RelativeLayout>
+</LinearLayout>

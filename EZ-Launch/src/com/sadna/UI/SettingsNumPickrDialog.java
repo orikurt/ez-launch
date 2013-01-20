@@ -23,7 +23,7 @@ public class SettingsNumPickrDialog extends Activity {
 		setContentView(R.layout.settings_num_pickr);
 
 		// numberPicker
-		final NumberPicker numberPK = (NumberPicker) findViewById(R.id.numberPicker);
+		final NumberPicker numberPK = (NumberPicker) findViewById(R.id.numberPicker1);
 		numberPK.setMaxValue(50);
 		numberPK.setMinValue(1);
 		numberPK.setWrapSelectorWheel(true);
@@ -39,7 +39,7 @@ public class SettingsNumPickrDialog extends Activity {
 		numberPK.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
 		// button
-		final Button btn = (Button) findViewById(R.id.button);
+		final Button btn = (Button) findViewById(R.id.button1);
 		// Perform action on click
 		btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
@@ -49,7 +49,7 @@ public class SettingsNumPickrDialog extends Activity {
 			}
 		});
 		
-		final Button btnCancel = (Button) findViewById(R.id.buttonCancel);
+		final Button btnCancel = (Button) findViewById(R.id.button2);
 		// Perform action on click
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {  
