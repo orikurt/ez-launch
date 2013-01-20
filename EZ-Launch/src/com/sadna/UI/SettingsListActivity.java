@@ -32,6 +32,7 @@ public class SettingsListActivity extends PreferenceActivity{
 	
 		snap = dm.getSelectedSnapshot();
 
+		dm.validateIntegrity();
 		dm.saveSnapshot(snap);
 
 		list=(ListView)findViewById(android.R.id.list);
