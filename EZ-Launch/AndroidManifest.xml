@@ -48,11 +48,14 @@
 				<action android:name="com.sadna.widgets.application.PREFS" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.sadna.UI.SettingsListActivity">
+		
+		<activity android:name="com.sadna.UI.SettingsListActivity"
+		    android:theme="@android:style/Theme.Holo.Dialog" >
 			<intent-filter>
 				<action android:name=".SettingsListActivity" />
 			</intent-filter>
 		</activity>
+		
 		<activity android:name="com.sadna.UI.SettingsNumPickrDialog"
 		   			 android:theme="@android:style/Theme.Holo.Dialog" >
 			<intent-filter>
