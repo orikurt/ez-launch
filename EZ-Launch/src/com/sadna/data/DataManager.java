@@ -553,6 +553,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 
 		public Snapshot getSplitlist(int id) {
+			if (snap.size() == 0) {
+				return new Snapshot(snap.getSnapshotInfo() ,new ArrayList<IWidgetItemInfo>());
+			}
 			int start = Math.min(id * getApplicationLimit(),snap.size() - 1);
 			int end = Math.min(((id + 1) * getApplicationLimit()),snap.size());
 			if (id < 0 ) {
