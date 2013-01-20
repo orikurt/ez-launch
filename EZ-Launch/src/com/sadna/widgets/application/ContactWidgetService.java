@@ -152,6 +152,9 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	}
 
 	public RemoteViews getLoadingView() {
+		if ((mData == null) || (mData.size() < 1)) {
+			return null;
+		}
 		IWidgetItemInfo item = mData.get(0);
 		int itemresid = R.layout.gridviewitem_ics;
 		RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemresid);
