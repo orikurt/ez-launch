@@ -58,7 +58,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-		Log.d(TAG, "onUpdate");
+		//Log.d(TAG, "onUpdate");
 		
 		// If no specific widgets requested, collect list of all
 		if (appWidgetIds == null) {
@@ -70,7 +70,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			return;
 		}
 
-		Log.d(TAG, "appWidgetIds[0]=" + appWidgetIds[0]);
+		//Log.d(TAG, "appWidgetIds[0]=" + appWidgetIds[0]);
 
 
 		final int N = appWidgetIds.length;
@@ -83,45 +83,45 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public abstract int getWidth();
 
-	public void logIntent(Intent intent, boolean extended) {
-		if (extended)
-			Log.d(TAG, "------------Log Intent------------");
-		Log.d(TAG, "Action       : " + intent.getAction());
-		if (!extended)
-			return;
-		Log.d(TAG, "Data         : " + intent.getDataString());
-		Log.d(TAG, "Component    : " + intent.getComponent().toString());
-		Log.d(TAG, "Package      : " + intent.getPackage());
-		Log.d(TAG, "Flags        : " + intent.getFlags());
-		Log.d(TAG, "Scheme       : " + intent.getScheme());
-		Log.d(TAG, "SourceBounds : " + intent.getSourceBounds());
-		Log.d(TAG, "Type         : " + intent.getType());
-		Bundle extras = intent.getExtras();
-		if (extras != null) {
-			Log.d(TAG, "--Extras--");
-
-			for(String key : extras.keySet()) {
-				Log.d(TAG, key + " --> " + extras.get(key));
-			}
-			Log.d(TAG, "----------");
-		}
-		Set<String> cats = intent.getCategories();
-		if (cats != null) {
-			Log.d(TAG, "--Categories--");
-			for(String cat : cats) {
-				Log.d(TAG, " --> " + cat);
-			}
-			Log.d(TAG, "--------------");
-		}
-		Log.d(TAG, "----------------------------------");
-	}
+//	public void logIntent(Intent intent, boolean extended) {
+//		if (extended)
+//			Log.d(TAG, "------------Log Intent------------");
+//		Log.d(TAG, "Action       : " + intent.getAction());
+//		if (!extended)
+//			return;
+//		Log.d(TAG, "Data         : " + intent.getDataString());
+//		Log.d(TAG, "Component    : " + intent.getComponent().toString());
+//		Log.d(TAG, "Package      : " + intent.getPackage());
+//		Log.d(TAG, "Flags        : " + intent.getFlags());
+//		Log.d(TAG, "Scheme       : " + intent.getScheme());
+//		Log.d(TAG, "SourceBounds : " + intent.getSourceBounds());
+//		Log.d(TAG, "Type         : " + intent.getType());
+//		Bundle extras = intent.getExtras();
+//		if (extras != null) {
+//			Log.d(TAG, "--Extras--");
+//
+//			for(String key : extras.keySet()) {
+//				Log.d(TAG, key + " --> " + extras.get(key));
+//			}
+//			Log.d(TAG, "----------");
+//		}
+//		Set<String> cats = intent.getCategories();
+//		if (cats != null) {
+//			Log.d(TAG, "--Categories--");
+//			for(String cat : cats) {
+//				Log.d(TAG, " --> " + cat);
+//			}
+//			Log.d(TAG, "--------------");
+//		}
+//		Log.d(TAG, "----------------------------------");
+//	}
 
 	@SuppressLint("NewApi")
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d(TAG, "Contact Widget - onReceive");
+		//Log.d(TAG, "Contact Widget - onReceive");
 		final String action = intent.getAction();
-		logIntent(intent, true);
+		//logIntent(intent, true);
 
 
 		if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
@@ -133,14 +133,14 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			}
 		}
 		else if (StatisticsService.SNAPSHOT_UPDATE.equals(action)) {
-			Log.d(TAG, "onReceive- calling onupdate");
+			//Log.d(TAG, "onReceive- calling onupdate");
 
 			// Generate appWidgetManager
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			ComponentName thisWidget = new ComponentName(context, getClass());
 			int [] widgetIDs = appWidgetManager.getAppWidgetIds(thisWidget);
 			for (int id : widgetIDs) {
-				Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
+				//Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
 				appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
 			}
 		}
@@ -150,7 +150,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			context.startService(serviceIntent);
 		}
 		else if (!mImpl.onReceive(context, intent)) {
-			Log.d(TAG, "onReceive- calling onReceive for mImpl");
+			//Log.d(TAG, "onReceive- calling onReceive for mImpl");
 			super.onReceive(context, intent);
 		}
 	}
