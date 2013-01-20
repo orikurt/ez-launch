@@ -21,7 +21,8 @@ public class SettingsNumPickrDialog extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_num_pickr);
-
+		this.setTitle(R.string.appsPerScreen);
+		
 		// numberPicker
 		final NumberPicker numberPK = (NumberPicker) findViewById(R.id.numberPicker1);
 		numberPK.setMaxValue(50);

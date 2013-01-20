@@ -26,7 +26,7 @@ public class SettingsListActivity extends PreferenceActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.configuration_list);
-		
+		this.setTitle(R.string.fixAppsOnScreen);
 
 		dm = new DataManager(getApplicationContext());
 		//appList = new ArrayList<IWidgetItemInfo>();
