@@ -23,7 +23,7 @@
         android:layout_gravity="fill_horizontal">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/cancel_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/ok_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
