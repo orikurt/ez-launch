@@ -23,6 +23,7 @@ public class SettingsHoursPickrDialog  extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_time_pickr);
+		this.setTitle(R.string.hours_title);
 		final TextView leftText = (TextView) findViewById(R.id.clockLeft);
 		final TextView rightText = (TextView) findViewById(R.id.clockRight);
 
