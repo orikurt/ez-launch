@@ -5,11 +5,12 @@ import java.util.concurrent.TimeUnit;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.view.View.OnTouchListener;
 import com.sadna.UI.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.sadna.data.DataManager;
 import com.sadna.widgets.application.R;
@@ -39,6 +40,15 @@ public class SettingsHoursPickrDialog  extends Activity {
 			}
 		});
 
+
+		seekBar.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				leftText.setText(formatTime(seekBar.getSelectedMinValue()*10));
+				rightText.setText(formatTime(seekBar.getSelectedMaxValue()*10));
+				return false;
+			}
+		});
 		// add RangeSeekBar to layout
 		ViewGroup PrefLayout = (ViewGroup) findViewById(R.id.rangeSeekContainer);
 		PrefLayout.addView(seekBar);
