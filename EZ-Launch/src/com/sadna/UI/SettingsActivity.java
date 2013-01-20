@@ -72,7 +72,7 @@ public class SettingsActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 		
 		// Add SettingsList button
-		ListView v = getListView();
+		/*ListView v = getListView();
 		Button goButton = new Button(this);
 		goButton.setText("Go!");
 		goButton.setOnClickListener(new OnClickListener() {
@@ -80,7 +80,7 @@ public class SettingsActivity extends PreferenceActivity {
 			    finish();
 			}
 		});
-		v.addFooterView(goButton);
+		v.addFooterView(goButton);*/
 				
 		
 		// Prepare
