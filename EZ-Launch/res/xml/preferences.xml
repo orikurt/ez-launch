@@ -4,13 +4,12 @@
   
      
 	<PreferenceCategory android:title="@string/behavior">
-		<Preference
+	    <Preference
   	        android:key="fixApps-%d"
   	      	android:title="@string/fixAppsOnScreen"
   	      	android:summary="@string/pickApps" 
         	android:persistent = "true"
 			/>
-  	  
 		<Preference
 			android:key="iconNumber-%d"
   	      	android:title="@string/appsPerScreen"
