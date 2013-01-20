@@ -1,18 +1,17 @@
 package com.sadna.UI;
 
-import com.sadna.data.DataManager;
-import com.sadna.data.Snapshot;
-import com.sadna.utils.LazyAdapter;
-import com.sadna.widgets.application.R;
-import com.sadna.widgets.application.R.layout;
-
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
+import com.sadna.utils.LazyAdapter;
+import com.sadna.widgets.application.R;
 
 public class SettingsListActivity extends PreferenceActivity{
 
