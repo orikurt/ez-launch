@@ -559,7 +559,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				start = 0;
 				end = Math.min(getApplicationLimit(),snap.size());
 			}
-			if (start > end) {
+			if (start < end) {
 				return new Snapshot(snap.getSnapshotInfo() ,snap.subList(start, end));	
 			}
 			return new Snapshot(snap.getSnapshotInfo() ,new ArrayList<IWidgetItemInfo>());
