@@ -41,7 +41,7 @@
     <string name="showName">Show contact name</string>
     <string name="pref_grp_data">מידע</string>
     <string name="pref_grp_layout">Layout</string>
-    <string name="pref_grp_general">General</string>
+    <string name="pref_grp_general">כללי</string>
     <string name="help">עזרה</string>
     <string name="help_summary">Troubleshoot Widget</string>
     <string name="okbtn">OK</string>
