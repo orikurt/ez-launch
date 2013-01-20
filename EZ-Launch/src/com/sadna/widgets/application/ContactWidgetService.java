@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -103,7 +104,7 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 
 	@Override
 	public RemoteViews getViewAt(int position) {
-//		Log.d(TAG, "get item at position: "+ position);
+		//Log.d(TAG, "get item at position: "+ position);
 		// position will always range from 0 to getCount() - 1.
 		IWidgetItemInfo item = mData.get(position);
 
@@ -151,9 +152,12 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	}
 
 	public RemoteViews getLoadingView() {
-		// You can create a custom loading view (for instance when getViewAt() is slow.) If you
-		// return null here, you will get the default loading view.
-		return null;
+		IWidgetItemInfo item = mData.get(0);
+		int itemresid = R.layout.gridviewitem_ics;
+		RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemresid);
+		rv.setTextViewText(R.id.displayname, "Loading");			
+		rv.setImageViewBitmap(R.id.photo,BitmapFactory.decodeResource(mContext.getResources(), R.drawable.loading));
+		return rv;
 	}
 
 	public int getViewTypeCount() {
