@@ -552,9 +552,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			if (snap == null) {
 				return false;
 			}
-			long diff = (new Date()).getTime() - date.getTime();
-			long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
-			return (seconds < TRESHOLD);
+
+			return (getSeconds(date)< TRESHOLD);
 		}
 
 		public Snapshot getSplitlist(int id) {
@@ -763,6 +762,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			}
 		}
 		return sum/temp.size();
+	}
+
+	public static long getSeconds(Date lastUpdate) {
+		long diff = (new Date()).getTime() - lastUpdate.getTime();
+		return TimeUnit.MILLISECONDS.toSeconds(diff);
 	}
 
 
