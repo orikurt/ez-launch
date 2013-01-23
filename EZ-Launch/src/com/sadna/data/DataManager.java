@@ -98,6 +98,8 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private ApplicationListCache appListCache = null;
 
+	private static Object snapshotIteratorSyncObject = new Object();;
+
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		mContext = context;
@@ -153,33 +155,33 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	public boolean saveSnapshot(Snapshot snap) {
 		SQLiteDatabase db = getWritableDatabase();
 		db.beginTransaction();
+		synchronized (snapshotIteratorSyncObject){
+			for (IWidgetItemInfo iWidgetItemInfo : snap) {
+				saveWidgetInfo(iWidgetItemInfo,db);
+			}
+			//		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
+			//				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
+			//				new String[] {snap.getSnapshotInfo().getSnapshotName(),snap.getSnapshotInfo().getLastEditedFormated()});
+			ContentValues iSSQCV = new ContentValues(2);
+			iSSQCV.put(KEY_SNAPSHOT_NAME, snap.getSnapshotInfo().getSnapshotName());
+			iSSQCV.put(COLUMN_SNAPSHOT_LAST_DATE, snap.getSnapshotInfo().getLastEditedFormated());
+			db.insertWithOnConflict(TABLE_SNAPSHOT_INFO, null, iSSQCV, SQLiteDatabase.CONFLICT_REPLACE);
+			//db.execSQL(insertSnapShotQuery);
 
-		for (IWidgetItemInfo iWidgetItemInfo : snap) {
-			saveWidgetInfo(iWidgetItemInfo,db);
+			// Update relations - the current Implementation is not perfect as it sends many queries to the DB instead of 1 query
+			for (IWidgetItemInfo widg : snap) {
+				//			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
+				//					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
+				//					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
+				ContentValues iSTWQ = new ContentValues(4);
+				iSTWQ.put(KEY_WIDGET_REF, widg.getPackageName());
+				iSTWQ.put(KEY_SNAPSHOT_REF, snap.getSnapshotInfo().getSnapshotName());
+				iSTWQ.put(COLUMN_WIDGET_SCORE, widg.getScore());
+				iSTWQ.put(COLUMN_WIDGET_STATE, widg.getItemState().getStatusCode());
+				db.insertWithOnConflict(TABLE_WIDGET_TO_SNAPSHOT, null, iSTWQ, SQLiteDatabase.CONFLICT_REPLACE);
+				//db.execSQL(insertSnapToWidgetQuery);
+			}
 		}
-		//		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
-		//				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
-		//				new String[] {snap.getSnapshotInfo().getSnapshotName(),snap.getSnapshotInfo().getLastEditedFormated()});
-		ContentValues iSSQCV = new ContentValues(2);
-		iSSQCV.put(KEY_SNAPSHOT_NAME, snap.getSnapshotInfo().getSnapshotName());
-		iSSQCV.put(COLUMN_SNAPSHOT_LAST_DATE, snap.getSnapshotInfo().getLastEditedFormated());
-		db.insertWithOnConflict(TABLE_SNAPSHOT_INFO, null, iSSQCV, SQLiteDatabase.CONFLICT_REPLACE);
-		//db.execSQL(insertSnapShotQuery);
-
-		// Update relations - the current Implementation is not perfect as it sends many queries to the DB instead of 1 query
-		for (IWidgetItemInfo widg : snap) {
-			//			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
-			//					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
-			//					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
-			ContentValues iSTWQ = new ContentValues(4);
-			iSTWQ.put(KEY_WIDGET_REF, widg.getPackageName());
-			iSTWQ.put(KEY_SNAPSHOT_REF, snap.getSnapshotInfo().getSnapshotName());
-			iSTWQ.put(COLUMN_WIDGET_SCORE, widg.getScore());
-			iSTWQ.put(COLUMN_WIDGET_STATE, widg.getItemState().getStatusCode());
-			db.insertWithOnConflict(TABLE_WIDGET_TO_SNAPSHOT, null, iSTWQ, SQLiteDatabase.CONFLICT_REPLACE);
-			//db.execSQL(insertSnapToWidgetQuery);
-		}
-
 		db.setTransactionSuccessful();
 		db.endTransaction();
 		db.close();
@@ -455,7 +457,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Date currDate = new Date();
 		ISnapshotInfo snapshotInfo = new SnapshotInfo(getProperSnapshotName(), currDate);
 		Snapshot currSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-		currSnapshot.removeDuplicateEntries();
+		synchronized (snapshotIteratorSyncObject) {
+			currSnapshot.removeDuplicateEntries();
+		}
 		this.saveSnapshot(currSnapshot);
 		this.setSelectedSnapshot(currSnapshot);
 		return currSnapshot;
@@ -503,23 +507,24 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		boolean shouldValidate = false;
 		IWidgetItemInfo itemCopy;
 
-		for (IWidgetItemInfo item: s){
-			itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
-			if (item.getBitmap(mContext) == null) {
-				shouldValidate = true;
-				continue;
+		synchronized (snapshotIteratorSyncObject){
+			for (IWidgetItemInfo item: s){
+				itemCopy = iWidgetItemInfoFactory(item.getPackageName(), item.getLabel(), item.getScore(),item.getItemState(),item.getLastUse());
+				if (item.getBitmap(mContext) == null) {
+					shouldValidate = true;
+					continue;
+				}
+				if (item.getPackageName().equals(getDefaultLauncher())) {
+					continue;
+				}
+				if (item.getItemState() == ItemState.MUST){
+					must.add(itemCopy);
+				}else if (item.getItemState() == ItemState.AUTO) {
+					filtered.add(itemCopy);
+				}
 			}
-			if (item.getPackageName().equals(getDefaultLauncher())) {
-				continue;
-			}
-			if (item.getItemState() == ItemState.MUST){
-				must.add(itemCopy);
-			}else if (item.getItemState() == ItemState.AUTO) {
-				filtered.add(itemCopy);
-			}
+
 		}
-
-
 
 
 		//filtered.add(new ConfigurationItemInfo());
@@ -585,14 +590,14 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		Date currDate = new Date();
 		ISnapshotInfo snapshotInfo = new SnapshotInfo(StatisticsService.RESERVED_SNAPSHOT, currDate);
 		Snapshot tempSnapshot = new Snapshot(snapshotInfo, getInstalledAppsInfo());
-		
-		snap.removeAll(tempSnapshot);
-		
-		for (IWidgetItemInfo iWidgetItemInfo : snap) {
-			deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
-			snapMain.remove(iWidgetItemInfo);
+		synchronized (snapshotIteratorSyncObject) {
+			snap.removeAll(tempSnapshot);
+			for (IWidgetItemInfo iWidgetItemInfo : snap) {
+				deleteWidgetItemInfo(iWidgetItemInfo.getPackageName());
+				snapMain.remove(iWidgetItemInfo);
+			}
+			setSelectedSnapshot(snapMain);
 		}
-		setSelectedSnapshot(snapMain);
 	}
 	
 
@@ -752,8 +757,10 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return 1;
 		}
 		double sum = 0;
-		for (IWidgetItemInfo iWidgetItemInfo : temp) {
-			sum += iWidgetItemInfo.getScore();
+		synchronized (snapshotIteratorSyncObject){
+			for (IWidgetItemInfo iWidgetItemInfo : temp) {
+				sum += iWidgetItemInfo.getScore();
+			}
 		}
 		return sum/temp.size();
 	}
