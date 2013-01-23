@@ -1,12 +1,7 @@
 
 package com.sadna.widgets.application;
 
-import java.util.Set;
-
-import com.sadna.data.Snapshot;
-import com.sadna.data.WidgetItemInfo;
-import com.sadna.service.StatisticsService;
-
+import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
@@ -16,18 +11,24 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract.QuickContact;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.WindowManager;
+
+import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
+import com.sadna.data.WidgetItemInfo;
+import com.sadna.service.StatisticsService;
 
 
 public abstract class ContactWidget extends AppWidgetProvider {
+	private static final int THRESHOLD = 15;
+
+
+
+	public Date lastUpdate = new Date();
 
 	public interface WidgetImplementation {
 		public void setWidget(ContactWidget widget);
@@ -139,9 +140,13 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			ComponentName thisWidget = new ComponentName(context, getClass());
 			int [] widgetIDs = appWidgetManager.getAppWidgetIds(thisWidget);
-			for (int id : widgetIDs) {
-				//Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
-				appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
+			if (DataManager.getSeconds(lastUpdate) > THRESHOLD) {
+
+				lastUpdate = new Date();
+				for (int id : widgetIDs) {
+					//Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
+					appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
+				}
 			}
 		}
 		else if (AppWidgetManager.ACTION_APPWIDGET_ENABLED.equals(action)) {

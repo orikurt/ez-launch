@@ -292,6 +292,9 @@ public class StatisticsService extends Service{
 					item.setScore(0);
 					item.setItemState(ItemState.NOT_ALLOWED);
 					Log.d(LOG_TAG, pkgName + " Added to black List");
+					Log.d(LOG_TAG, "Got SERVICE_UPDATE");
+					//updateReservedSnapshot();
+					notifyWidget();
 				}
 			}
 			else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
