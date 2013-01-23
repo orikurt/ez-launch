@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="@dimen/widgetThumbnailHeight"
     android:orientation="vertical" >
 
-    <ImageView
+    <ImageButton
         android:id="@+id/photo"
         android:layout_width="match_parent"
         android:layout_height="@dimen/widgetImageHeight"
         android:layout_marginTop="10dip"
+        android:background="@drawable/thumb_selector"
         android:scaleType="centerInside"
-        android:src="@drawable/no_image" />
-    <!-- android:background="@drawable/thumb_holo" -->
+        android:src="@drawable/no_image"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/displayname"
@@ -27,6 +29,7 @@
         android:text="bldsdbsdb"
         android:textColor="@android:color/white"
         android:textSize="13sp"
-        android:typeface="sans" />
+        android:typeface="sans"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>
