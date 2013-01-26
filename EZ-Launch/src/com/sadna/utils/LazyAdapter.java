@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,14 +24,16 @@ public class LazyAdapter extends BaseAdapter {
 
 	private Activity activity;
 	private List<IWidgetItemInfo> data;
+	private List<IWidgetItemInfo> originalData;
+	private Filter filter = null;
 	private static LayoutInflater inflater=null;
 
 
 	public LazyAdapter(Activity a, List<IWidgetItemInfo> d) {
 		activity = a;
-		data=d;
+		data=originalData=d;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+		filter = new filter_here();
 	}
 
 	public int getCount() {
@@ -138,6 +141,59 @@ public class LazyAdapter extends BaseAdapter {
 		return null;
 		
 	}
+	
+	
+    public Filter getFilter() {
+        // TODO Auto-generated method stub
+        return filter ;
+    }
+	
+	
+	public class filter_here extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            // TODO Auto-generated method stub
+
+            FilterResults Result = new FilterResults();
+            // if constraint is empty return the original names
+            if(constraint.length() == 0 ){
+                Result.values = originalData;
+                Result.count = originalData.size();
+                return Result;
+            }
+
+            List<IWidgetItemInfo> filteredData = new ArrayList<IWidgetItemInfo>();
+            String filterString = constraint.toString().toLowerCase();
+            IWidgetItemInfo filterableString;
+
+            for(int i = 0; i<originalData.size(); i++){
+                filterableString = originalData.get(i);
+                if(filterableString.getLabel().toLowerCase().contains(filterString)){
+                    filteredData.add(filterableString);
+                }
+            }
+            Result.values = filteredData;
+            Result.count = filteredData.size();
+
+            return Result;
+        }
+
+//        @SuppressWarnings("unchecked")
+		@Override
+        protected void publishResults(CharSequence constraint,FilterResults results) {
+            // TODO Auto-generated method stub
+//        	try {
+        		data = ((List<IWidgetItemInfo>) results.values);	
+//			} catch (ClassCastException e) {
+//				e.printStackTrace();
+//				data = originalData;
+//			}
+//            
+            notifyDataSetChanged();
+        }
+
+    }
 
 
 }

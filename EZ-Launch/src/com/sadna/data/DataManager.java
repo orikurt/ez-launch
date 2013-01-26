@@ -106,6 +106,12 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		sharedPreferences = context.getSharedPreferences(APPLICATION_SHARED_PREFRENCES, Context.MODE_PRIVATE);
 
 	}
+	
+	public static void SortSnapshot(Snapshot snapshot){
+		synchronized (snapshotIteratorSyncObject) {
+			Collections.sort(snapshot);
+		}
+	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
