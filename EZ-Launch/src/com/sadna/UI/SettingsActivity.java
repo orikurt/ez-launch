@@ -3,21 +3,8 @@ package com.sadna.UI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.Set;
-
 import java.util.List;
-
-
-import com.sadna.UI.RangeSeekBar.OnRangeSeekBarChangeListener;
-import com.sadna.data.DataManager;
-import com.sadna.data.Snapshot;
-
-import com.sadna.interfaces.IDataManager;
-import com.sadna.service.StatisticsService;
-import com.sadna.widgets.application.Preferences;
-import com.sadna.widgets.application.R;
-import com.sadna.widgets.application.R.string;
-import com.sadna.widgets.application.R.xml;
+import java.util.Set;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -30,19 +17,18 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.preference.SwitchPreference;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SeekBar;
+
+import com.sadna.data.DataManager;
+import com.sadna.data.Snapshot;
+import com.sadna.interfaces.IDataManager;
+import com.sadna.service.StatisticsService;
+import com.sadna.widgets.application.Preferences;
+import com.sadna.widgets.application.R;
 
 @SuppressLint("NewApi")
 public class SettingsActivity extends PreferenceActivity {
@@ -65,6 +51,7 @@ public class SettingsActivity extends PreferenceActivity {
 	private final String LOG_TAG = "SettingsActivity";
 	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,12 +98,14 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	/************************* Preparing Functions ****************************/
+	@SuppressWarnings("deprecation")
 	private void prepareSwitchPref() {
 		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
 		ProfilingSwitch.setChecked(DM.getProfolingState());
 		ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void prepareProfDays() {
 		ProfilingDays = (MultiSelectListPreference) findPreference(Preferences.PROF_DAYS);
 		Calendar cal = Calendar.getInstance();
@@ -201,6 +190,7 @@ public class SettingsActivity extends PreferenceActivity {
 		ProfilingDays.setOnPreferenceChangeListener(new onProfDaysChangeListener());
 	}
 
+	@SuppressWarnings("deprecation")
 	private void prepareProfHours() {
 		ProfilingHours = findPreference(Preferences.PROF_HOURS);
 		ProfilingHours.setOnPreferenceClickListener(new onHoursPickrClickListener());
@@ -231,6 +221,7 @@ public class SettingsActivity extends PreferenceActivity {
 		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
 	}*/
 	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	private void prepareFixPref() {
 		FixPreference = findPreference(Preferences.FIX);
@@ -238,6 +229,7 @@ public class SettingsActivity extends PreferenceActivity {
 		FixPreference.setOnPreferenceClickListener(new onFixPreferenceClickListener());
 	}
 	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	private void prepareNumPickrPref() {
 		FixPreference = findPreference(Preferences.ICONNUMBER);
@@ -245,6 +237,7 @@ public class SettingsActivity extends PreferenceActivity {
 		FixPreference.setOnPreferenceClickListener(new onNumPickrClickListener());
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void prepareAboutBtn() {
 		// TODO Auto-generated method stub
 		AboutPref = findPreference("ABOUT");
@@ -252,6 +245,7 @@ public class SettingsActivity extends PreferenceActivity {
 		AboutPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this, true));
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void prepareHelpBtn() {
 
 		HelpPref = findPreference(Preferences.HELP);
@@ -261,6 +255,7 @@ public class SettingsActivity extends PreferenceActivity {
 
 	}
 	
+	@SuppressWarnings("unused")
 	private void setListPreferenceData(ListPreference Pref) {
 		// TODO Auto-generated method stub
 		//Here you put the names of the screenshots
@@ -323,6 +318,7 @@ public class SettingsActivity extends PreferenceActivity {
 	
 	public class onProfDaysChangeListener implements OnPreferenceChangeListener {
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			
@@ -357,6 +353,7 @@ public class SettingsActivity extends PreferenceActivity {
 			fAbout  = about;
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
 			AlertDialog alertDialog;

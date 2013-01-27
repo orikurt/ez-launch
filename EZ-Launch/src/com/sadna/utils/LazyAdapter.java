@@ -179,7 +179,7 @@ public class LazyAdapter extends BaseAdapter {
             return Result;
         }
 
-//        @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
 		@Override
         protected void publishResults(CharSequence constraint,FilterResults results) {
             // TODO Auto-generated method stub
