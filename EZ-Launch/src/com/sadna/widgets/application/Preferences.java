@@ -41,6 +41,7 @@ public class Preferences {
     public static final int CLICK_SHWCONTACT = 2;
     public static final int CLICK_SMS = 3;
     
+    public static final String DONATE = "donate";
     public static final String HELP = "help-%d";
     public static final String FIX = "fixApps-%d";
     public static final String ICONNUMBER = "iconNumber-%d";
