@@ -47,6 +47,7 @@
     <string name="okbtn">OK</string>
     <string name="helptext">EZ-Launch will display apps on your home screen, depending on your usage.\n\n*Use fixed apps to check which apps should always appear on your homescreen, and which apps should never appear.\n\n*Use profiling to get a different arrangement for your applications for different hours on different days of the week.</string>
     <string name="about">About</string>
+    <string name="donate">Donate</string>
     <string name="abouttext">EZ-Launch is an application that provides a better, nicer and safer arrangement for your homescreen. \n\nFor any questions or feedback please contact our development team at EZLaunch@gmail.com</string>
     <string name="columncount">Columns</string>
     <string name="background_alpha">Background alpha</string>
