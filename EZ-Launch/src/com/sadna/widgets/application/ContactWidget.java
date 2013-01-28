@@ -24,11 +24,11 @@ import com.sadna.service.StatisticsService;
 
 
 public abstract class ContactWidget extends AppWidgetProvider {
-	private static final int THRESHOLD = 15;
+	private static final int THRESHOLD = 4;
 
 
 
-	public Date lastUpdate = new Date();
+
 
 	public interface WidgetImplementation {
 		public void setWidget(ContactWidget widget);
@@ -140,9 +140,9 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			ComponentName thisWidget = new ComponentName(context, getClass());
 			int [] widgetIDs = appWidgetManager.getAppWidgetIds(thisWidget);
-			if (DataManager.getSeconds(lastUpdate) > THRESHOLD) {
+			if ((DataManager.lastWidgerUpdate == null) || (DataManager.getSeconds(DataManager.lastWidgerUpdate) > THRESHOLD)) {
 
-				lastUpdate = new Date();
+				DataManager.lastWidgerUpdate = new Date();
 				for (int id : widgetIDs) {
 					//Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
 					appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
