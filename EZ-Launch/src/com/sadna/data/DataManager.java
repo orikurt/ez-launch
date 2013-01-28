@@ -98,7 +98,9 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	private ApplicationListCache appListCache = null;
 
-	private static Object snapshotIteratorSyncObject = new Object();;
+	private static Object snapshotIteratorSyncObject = new Object();
+
+	public static Date lastWidgerUpdate;
 
 	public DataManager(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
