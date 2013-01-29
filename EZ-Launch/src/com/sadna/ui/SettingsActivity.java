@@ -13,6 +13,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -29,6 +30,7 @@ import com.sadna.interfaces.IDataManager;
 import com.sadna.service.StatisticsService;
 import com.sadna.widgets.application.Preferences;
 import com.sadna.widgets.application.R;
+
 
 @SuppressLint("NewApi")
 public class SettingsActivity extends PreferenceActivity {
@@ -56,7 +58,12 @@ public class SettingsActivity extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Build GUI from resource
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+			return;
+		}
 		addPreferencesFromResource(R.xml.preferences);
+		
+		
 		
 		// Add SettingsList button
 		/*ListView v = getListView();
@@ -98,15 +105,24 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	/************************* Preparing Functions ****************************/
+	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	private void prepareSwitchPref() {
-		ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
-		ProfilingSwitch.setChecked(DM.getProfolingState());
-		ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+//			do something
+		}else{
+			ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
+			ProfilingSwitch.setChecked(DM.getProfolingState());
+			ProfilingSwitch.setOnPreferenceChangeListener(new onProfSwitchChangeListener());
+		}
 	}
 	
+	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	private void prepareProfDays() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
+			return;
+		}
 		ProfilingDays = (MultiSelectListPreference) findPreference(Preferences.PROF_DAYS);
 		Calendar cal = Calendar.getInstance();
 		CharSequence[] entries, entryValues;
@@ -295,6 +311,7 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}*/
 	
+	@SuppressLint("NewApi")
 	public class onProfSwitchChangeListener implements OnPreferenceChangeListener {
 
 		@Override
