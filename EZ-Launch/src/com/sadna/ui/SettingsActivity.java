@@ -1,4 +1,4 @@
-package com.sadna.UI;
+package com.sadna.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;

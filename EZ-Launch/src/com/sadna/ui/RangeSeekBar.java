@@ -1,4 +1,4 @@
-package com.sadna.UI;
+package com.sadna.ui;
 import java.math.BigDecimal;
 
 import com.sadna.widgets.application.R;

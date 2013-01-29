@@ -1,4 +1,4 @@
-package com.sadna.UI;
+package com.sadna.ui;
 
 import com.sadna.service.StatisticsService;
 import com.sadna.widgets.application.Preferences;
