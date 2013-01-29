@@ -1,4 +1,4 @@
-package com.sadna.UI;
+package com.sadna.ui;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.View.OnTouchListener;
-import com.sadna.UI.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.sadna.data.DataManager;
+import com.sadna.ui.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.sadna.widgets.application.R;
 
 public class SettingsHoursPickrDialog  extends Activity {

@@ -13,9 +13,9 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 
-import com.sadna.UI.SettingsActivity;
 import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IWidgetItemInfo;
+import com.sadna.ui.SettingsActivity;
 import com.sadna.widgets.application.R;
 
 public class ConfigurationItemInfo implements IWidgetItemInfo{

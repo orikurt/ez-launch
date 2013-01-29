@@ -1,4 +1,4 @@
-package com.sadna.UI;
+package com.sadna.ui;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.sadna.UI;
+package com.sadna.ui;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
