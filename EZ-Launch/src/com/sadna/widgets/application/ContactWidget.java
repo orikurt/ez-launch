@@ -40,14 +40,14 @@ public abstract class ContactWidget extends AppWidgetProvider {
 	// Tag for logging
 	private static final String TAG = "sadna.ContactWidget";
 
-	
+
 
 	private WidgetImplementation mImpl;
 	Snapshot snap;
 
 	public ContactWidget() {
 		super();
-		
+
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 			mImpl = new ImplSWA();
 		else
@@ -60,7 +60,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
 		//Log.d(TAG, "onUpdate");
-		
+
 		// If no specific widgets requested, collect list of all
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
@@ -84,38 +84,38 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public abstract int getWidth();
 
-//	public void logIntent(Intent intent, boolean extended) {
-//		if (extended)
-//			Log.d(TAG, "------------Log Intent------------");
-//		Log.d(TAG, "Action       : " + intent.getAction());
-//		if (!extended)
-//			return;
-//		Log.d(TAG, "Data         : " + intent.getDataString());
-//		Log.d(TAG, "Component    : " + intent.getComponent().toString());
-//		Log.d(TAG, "Package      : " + intent.getPackage());
-//		Log.d(TAG, "Flags        : " + intent.getFlags());
-//		Log.d(TAG, "Scheme       : " + intent.getScheme());
-//		Log.d(TAG, "SourceBounds : " + intent.getSourceBounds());
-//		Log.d(TAG, "Type         : " + intent.getType());
-//		Bundle extras = intent.getExtras();
-//		if (extras != null) {
-//			Log.d(TAG, "--Extras--");
-//
-//			for(String key : extras.keySet()) {
-//				Log.d(TAG, key + " --> " + extras.get(key));
-//			}
-//			Log.d(TAG, "----------");
-//		}
-//		Set<String> cats = intent.getCategories();
-//		if (cats != null) {
-//			Log.d(TAG, "--Categories--");
-//			for(String cat : cats) {
-//				Log.d(TAG, " --> " + cat);
-//			}
-//			Log.d(TAG, "--------------");
-//		}
-//		Log.d(TAG, "----------------------------------");
-//	}
+	//	public void logIntent(Intent intent, boolean extended) {
+	//		if (extended)
+	//			Log.d(TAG, "------------Log Intent------------");
+	//		Log.d(TAG, "Action       : " + intent.getAction());
+	//		if (!extended)
+	//			return;
+	//		Log.d(TAG, "Data         : " + intent.getDataString());
+	//		Log.d(TAG, "Component    : " + intent.getComponent().toString());
+	//		Log.d(TAG, "Package      : " + intent.getPackage());
+	//		Log.d(TAG, "Flags        : " + intent.getFlags());
+	//		Log.d(TAG, "Scheme       : " + intent.getScheme());
+	//		Log.d(TAG, "SourceBounds : " + intent.getSourceBounds());
+	//		Log.d(TAG, "Type         : " + intent.getType());
+	//		Bundle extras = intent.getExtras();
+	//		if (extras != null) {
+	//			Log.d(TAG, "--Extras--");
+	//
+	//			for(String key : extras.keySet()) {
+	//				Log.d(TAG, key + " --> " + extras.get(key));
+	//			}
+	//			Log.d(TAG, "----------");
+	//		}
+	//		Set<String> cats = intent.getCategories();
+	//		if (cats != null) {
+	//			Log.d(TAG, "--Categories--");
+	//			for(String cat : cats) {
+	//				Log.d(TAG, " --> " + cat);
+	//			}
+	//			Log.d(TAG, "--------------");
+	//		}
+	//		Log.d(TAG, "----------------------------------");
+	//	}
 
 	@SuppressLint("NewApi")
 	@Override
@@ -145,7 +145,12 @@ public abstract class ContactWidget extends AppWidgetProvider {
 				DataManager.lastWidgerUpdate = new Date();
 				for (int id : widgetIDs) {
 					//Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
-					appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
+
+					}else
+					{
+						appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.my_gridview);
+					}
 				}
 			}
 		}
@@ -173,7 +178,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public void onClick(Context context, int appWidgetId, Rect targetRect, Intent LaunchIntent) {
 		//Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(uri.toString());
-		
+
 		if (LaunchIntent.getCategories().contains(WidgetItemInfo.BLACK_LIST_APP_INTENT)) {
 			addToBlackList(context, LaunchIntent);
 			return;
@@ -192,7 +197,7 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 
 
-		
+
 		/*
 		try
 		{

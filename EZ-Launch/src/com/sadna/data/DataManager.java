@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
 import com.sadna.enums.ItemState;
 import com.sadna.interfaces.IDataManager;
@@ -659,8 +661,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return sharedPreferences.getBoolean(SETTINGS_PROFILING_STATE,true);
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void setWorkingDays(int[] workingDays) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+			return;
 		if (workingDays == null) {
 			return;
 		}
@@ -673,8 +678,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		editor.commit();
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public int[] getWorkingDays() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+			return new int[]{Calendar.MONDAY ,Calendar.TUESDAY ,Calendar.WEDNESDAY ,Calendar.THURSDAY, Calendar.FRIDAY};
 		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_DAYS, null);
 		if (valList == null) {
 			Calendar cal = Calendar.getInstance();
@@ -698,8 +706,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return retArr;
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void setWorkingHours(int startMinutes,int endMinutes) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+			return;
 		// TODO Auto-generated method stub
 		Set<String> valList = new TreeSet<String>();
 
@@ -711,8 +722,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		editor.commit();
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public int[] getWorkingHours() {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+			return new int[]{(8*60),(18*60)};
 		Set<String> valList  = sharedPreferences.getStringSet(SETTINGS_WORKING_HOURS, null);
 		if ((valList == null) || (valList.size() != 2)) {
 			return new int[]{(8*60),(18*60)};
