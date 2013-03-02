@@ -23,7 +23,6 @@
             android:id="@+id/APP_list_image"
             android:layout_width="50dip"
             android:layout_height="50dip"
-            android:src="@drawable/rihanna"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>
