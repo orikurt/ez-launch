@@ -26,7 +26,6 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 	public static final String LAUNCH_INTENT = "com.sadna.data.LAUNCH_INTENT";
 	
-	//private Drawable image;
 	private String packageName;
 	private String label;
 	private double score;
@@ -62,14 +61,12 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		try {
 			return c.getPackageManager().getApplicationIcon(packageName);
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 	@Override
 	public Bitmap getBitmap(Context c) {
-		// TODO Auto-generated method stub
 		return getImage(getImage(c));
 	}	
 
@@ -82,9 +79,6 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 		Canvas canvas = new Canvas(bmp); 
 		icon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
 		icon.draw(canvas);
-		//ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		//bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		//byte[] byteArray = stream.toByteArray();
 		return bmp;
 	}
 
@@ -122,7 +116,7 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	 * we normalize in here 
 	 * */
 	public double getScore() {
-		long diff = (new Date().getTime()) -  getLastUse().getTime();
+		long diff = (new Date().getTime()) - getLastUse().getTime();
 		long days = TimeUnit.MILLISECONDS.toDays(diff);
 		return score * Math.pow((99.0/100.0), days);
 	}
@@ -143,13 +137,11 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	};
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		/*dest.writeParcelable(image, flags);*/
 		dest.writeString(packageName);
 		dest.writeString(label);
 		dest.writeDouble(score);
@@ -177,7 +169,6 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public Date getLastUse() {
-		// TODO Auto-generated method stub
 		return this.lastUsed;
 	}
 
@@ -189,7 +180,6 @@ public class WidgetItemInfo implements IWidgetItemInfo{
 	@Override
 	public String getLastUsedFormated() {
 		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
-		// TODO Auto-generated method stub
 		return df.format(getLastUse());
 	}
 	
