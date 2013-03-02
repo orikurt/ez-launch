@@ -53,7 +53,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	//private static final String BAD_SNAPSHOT = "Bad_SnapshotXXXERROR";
 
-	public static final String DATE_FORMAT = "YYYY-MM-DD HH:MM:SS".toLowerCase(Locale.getDefault());
+	public static final String DATE_FORMAT = "yyMMddHHmmssZ";
 
 	// All Static variables
 	// Database Name
@@ -608,7 +608,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 	@Override
 	public boolean getProfolingState() {
-		return sharedPreferences.getBoolean(SETTINGS_PROFILING_STATE,true);
+		return sharedPreferences.getBoolean(SETTINGS_PROFILING_STATE,false);
 	}
 
 	@SuppressLint("NewApi")
