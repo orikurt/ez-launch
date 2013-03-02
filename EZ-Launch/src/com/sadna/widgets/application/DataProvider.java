@@ -69,11 +69,9 @@ public class DataProvider extends ContentProvider {
 		}
 
 	}
-
+	
 	private static Context ctx = null;
 	
-	
-
 	static {
 		URI_MATCHER.addURI(AUTHORITY, "data/*", URI_DATA);
 	}
@@ -86,9 +84,6 @@ public class DataProvider extends ContentProvider {
 			ctx.getContentResolver().registerContentObserver(RawContacts.CONTENT_URI,
 					true, new ContObserver());
 		}
-		
-		
-
 		return false;
 	}
 
@@ -139,23 +134,13 @@ public class DataProvider extends ContentProvider {
 		}
 	}
 
-
-
-	
 	private static List<ResolveInfo> GetInstalledApplicationsList()
 	{
-		//Context context = getContext();//getApplicationContext();
 
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = ctx.getPackageManager().queryIntentActivities( mainIntent, 0);
-		return pkgAppsList;/*
-		for (ResolveInfo resolveInfo : pkgAppsList) {
-
-			Shortcut a = new Shortcut((resolveInfo.activityInfo.loadIcon(getPackageManager())),
-					resolveInfo.activityInfo.packageName, null);
-			mList.add(a);
-		}*/
+		return pkgAppsList;
 	}
 	private static byte[] getImage(Drawable icon)
 	{
@@ -181,81 +166,11 @@ public class DataProvider extends ContentProvider {
 				name = ctx.getPackageManager().getApplicationLabel(ctx.getPackageManager().getApplicationInfo(res.activityInfo.packageName, 0)).toString();
 				
 			} catch (NameNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Object[] values = { res.labelRes, getImage(icon), name,res.activityInfo.packageName };
 			ret.addRow(values);
-			//return null;
 		}
-/*
-		Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        String[] src_projection = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME,
-                ContactsContract.Contacts.LOOKUP_KEY
-        };
-        AdressFilter flt = new AdressFilter(ctx, GroupId, NameKind);
-        String src_sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-
-        AdressFilter.NameResolver nameResolver = flt.getNameResolver();
-
-		boolean withPhone = clickActn == Preferences.CLICK_DIAL ||
-                            clickActn == Preferences.CLICK_SMS;
-        String needsPhone = withPhone ? ContactsContract.Contacts.HAS_PHONE_NUMBER + " = 1 AND " : "";
-
-        Cursor cur = ctx.getContentResolver().query(uri, src_projection, needsPhone + flt.getFilter(), flt.getFilterParams(), src_sortOrder);
-		if (cur == null || nameResolver == null) {
-			return ret;
-		}
-        cur.moveToFirst();
-		try
-		{
-			while (!cur.isAfterLast()) {
-				boolean skip = false;
-				Object[] values = new Object[projection.length];
-				long id = cur.getLong(cur.getColumnIndex(ContactsContract.Contacts._ID));
-
-				for (int i = 0, count = projection.length; i < count; i++) {
-					String column = projection[i];
-					if (DataProviderColumns._id.toString().equals(column)) {
-						values[i] = id;
-					} else if (DataProviderColumns.name.toString().equals(column)) {
-						values[i] = nameResolver.updateName(
-								    cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY)),
-									cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-					} else if (DataProviderColumns.photo.toString().equals(column)) {
-						values[i] = getImg(id);
-					} else if (DataProviderColumns.contacturi.toString().equals(column)) {
-						if (withPhone) {
-							values[i] = getPhoneUri(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY)), clickActn);
-							if (values[i] == null) {
-								skip = true;
-								break;
-							}
-						}
-						else
-						    values[i] = ContactsContract.Contacts.CONTENT_LOOKUP_URI.buildUpon()
-						                .appendPath(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY)))
-						                .appendPath(cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID)))
-						                .build().toString();
-					}
-				}
-				if (!skip)
-					ret.addRow(values);
-				cur.moveToNext();
-			}
-		}
-		finally
-		{
-			if (nameResolver != null)
-				nameResolver.close();
-			if (cur != null)
-				cur.close();
-		}
-		return ret;
-		
-		*/
 		return ret;
 	}
 

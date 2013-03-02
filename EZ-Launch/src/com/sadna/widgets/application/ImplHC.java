@@ -1,6 +1,5 @@
 package com.sadna.widgets.application;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -61,8 +60,7 @@ public class ImplHC implements ContactWidget.WidgetImplementation {
 				default: mainlayout = R.layout.main_hc1; break;
 			}
 		}
-		
-			
+					
 		RemoteViews rv = new RemoteViews(context.getPackageName(), mainlayout);
 		
 		String text = Preferences.getDisplayLabel(context, appWidgetId);

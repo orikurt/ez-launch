@@ -69,7 +69,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String KEY_SNAPSHOT_NAME = "snapshotName";
 	private static final String COLUMN_SNAPSHOT_LAST_DATE = "lastEdited";
 
-
 	// Widget info table name
 	private static final String TABLE_WIDGET_INFO = "widgetInfoTable";
 
@@ -87,7 +86,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 	private static final String KEY_SNAPSHOT_REF = "snapshotNameREF";
 	private static final String COLUMN_WIDGET_SCORE = "widgetScore";
 	private static final String COLUMN_WIDGET_STATE = "widgetState";
-
 
 	// Shared Preferences
 	private static SharedPreferences sharedPreferences;
@@ -108,7 +106,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		mContext = context;
 		sharedPreferences = context.getSharedPreferences(APPLICATION_SHARED_PREFRENCES, Context.MODE_PRIVATE);
-
 	}
 	
 	public static void SortSnapshot(Snapshot snapshot){
@@ -139,7 +136,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				+ "FOREIGN KEY(" + KEY_WIDGET_REF + ") REFERENCES " + TABLE_WIDGET_INFO + "(" + KEY_WIDGET_NAME +") ON UPDATE CASCADE ON DELETE CASCADE,"
 				+ "FOREIGN KEY(" + KEY_SNAPSHOT_REF + ") REFERENCES " + TABLE_SNAPSHOT_INFO + "(" + KEY_SNAPSHOT_NAME +") ON UPDATE CASCADE ON DELETE CASCADE" +");";
 		db.execSQL(CREATE_WIDGET_TO_SNAPSHOT_TABLE);
-
 	}
 
 	// Upgrading database
@@ -169,57 +165,37 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			for (IWidgetItemInfo iWidgetItemInfo : snap) {
 				saveWidgetInfo(iWidgetItemInfo,db);
 			}
-			//		String insertSnapShotQuery = getInsertOrReplaceQuery(TABLE_SNAPSHOT_INFO, 
-			//				new String[] {KEY_SNAPSHOT_NAME,COLUMN_SNAPSHOT_LAST_DATE}, 
-			//				new String[] {snap.getSnapshotInfo().getSnapshotName(),snap.getSnapshotInfo().getLastEditedFormated()});
 			ContentValues iSSQCV = new ContentValues(2);
 			iSSQCV.put(KEY_SNAPSHOT_NAME, snap.getSnapshotInfo().getSnapshotName());
 			iSSQCV.put(COLUMN_SNAPSHOT_LAST_DATE, snap.getSnapshotInfo().getLastEditedFormated());
 			db.insertWithOnConflict(TABLE_SNAPSHOT_INFO, null, iSSQCV, SQLiteDatabase.CONFLICT_REPLACE);
-			//db.execSQL(insertSnapShotQuery);
 
 			// Update relations - the current Implementation is not perfect as it sends many queries to the DB instead of 1 query
 			for (IWidgetItemInfo widg : snap) {
-				//			String insertSnapToWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_TO_SNAPSHOT,
-				//					new String[]{KEY_WIDGET_REF,KEY_SNAPSHOT_REF}, 
-				//					new String[]{widg.getPackageName(),snap.getSnapshotInfo().getSnapshotName()});
 				ContentValues iSTWQ = new ContentValues(4);
 				iSTWQ.put(KEY_WIDGET_REF, widg.getPackageName());
 				iSTWQ.put(KEY_SNAPSHOT_REF, snap.getSnapshotInfo().getSnapshotName());
 				iSTWQ.put(COLUMN_WIDGET_SCORE, widg.getScore());
 				iSTWQ.put(COLUMN_WIDGET_STATE, widg.getItemState().getStatusCode());
 				db.insertWithOnConflict(TABLE_WIDGET_TO_SNAPSHOT, null, iSTWQ, SQLiteDatabase.CONFLICT_REPLACE);
-				//db.execSQL(insertSnapToWidgetQuery);
 			}
 		}
 		db.setTransactionSuccessful();
 		db.endTransaction();
 		db.close();
 
-		/*
-		INSERT OR REPLACE INTO Employee (id,role,name) 
-		  VALUES (  1, 
-		            'code monkey',
-		            (select name from Employee where id = 1)
-		          );*/
 		return true;
 	}
 
 	private boolean saveWidgetInfo(IWidgetItemInfo widg, SQLiteDatabase db){
-		//		String insertWidgetQuery = getInsertOrReplaceQuery(TABLE_WIDGET_INFO, 
-		//				new String[]{KEY_WIDGET_NAME,COLUMN_WIDGET_LABEL,COLUMN_WIDGET_SCORE,COLUMN_WIDGET_STATE,COLUMN_WIDGET_LAST_DATE}, 
-		//				new String[]{widg.getPackageName(),widg.getLabel(),Double.toString(widg.getScore()),widg.getItemState().getStatusCode(),widg.getLastUsedFormated()});
 		ContentValues cv = new ContentValues(3);
 		cv.put(KEY_WIDGET_NAME, widg.getPackageName());
 		cv.put(COLUMN_WIDGET_LABEL, widg.getLabel());
 		cv.put(COLUMN_WIDGET_LAST_DATE, widg.getLastUsedFormated());
 
-
 		db.insertWithOnConflict(TABLE_WIDGET_INFO, null, cv,SQLiteDatabase.CONFLICT_REPLACE); 
-		//db.execSQL(insertWidgetQuery);
 		return true;
 	}
-	//field 
 
 	@Override
 	public boolean deleteSnapshot(String snapName) {
@@ -241,7 +217,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		db.endTransaction();
 		db.close();
 
-
 		return true;
 	}
 
@@ -255,8 +230,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		String[] whereArgs = {widgPack};
 		db.delete(TABLE_WIDGET_TO_SNAPSHOT, whereClause, whereArgs);
 
-
-		// now Delete form Snapshot Tabel
+		// now Delete form Snapshot Table
 		whereClause = KEY_WIDGET_NAME + " = ?";
 		db.delete(TABLE_WIDGET_INFO, whereClause, whereArgs);
 		db.setTransactionSuccessful();
@@ -272,7 +246,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 		return true;
 	}
-
 
 	@Override
 	public List<Snapshot> loadAllSnapshots() {
@@ -295,9 +268,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			return null;
 		}
 		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
-		//Snapshot snapArr[]=new Snapshot[c.getCount()];
 		Map<ISnapshotInfo, List<IWidgetItemInfo>> hs = new HashMap<ISnapshotInfo, List<IWidgetItemInfo>>();
-
 
 		if (c.getCount() > 0) 
 		{               
@@ -329,8 +300,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 					hs.put(si, widgList);
 				}
 
-
-
 			} while (c.moveToNext());
 			c.close();
 
@@ -342,8 +311,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		return null;
 	}
-
-
 
 	public static IWidgetItemInfo iWidgetItemInfoFactory(String packageName, String label, double score, ItemState itemState,Date lastUsed) {
 		if (packageName.equalsIgnoreCase(ConfigurationItemInfo.COM_SADNA_WIDGETS_APPLICATION_CONFIGURATION)) {
@@ -379,7 +346,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return retVal;
 	}
 
-
 	@Override
 	public Snapshot loadSnapshot(String snapName) {
 		/**
@@ -387,8 +353,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			FROM widgetInfoTable, snapshotInfoTable, widgetToSnapshotTable
 			WHERE packageName = packageNameREF AND snapshotName = snapshotNameREF AND snapshotName = 'Snapshot 0';
 		 ***/
-
-
 		String loadQuery = getBaseSelectWithJoin() + " AND " + KEY_SNAPSHOT_NAME + " = " + "\"" + snapName + "\"" + ";";
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor c = db.rawQuery(loadQuery, null);
@@ -398,7 +362,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return (retval != null) ? retval.get(0) : null;
 	}
 
-
 	@Override
 	public boolean setSelectedSnapshot(Snapshot snap) {
 		if (snap == null) {
@@ -406,9 +369,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		selectedSnapshot = snap;
 		selectedSnapshot.getSnapshotInfo().setSnapshotName(getProperSnapshotName());
-//		SharedPreferences.Editor editor = sharedPreferences.edit();
-//		editor.putString(SELECTED_SNAPSHOT, snap.getSnapshotInfo().getSnapshotName());
-//		editor.commit();
 		return true;
 	}
 
@@ -446,12 +406,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			
 			
 		}
-//		String selected = sharedPreferences.getString(SELECTED_SNAPSHOT,BAD_SNAPSHOT);
-//		if (selected.toString().equals(BAD_SNAPSHOT)) {
-//			// DB is empty - Generate first snapshot
-//			return generateValidSnapshot();
-//		} else {
-			//Snapshot ret = loadSnapshot(selected);
 			selectedSnapshot = loadSnapshot(getProperSnapshotName()); 
 			if (selectedSnapshot == null) {
 				// the Db has a corrupted snapshot ! generating a new one
@@ -459,8 +413,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 				return selectedSnapshot;
 				
 			}
-			return selectedSnapshot;
-//		}		
+			return selectedSnapshot;		
 	}
 
 	private Snapshot generateValidSnapshot() {
@@ -536,13 +489,11 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 
 		}
 
-
-		//filtered.add(new ConfigurationItemInfo());
 		Collections.sort(filtered);
 		Collections.sort(must);
 
 		must.addAll(filtered);
-		//must.add(APPLICATION_LIMIT ,new ConfigurationItemInfo());
+		
 		if (shouldValidate) {
 			validateIntegrity();
 		}
@@ -608,7 +559,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 			setSelectedSnapshot(snapMain);
 		}
 	}
-	
 
 	@Override
 	public int getApplicationLimit() {
@@ -743,7 +693,6 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		return retArr;
 	}
 
-
 	private Date dateFromHourMin(int m)
 	{
 		final GregorianCalendar gc = new GregorianCalendar();
@@ -756,6 +705,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		gc.set(Calendar.MILLISECOND, 0);
 		return gc.getTime();
 	}
+	
 	boolean isWorkingDay(int day){
 		int[] days = getWorkingDays();
 		for (int i : days) {
@@ -765,6 +715,7 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		}
 		return false;
 	}
+	
 	boolean isNowBetweenDateTime(final Date s, final Date e)
 	{
 	    final Date now = new Date();
@@ -790,24 +741,4 @@ public class DataManager extends SQLiteOpenHelper implements IDataManager {
 		long diff = (new Date()).getTime() - lastUpdate.getTime();
 		return TimeUnit.MILLISECONDS.toSeconds(diff);
 	}
-
-
-	//	private String getInsertOrReplaceQuery2(String table,String fields[], String values[]){
-	//		StringBuilder res = new StringBuilder();
-	//		res.append("INSERT OR REPLACE INTO ");
-	//		res.append(table);
-	//		res.append("( ");
-	//		for (int i = 0; i < fields.length - 1; i++) {
-	//			res.append(fields[i] + ",");	
-	//		}
-	//		res.append(fields[fields.length - 1]);
-	//		res.append(") VALUES( ");
-	//		for (int i = 0; i < values.length - 1; i++) {
-	//			res.append("\"" + values[i]+ "\"" + ",");	
-	//		}
-	//		res.append("\"" + values[values.length-1]+ "\"");
-	//		res.append(");");
-	//		return res.toString();
-	//	}
-
 }

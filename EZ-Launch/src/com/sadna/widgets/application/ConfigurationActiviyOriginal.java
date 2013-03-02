@@ -154,19 +154,7 @@ public class ConfigurationActiviyOriginal extends PreferenceActivity {
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);		
 		loadSnapshot.setKey(Preferences.get(Preferences.LOAD_SNAPSHOT, appWidgetId));
 		
-		//Here you put the names of the screenshots
-		
-		/*
-		SnapShots = DM.loadAllSnapshots();
-		int SnapShotsLength = SnapShots.size();
-		
-		//Create the snapshot value arrays and fill them with data
-		CharSequence[] Values= new CharSequence[SnapShotsLength];
-		
-		for (int i = 0; i < SnapShotsLength; i++) {
-			Values[i] = SnapShots.get(i).getSnapshot().getSnapshotName();
-		}
-		*/
+		//Here you put the names of the snapshots
 		
 		CharSequence [] Titles= new CharSequence[] {"0", "1", "2", "3", "..."};
 		CharSequence [] Values= new CharSequence[] {"0", "1", "2", "3", "..."};
@@ -174,7 +162,6 @@ public class ConfigurationActiviyOriginal extends PreferenceActivity {
 
 		loadSnapshot.setEntries(Titles);
 		loadSnapshot.setEntryValues(Values);
-		//loadSnapshot.setValue(String.valueOf(Preferences.getOnClickAction(this, appWidgetId)));
 		loadSnapshot.setValue("0");
 		
 	}

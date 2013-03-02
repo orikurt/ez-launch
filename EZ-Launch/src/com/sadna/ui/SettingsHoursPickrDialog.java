@@ -82,9 +82,6 @@ public class SettingsHoursPickrDialog  extends Activity {
 
 	@SuppressLint("DefaultLocale")
 	private String formatTime(int d) {
-		// TODO Auto-generated method stub
-
-
 		int hours  = (int) TimeUnit.MINUTES.toHours(d);
 		int minutes = d - (hours * 60); 
 

@@ -4,28 +4,14 @@ import android.content.Intent;
 
 public class LauncherIntent extends Intent {
 
-    /**
-     * 
-     */
     public static final String PNAME = "mobi.intuitit.android.hpp.";
 
-    /**
-     * 
-     * @author bo
-     * 
-     */
     public static final class Broadcast {
 
         public static final String BROADCAST_HOME_PAUSE = PNAME + "BROADCAST_HOME_PAUSE";
         public static final String BROADCAST_HOME_RESUME = PNAME + "BROADCAST_HOME_RESUME";
-
     }
 
-    /**
-     * 
-     * @author bo
-     * 
-     */
     public static final class Notification {
 
         public static final String NOTIFICATION_IN_VIEWPORT = PNAME + "NOTIFICATION_IN_VIEWPORT";
@@ -45,14 +31,8 @@ public class LauncherIntent extends Intent {
                 + "NOTIFICATION_TWEEN_ANIMATION_REPEATED";
         public static final String NOTIFICATION_TWEEN_ANIMATION_ENDED = PNAME
                 + "NOTIFICATION_TWEEN_ANIMATION_ENDED";
-
     }
 
-    /**
-     * 
-     * @author bo
-     * 
-     */
     public static final class Action {
 
         public static final String ACTION_READY = PNAME + "ACTION_READY";
@@ -79,25 +59,14 @@ public class LauncherIntent extends Intent {
 				+ "ACTION_SCROLL_WIDGET_CLEAR_IMAGE_CACHE";
     }
 
-    /**
-     * 
-     * @author bo
-     * 
-     */
     public static final class Error {
 
         public static final String ERROR_FRAME_ANIMATION = PNAME + "ERROR_FRAME_ANIMATION";
         public static final String ERROR_TWEEN_ANIMATION = PNAME + "ERROR_TWEEN_ANIMATION";
 
         public static final String ERROR_SCROLL_CURSOR = PNAME + "ERROR_SCROLL_CURSOR";
-
     }
 
-    /**
-     * 
-     * @author bo
-     * 
-     */
     public static final class Extra {
 
         public static final class Scroll {
@@ -199,10 +168,7 @@ public class LauncherIntent extends Intent {
             }
 
             /**
-             * View types used in mapping, button could use TEXTVIEW
-             * 
-             * @author Bo
-             * 
+             * View types used in mapping, button could use TEXTVIEW 
              */
             public static final class Types {
                 public static final int VIEW = 99;
@@ -226,5 +192,4 @@ public class LauncherIntent extends Intent {
 
         public static final String EXTRA_API_VERSION = PNAME + "EXTRA_API_VERSION";
     }
-
 }

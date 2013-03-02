@@ -31,23 +31,18 @@ import com.sadna.service.StatisticsService;
 import com.sadna.widgets.application.Preferences;
 import com.sadna.widgets.application.R;
 
-
 @SuppressLint("NewApi")
 public class SettingsActivity extends PreferenceActivity {
 
 	private List<Snapshot> snapShots;
 	public IDataManager DM;
 
-	//private ListPreference loadSnapshot; 
-	//private ListPreference deleteSnapshot;
 	private SwitchPreference ProfilingSwitch;
 	private MultiSelectListPreference ProfilingDays;
 	private Preference ProfilingHours;
 	private Preference FixPreference;
-	//private Preference NumberPreference;
 	private Preference HelpPref;
 	private Preference AboutPref;
-	//private Preference SaveSnapshotPref;
 	private int widgetID;
 	
 	private final String LOG_TAG = "SettingsActivity";
@@ -63,27 +58,10 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 		addPreferencesFromResource(R.xml.preferences);
 		
-		
-		
-		// Add SettingsList button
-		/*ListView v = getListView();
-		Button goButton = new Button(this);
-		goButton.setText("Go!");
-		goButton.setOnClickListener(new OnClickListener() {
-			public void onClick(final View Arg) {				
-			    finish();
-			}
-		});
-		v.addFooterView(goButton);*/
-				
-		
 		// Prepare
 		DM = new DataManager(this);
 		snapShots = DM.loadAllSnapshots();
-		
-		/*prepareLoadScreenshotPref();
-		prepareSaveSnapshotPref();
-		prepareDeleteSnapshotPref();*/
+
 		prepareSwitchPref();
 		prepareProfDays();
 		prepareProfHours();
@@ -109,7 +87,6 @@ public class SettingsActivity extends PreferenceActivity {
 	@SuppressWarnings("deprecation")
 	private void prepareSwitchPref() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
-//			do something
 		}else{
 			ProfilingSwitch = (SwitchPreference) findPreference(Preferences.PROF_ENABLE);
 			ProfilingSwitch.setChecked(DM.getProfolingState());
@@ -211,32 +188,7 @@ public class SettingsActivity extends PreferenceActivity {
 		ProfilingHours = findPreference(Preferences.PROF_HOURS);
 		ProfilingHours.setOnPreferenceClickListener(new onHoursPickrClickListener());
 	}
-	
-	/*private void prepareLoadScreenshotPref() {
-		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
-		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
-		setListPreferenceData(loadSnapshot);
-		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener(true));
-		loadSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener(true));
-	}
 
-	private void prepareDeleteSnapshotPref() {
-		
-		deleteSnapshot = (ListPreference)findPreference(Preferences.DELETE);
-		deleteSnapshot.setKey(String.format(Preferences.DELETE, widgetID));
-		// TODO Auto-generated method stub
-		setListPreferenceData(deleteSnapshot);
-		deleteSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener(false));
-		deleteSnapshot.setOnPreferenceChangeListener(new onLoadPreferenceChangeListener(false));
-	}
-
-	private void prepareSaveSnapshotPref() {
-
-		SaveSnapshotPref = findPreference(Preferences.SAVE);
-		SaveSnapshotPref.setKey(String.format(Preferences.SAVE, widgetID));
-		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
-	}*/
-	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	private void prepareFixPref() {
@@ -255,9 +207,7 @@ public class SettingsActivity extends PreferenceActivity {
 	
 	@SuppressWarnings("deprecation")
 	private void prepareAboutBtn() {
-		// TODO Auto-generated method stub
 		AboutPref = findPreference("ABOUT");
-		//AboutPref.setKey(String.format(Preferences.ABOUT, widgetID));
 		AboutPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this, true));
 	}
 	
@@ -266,15 +216,12 @@ public class SettingsActivity extends PreferenceActivity {
 
 		HelpPref = findPreference(Preferences.HELP);
 		HelpPref.setKey(String.format(Preferences.HELP, widgetID));
-
 		HelpPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this));
-
 	}
 	
 	@SuppressWarnings("unused")
 	private void setListPreferenceData(ListPreference Pref) {
-		// TODO Auto-generated method stub
-		//Here you put the names of the screenshots
+		//Here you put the names of the snaphots
 		snapShots = DM.loadAllSnapshots();
 		
 		if (snapShots == null) {
@@ -284,9 +231,7 @@ public class SettingsActivity extends PreferenceActivity {
 			return;
 		}
 
-		
 		//Create the snapshot value arrays and fill them with data
-
 		List<CharSequence> Titles= new ArrayList<CharSequence>();
 		
 		for (Snapshot snap : snapShots) {
@@ -300,16 +245,6 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	/************************* End of Preparing Functions ****************************/
-
-	/*public class ProfilingPrefClickListener implements OnPreferenceClickListener {
-
-		@Override
-		public boolean onPreferenceClick(Preference preference) {
-			Intent NumPickrIntent = new Intent(preference.getContext(), SettingsDaysPickrDialog.class);
-			startActivity(NumPickrIntent);
-			return false;
-		}
-	}*/
 	
 	@SuppressLint("NewApi")
 	public class onProfSwitchChangeListener implements OnPreferenceChangeListener {
@@ -417,115 +352,6 @@ public class SettingsActivity extends PreferenceActivity {
 	    }
 	}
 	
-	
-	/*public class SavePreferenceClickListener implements OnPreferenceClickListener {
-
-		private final Context fContext;
-
-		public SavePreferenceClickListener(Context context) 
-		{
-			fContext = context;
-		}
-		
-		private boolean saveSnapshotProcess(String value) 
-		{	
-			Snapshot snap = DM.getSelectedSnapshot();
-			String oldName = snap.getSnapshotInfo().getSnapshotName();
-			snap.getSnapshotInfo().setSnapshotName(value);
-			if (snapShots.contains(snap))
-			{
-				snap.getSnapshotInfo().setSnapshotName(oldName);
-				return false;
-			}
-			DM.saveSnapshot(snap);
-			setListPreferenceData(deleteSnapshot);
-			setListPreferenceData(loadSnapshot);
-			return true;
-		}
-		
-		
-		@Override
-		public boolean onPreferenceClick(Preference preference) {
-			
-			Context Cntxt = this.fContext;
-			AlertDialog.Builder alert = new AlertDialog.Builder(Cntxt);
-
-			alert.setTitle("Save Snapshot");
-			alert.setMessage("Enter name to save:");
-
-			
-			// Set an EditText view to get user input 
-			final EditText input = new EditText(Cntxt);
-			alert.setView(input);
-
-			alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-			  final String value = input.getText().toString();
-			  saveSnapshotProcess(value);
-				}
-			});
-			  // Do something with value!
-
-			alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				  public void onClick(DialogInterface dialog, int whichButton) {
-				    // Canceled.
-				  }
-				});
-			AlertDialog dialog = alert.create();
-			dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-			dialog.show();
-			//alert.show();
-			
-			return false;
-		}
-	}
-	
-	public class onLoadPreferenceClickListener implements OnPreferenceClickListener {
-		boolean isLoad;
-		public onLoadPreferenceClickListener(boolean bool)
-		{
-			isLoad = bool;
-		}
-
-		@Override
-		public boolean onPreferenceClick(Preference preference) {
-			if (isLoad)
-			{
-			setListPreferenceData(loadSnapshot);
-			}
-			else 
-			{
-				setListPreferenceData(deleteSnapshot);
-			}
-			return true;
-		}
-	}
-	
-	public class onLoadPreferenceChangeListener implements OnPreferenceChangeListener {
-
-		boolean isLoad;
-		
-		public onLoadPreferenceChangeListener(boolean bool)
-		{
-			isLoad = bool;
-		}
-		@Override
-		public boolean onPreferenceChange(Preference preference, Object newValue) {
-			
-			String snapName = newValue.toString();
-			if (isLoad)
-			{
-				Snapshot SnapToLoad = DM.loadSnapshot(snapName);
-				DM.setSelectedSnapshot(SnapToLoad);
-			}
-			else
-			{
-				DM.deleteSnapshot(snapName);
-			}
-			return false;
-		}
-	}*/
-	
 	public class onFixPreferenceClickListener implements OnPreferenceClickListener {
 
 		@Override
@@ -546,6 +372,3 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 }
-
-
-

@@ -26,21 +26,14 @@ import com.sadna.service.StatisticsService;
 public abstract class ContactWidget extends AppWidgetProvider {
 	private static final int THRESHOLD = 4;
 
-
-
-
-
 	public interface WidgetImplementation {
 		public void setWidget(ContactWidget widget);
 		public void onUpdate(Context context, int appWidgetId, Snapshot snap);
 		public boolean onReceive(Context context, Intent intent);
 	}
 
-
 	// Tag for logging
 	private static final String TAG = "sadna.ContactWidget";
-
-
 
 	private WidgetImplementation mImpl;
 	Snapshot snap;
@@ -58,9 +51,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-
-		//Log.d(TAG, "onUpdate");
-
 		// If no specific widgets requested, collect list of all
 		if (appWidgetIds == null) {
 			appWidgetIds = Preferences.getAllWidgetIds(context);
@@ -70,9 +60,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			Log.d(TAG, "appWidgetIds is empty");
 			return;
 		}
-
-		//Log.d(TAG, "appWidgetIds[0]=" + appWidgetIds[0]);
-
 
 		final int N = appWidgetIds.length;
 		for (int i = 0; i < N; i++) {
@@ -84,45 +71,10 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 	public abstract int getWidth();
 
-	//	public void logIntent(Intent intent, boolean extended) {
-	//		if (extended)
-	//			Log.d(TAG, "------------Log Intent------------");
-	//		Log.d(TAG, "Action       : " + intent.getAction());
-	//		if (!extended)
-	//			return;
-	//		Log.d(TAG, "Data         : " + intent.getDataString());
-	//		Log.d(TAG, "Component    : " + intent.getComponent().toString());
-	//		Log.d(TAG, "Package      : " + intent.getPackage());
-	//		Log.d(TAG, "Flags        : " + intent.getFlags());
-	//		Log.d(TAG, "Scheme       : " + intent.getScheme());
-	//		Log.d(TAG, "SourceBounds : " + intent.getSourceBounds());
-	//		Log.d(TAG, "Type         : " + intent.getType());
-	//		Bundle extras = intent.getExtras();
-	//		if (extras != null) {
-	//			Log.d(TAG, "--Extras--");
-	//
-	//			for(String key : extras.keySet()) {
-	//				Log.d(TAG, key + " --> " + extras.get(key));
-	//			}
-	//			Log.d(TAG, "----------");
-	//		}
-	//		Set<String> cats = intent.getCategories();
-	//		if (cats != null) {
-	//			Log.d(TAG, "--Categories--");
-	//			for(String cat : cats) {
-	//				Log.d(TAG, " --> " + cat);
-	//			}
-	//			Log.d(TAG, "--------------");
-	//		}
-	//		Log.d(TAG, "----------------------------------");
-	//	}
-
 	@SuppressLint("NewApi")
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		//Log.d(TAG, "Contact Widget - onReceive");
 		final String action = intent.getAction();
-		//logIntent(intent, true);
 
 
 		if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
@@ -134,8 +86,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			}
 		}
 		else if (StatisticsService.SNAPSHOT_UPDATE.equals(action)) {
-			//Log.d(TAG, "onReceive- calling onupdate");
-
 			// Generate appWidgetManager
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 			ComponentName thisWidget = new ComponentName(context, getClass());
@@ -144,7 +94,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 				DataManager.lastWidgerUpdate = new Date();
 				for (int id : widgetIDs) {
-					//Log.d(TAG, " calling notifyAppWidgetViewDataChanged for id=" + id);
 					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
 
 					}else
@@ -160,7 +109,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 			context.startService(serviceIntent);
 		}
 		else if (!mImpl.onReceive(context, intent)) {
-			//Log.d(TAG, "onReceive- calling onReceive for mImpl");
 			super.onReceive(context, intent);
 		}
 	}
@@ -177,7 +125,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 
 
 	public void onClick(Context context, int appWidgetId, Rect targetRect, Intent LaunchIntent) {
-		//Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage(uri.toString());
 
 		if (LaunchIntent.getCategories().contains(WidgetItemInfo.BLACK_LIST_APP_INTENT)) {
 			addToBlackList(context, LaunchIntent);
@@ -194,32 +141,6 @@ public abstract class ContactWidget extends AppWidgetProvider {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
-
-
-		/*
-		try
-		{
-			int act = Preferences.getOnClickAction(context, appWidgetId);
-            if (act == Preferences.CLICK_QCB) {
-			    QuickContact.showQuickContact(context,targetRect ,
-					uri, QuickContact.MODE_LARGE, null);
-            } else if (act == Preferences.CLICK_SHWCONTACT || act == Preferences.CLICK_SMS) {
-            	Intent launch = new Intent(Intent.ACTION_VIEW, uri);
-    			launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    			context.startActivity(launch);
-            } else if (act == Preferences.CLICK_DIAL) {
-            	Intent launch = new Intent(Intent.ACTION_CALL, uri);
-    			launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    			context.startActivity(launch);
-            }
-		}
-		catch(ActivityNotFoundException expt)
-		{
-			Log.d(TAG, "FAILED: " + expt.getMessage());
-		}
-		 */
 	}
 
 	private void addToBlackList(Context context, Intent LaunchIntent) {
