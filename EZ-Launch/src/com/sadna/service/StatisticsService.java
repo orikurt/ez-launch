@@ -191,10 +191,11 @@ public class StatisticsService extends Service{
 			isRunning = true;
 		
 		double score = BASE_SCORE;
-		if (!lastUsed.equals(defaultLauncher))
-			score *= NOT_RUN_FROM_LAUNCHER_MODIFIER;
-
+		
 		if (lastUsed != null){
+			if (!lastUsed.equals(defaultLauncher)){
+				score *= NOT_RUN_FROM_LAUNCHER_MODIFIER;
+			}
 			if (lastUsed.equals(name)){
 				if (!lastRunning && isRunning)
 					increaseScore(name, score);

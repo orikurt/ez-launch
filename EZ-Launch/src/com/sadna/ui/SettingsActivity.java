@@ -31,9 +31,9 @@ import com.sadna.service.StatisticsService;
 import com.sadna.widgets.application.Preferences;
 import com.sadna.widgets.application.R;
 
-@SuppressLint("NewApi")
 public class SettingsActivity extends PreferenceActivity {
 
+	public static final String IS_FIXED = "isFixed";
 	private List<Snapshot> snapShots;
 	public IDataManager DM;
 
@@ -41,6 +41,8 @@ public class SettingsActivity extends PreferenceActivity {
 	private MultiSelectListPreference ProfilingDays;
 	private Preference ProfilingHours;
 	private Preference FixPreference;
+	private Preference NumPicker;
+	private Preference Statistics;
 	private Preference HelpPref;
 	private Preference AboutPref;
 	private int widgetID;
@@ -53,7 +55,7 @@ public class SettingsActivity extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Build GUI from resource
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
 			return;
 		}
 		addPreferencesFromResource(R.xml.preferences);
@@ -67,6 +69,7 @@ public class SettingsActivity extends PreferenceActivity {
 		prepareProfHours();
 		prepareFixPref();
 		prepareNumPickrPref();
+		prepareStatitics();
 		prepareHelpBtn();
 		prepareAboutBtn();
 	}
@@ -83,7 +86,6 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 	
 	/************************* Preparing Functions ****************************/
-	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	private void prepareSwitchPref() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH){
@@ -94,7 +96,6 @@ public class SettingsActivity extends PreferenceActivity {
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	private void prepareProfDays() {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
@@ -190,19 +191,23 @@ public class SettingsActivity extends PreferenceActivity {
 	}
 
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	private void prepareFixPref() {
 		FixPreference = findPreference(Preferences.FIX);
 		FixPreference.setKey(String.format(Preferences.FIX, widgetID));
 		FixPreference.setOnPreferenceClickListener(new onFixPreferenceClickListener());
 	}
+	@SuppressWarnings("deprecation")
+	private void prepareStatitics() {
+		Statistics = findPreference(Preferences.STATISTICS);
+		Statistics.setKey(String.format(Preferences.STATISTICS, widgetID));
+		Statistics.setOnPreferenceClickListener(new onStatisticsPreferenceClickListener());
+	}
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	private void prepareNumPickrPref() {
-		FixPreference = findPreference(Preferences.ICONNUMBER);
-		FixPreference.setKey(String.format(Preferences.ICONNUMBER, widgetID));
-		FixPreference.setOnPreferenceClickListener(new onNumPickrClickListener());
+		NumPicker = findPreference(Preferences.ICONNUMBER);
+		NumPicker.setKey(String.format(Preferences.ICONNUMBER, widgetID));
+		NumPicker.setOnPreferenceClickListener(new onNumPickrClickListener());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -357,10 +362,24 @@ public class SettingsActivity extends PreferenceActivity {
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
 			Intent fixIntent = new Intent(preference.getContext(), SettingsListActivity.class);
+			fixIntent.putExtra(IS_FIXED, true);
 			startActivity(fixIntent);
 			return false;
 		}
 	}
+	
+	public class onStatisticsPreferenceClickListener implements OnPreferenceClickListener {
+
+		
+
+		@Override
+		public boolean onPreferenceClick(Preference preference) {
+			Intent statisticsIntent = new Intent(preference.getContext(), SettingsListActivity.class);
+			statisticsIntent.putExtra(IS_FIXED, false);
+			startActivity(statisticsIntent);
+			return false;
+		}
+	}	
 	
 	public class onNumPickrClickListener implements OnPreferenceClickListener {
 

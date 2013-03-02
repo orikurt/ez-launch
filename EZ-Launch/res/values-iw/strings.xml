@@ -93,5 +93,8 @@
 	<string name="prof_on">דלוק</string>
 	<string name="prof_sum_off">פרופילים מכובים</string>
 	<string name="prof_sum_on">פרופילים מופעלים</string>
+	<string name="StatistcsLabel">סטטיסטיקה וניקוד</string>
+	<string name="StatistcsLabelDesc">צפה בניקוד הנוכחי של אפליקציות</string>
+	<string name="score_base">ציון: %.2f</string>
 
 </resources>

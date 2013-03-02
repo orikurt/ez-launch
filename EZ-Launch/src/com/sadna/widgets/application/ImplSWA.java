@@ -82,6 +82,11 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 	
 	public boolean onReceive(Context context, Intent intent) {
 		final String action = intent.getAction();
+		Log.d("Action Recived", action);
+		if (TextUtils.equals(action, "android.appwidget.action.APPWIDGET_UPDATE")) {
+			onAppWidgetReady(context, intent);
+			return true;
+		}
 		if (TextUtils.equals(action, LauncherIntent.Action.ACTION_READY)) {
 			onAppWidgetReady(context, intent);
 			return true;
@@ -239,7 +244,7 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 		if (appWidgetId < 0) {
 			return;
 		}
-
+/*
 		if (APIVersion < 2) {
 			AppWidgetManager awm = AppWidgetManager.getInstance(context);
 			final boolean isICS = Preferences.getBGImage(context, appWidgetId) == Preferences.BG_ICS;
@@ -258,7 +263,7 @@ public class ImplSWA implements ContactWidget.WidgetImplementation {
 			awm.updateAppWidget(appWidgetId, views);
 			return;
 		}
-
+*/
 		onUpdate(context, appWidgetId, null);
 		Intent replaceDummy = CreateMakeScrollableIntent(context, appWidgetId);
 

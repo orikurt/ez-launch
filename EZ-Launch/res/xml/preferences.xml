@@ -1,51 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-  
-     
-	<PreferenceCategory android:title="@string/behavior">
-	    <Preference
-  	        android:key="fixApps-%d"
-  	      	android:title="@string/fixAppsOnScreen"
-  	      	android:summary="@string/pickApps" 
-        	android:persistent = "true"
-			/>
-		<Preference
-			android:key="iconNumber-%d"
-  	      	android:title="@string/appsPerScreen"
-  	      	android:summary="@string/appsPerScreenDescription" 
-        	android:persistent = "true"
-			/>
-	</PreferenceCategory>
-  	  
-	
-	<PreferenceCategory android:title="@string/profiling">
-		<SwitchPreference
-			android:key="prof_enable"
-			android:title="@string/switch_title"
-  	      	android:switchTextOff="@string/prof_off"
-  	      	android:switchTextOn="@string/prof_on"
-  	      	android:summaryOff="@string/prof_sum_off"
-  	      	android:summaryOn="@string/prof_sum_on" 
-        	android:persistent = "true"
-			/>
-		
-		<MultiSelectListPreference
-  	        android:key="prof_days"
-  	      	android:title="@string/days_title"
-  	      	android:summary="@string/days_summary"
-			/>
-		
-		<Preference
-		    android:key="prof_hours"
-  	      	android:title="@string/hours_title"
-  	      	android:summary="@string/hours_summary"
-			/>
-		    
-	</PreferenceCategory>
-	
-		
-	<!-- PreferenceCategory android:title="@string/pref_grp_data">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/behavior" >
+        <Preference
+            android:key="fixApps-%d"
+            android:persistent="true"
+            android:summary="@string/pickApps"
+            android:title="@string/fixAppsOnScreen" />
+        <Preference
+            android:key="iconNumber-%d"
+            android:persistent="true"
+            android:summary="@string/appsPerScreenDescription"
+            android:title="@string/appsPerScreen" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/profiling" >
+        <SwitchPreference
+            android:key="prof_enable"
+            android:persistent="true"
+            android:summaryOff="@string/prof_sum_off"
+            android:summaryOn="@string/prof_sum_on"
+            android:switchTextOff="@string/prof_off"
+            android:switchTextOn="@string/prof_on"
+            android:title="@string/switch_title" />
+
+        <MultiSelectListPreference
+            android:key="prof_days"
+            android:summary="@string/days_summary"
+            android:title="@string/days_title" />
+
+        <Preference
+            android:key="prof_hours"
+            android:summary="@string/hours_summary"
+            android:title="@string/hours_title" />
+    </PreferenceCategory>
+
+    <!--
+    PreferenceCategory android:title="@string/pref_grp_data">
 		<ListPreference 
 			android:key="LoadSnap-%d"
 			android:summary="@string/picksnap"
@@ -64,19 +54,21 @@
 			android:defaultValue="0"
 			android:title="@string/DeleteSnapshot"
 			/>	
-	</PreferenceCategory-->
+	</PreferenceCategory
+    -->
 
-  		  	
-	<PreferenceCategory android:title="@string/pref_grp_general">
-		<Preference 
-		    android:title="@string/help" 
-		    android:key="help-%d"
-		    />  
-		
-		<Preference 
-		    android:title="@string/about" 
-		    android:key="ABOUT"
-			/>  		
-	</PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_grp_general" >
+        <Preference
+            android:key="help-%d"
+            android:title="@string/help" />
+        <Preference
+            android:key="statistics-%d"
+            android:persistent="true"
+            android:summary="@string/StatistcsLabelDesc"
+            android:title="@string/StatistcsLabel" />
+        <Preference
+            android:key="ABOUT"
+            android:title="@string/about" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
