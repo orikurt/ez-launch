@@ -37,13 +37,13 @@ public class StatisticsService extends Service{
 	public static final String SERVICE_UPDATE = "com.sadna.widgets.application.SERVICE_UPDATE";
 	public static final String RESERVED_SNAPSHOT = "Default Snapshot %s";
 	public static final String SERVICE_NOTIFIER_LAUNCH = "sadna.service_notifier_launch";
-	//private static final String SERVICE_ALARM_LOCK = "sadna.service_alarm_lock";
-	//private static final String SERVICE_ALARM_UNLOCK = "sadna.service_alarm_unlock";
 	private static final int MAX_TASKS = 25;
 	private static final long UPDATE_DELAY = 7500;
 	public static final String SERVICE_NOTIFIER_BLACK_LIST = "sadna.service_notifier_black_list";
+	public static final double RUN_FROM_WIDGET_BONUS = 0.25;
+	public static final double NOT_RUN_FROM_LAUNCHER_MODIFIER = 0.5;
+	public static final double BASE_SCORE = 1.0;
 
-	//Snapshot		currSnapshot;
 	IDataManager	dataManager;
 
 	SystemIntentsReceiver systemIntentsReceiver;
@@ -100,19 +100,15 @@ public class StatisticsService extends Service{
 			if (d != null)
 				d.quit();
 		}
-		// Notify the user about destroying.
-		Toast.makeText(this, R.string.statistics_service_stopped, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Destroyed");
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
-		// Notify the user about Starting.
-		//Toast.makeText(this, R.string.statistics_service_started, Toast.LENGTH_SHORT).show();
 		Log.d(LOG_TAG, "Started");
 
-		// Register to ACTION_SCREEN_OFF;
+		// Register to intents;
 		if (systemIntentsReceiver == null)
 			systemIntentsReceiver = new SystemIntentsReceiver();
 		registerReceiver(systemIntentsReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
@@ -151,22 +147,10 @@ public class StatisticsService extends Service{
 		lastUnlock = new Date();
 		lastUsed = null;
 		lastRunning = false;
-
-		// Get current snapshot
-
-		//currSnapshot = dataManager.getSelectedSnapshot();
-
 	}
 
 	public void notifyWidget() {
 		Log.d(LOG_TAG, "notifyWidget");
-
-		// Save snapshot to DB
-		//currSnapshot.normalizeScores();
-		//Collections.sort(currSnapshot);
-		//dataManager.saveSnapshot(currSnapshot);
-		//dataManager.setSelectedSnapshot(dataManager.getSelectedSnapshot());
-		
 		// Send update intent
 		Intent updateWidget = new Intent(SNAPSHOT_UPDATE);
 		sendBroadcast(updateWidget);
@@ -189,16 +173,9 @@ public class StatisticsService extends Service{
 		}
 		name = packageManager.resolveActivity(intent, 0).activityInfo.packageName;
 		if (name.equals(defaultLauncher)){
+			lastUsed = defaultLauncher;
 			return;
 		}
-//			recentTask = recentTasksInfo.get(1);
-//			if (recentTask == null) return;
-//			intent = new Intent(recentTask.baseIntent);
-//			if (recentTask.origActivity != null){
-//				intent.setComponent(recentTask.origActivity);
-//			}
-//			name = packageManager.resolveActivity(intent, 0).activityInfo.packageName;
-//		}
 		
 		// check if app is running
 		boolean isRunning = false;
@@ -212,34 +189,32 @@ public class StatisticsService extends Service{
 		runningName = comp.getPackageName();
 		if (runningName.equals(name))
 			isRunning = true;
-
 		
+		double score = BASE_SCORE;
+		if (!lastUsed.equals(defaultLauncher))
+			score *= NOT_RUN_FROM_LAUNCHER_MODIFIER;
+
 		if (lastUsed != null){
 			if (lastUsed.equals(name)){
 				if (!lastRunning && isRunning)
-					increaseScore(name, 1.0);
+					increaseScore(name, score);
 			} else{
 				lastRunning = isRunning;
 				lastUsed = name;
-				increaseScore(name, 1.0);
+				increaseScore(name, score);
 			
 			}
 		} else{
 			lastUsed = name;
 			lastRunning = isRunning;
-			increaseScore(name, 1.0);
+			increaseScore(name, score);
 		}
 	}
 	
 	public void increaseScore(String name, double score){
-		/*WTF ?! who called this before init ?! 
-		 * Pleaes make sure you understand the flow before removing those checks.. */
 		if (dataManager == null) {
 			dataManager = new DataManager(getApplicationContext());
 		}
-//		if (currSnapshot == null) {
-//			currSnapshot = dataManager.getSelectedSnapshot();
-//		}
 		if (packageManager == null) {
 			packageManager = getPackageManager();
 		}
@@ -257,9 +232,9 @@ public class StatisticsService extends Service{
 			dataManager.getSelectedSnapshot().add(itemInfo);
 			Log.d(LOG_TAG, "Added " + name);
 		}
+		Log.d(LOG_TAG, name + " score:" + Double.toString(itemInfo.getScore()) + " -> "+ Double.toString(itemInfo.getScore() + score));
 		itemInfo.setScore(itemInfo.getScore() + score);
 		itemInfo.setLastUse(new Date());
-		Log.d(LOG_TAG, name + " score increased by " + Double.toString(score));
 	}
 
 	public class SystemIntentsReceiver extends BroadcastReceiver {
@@ -270,19 +245,11 @@ public class StatisticsService extends Service{
 				//updateReservedSnapshot();
 				notifyWidget();
 			}
-
-			else if (intent.getAction().equals(Intent.ACTION_MAIN) && intent.hasCategory(Intent.CATEGORY_HOME)){
-				Log.d(LOG_TAG, "Home button pressed; notifying widget");
-				notifyWidget();
-			}
 			
 			else if (intent.getAction().equals(SERVICE_NOTIFIER_LAUNCH)){
 				String pkgName = intent.getStringExtra("name");
 				if (pkgName != null){ 
-					IWidgetItemInfo item = dataManager.getSelectedSnapshot().getItemByName(pkgName);
-					item.setScore(item.getScore()+0.25);
-					item.setLastUse(new Date());
-					Log.d(LOG_TAG, pkgName + " new score:" + Double.toString(item.getScore()));
+					increaseScore(pkgName, RUN_FROM_WIDGET_BONUS);
 				}
 			}
 			else if (intent.getAction().equals(SERVICE_NOTIFIER_BLACK_LIST)){
@@ -293,7 +260,6 @@ public class StatisticsService extends Service{
 					item.setItemState(ItemState.NOT_ALLOWED);
 					Log.d(LOG_TAG, pkgName + " Added to black List");
 					Log.d(LOG_TAG, "Got SERVICE_UPDATE");
-					//updateReservedSnapshot();
 					notifyWidget();
 				}
 			}
@@ -308,12 +274,6 @@ public class StatisticsService extends Service{
 			}
 
 			else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-//				Date now = new Date();
-//				if ((now.getTime() - lastUnlock.getTime()) > /*1000*/0){
-//					//updateWithRecentTasks();
-//					updateWithRunningTasks();
-//					notifyWidget();
-//				}
 				synchronized (syncObj) {
 					screenLocked = true;
 					h.removeCallbacksAndMessages(null);
@@ -333,22 +293,6 @@ public class StatisticsService extends Service{
 		}
 	}
 
-//	public void updateReservedSnapshot() {
-//
-//		Snapshot newCurrSnapshot = dataManager.getSelectedSnapshot();
-//		if (newCurrSnapshot == null) {
-//			return;
-//		}
-//
-//		String newName = newCurrSnapshot.getSnapshotInfo().getSnapshotName();
-//		if ((newName != null) && (!newName.equalsIgnoreCase(RESERVED_SNAPSHOT))) {
-//
-//			// User changed the current snapshot
-//			newCurrSnapshot.getSnapshotInfo().setSnapshotName(RESERVED_SNAPSHOT);
-//			currSnapshot = newCurrSnapshot;
-//		}
-//	}
-	
 	public String resolveDefaultLauncher(){
 		final Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
