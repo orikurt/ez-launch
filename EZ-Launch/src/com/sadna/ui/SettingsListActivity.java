@@ -14,12 +14,14 @@ import android.widget.ListView;
 import com.sadna.data.DataManager;
 import com.sadna.data.Snapshot;
 import com.sadna.utils.LazyAdapter;
+import com.sadna.utils.LazyAdapterBase;
+import com.sadna.utils.LazyAdapterStatistics;
 import com.sadna.widgets.application.R;
 
 public class SettingsListActivity extends PreferenceActivity{
 
 	public ListView list;
-    public LazyAdapter adapter;
+    public LazyAdapterBase adapter;
 	private DataManager dm;
 	private Snapshot snap;
 	private EditText filterText;
@@ -31,8 +33,10 @@ public class SettingsListActivity extends PreferenceActivity{
 		this.setTitle(R.string.fixAppsOnScreen);
 
 		dm = new DataManager(getApplicationContext());
-	
-		snap = dm.getSelectedSnapshot();
+		
+	    boolean isFixed = getIntent().getBooleanExtra(SettingsActivity.IS_FIXED, true);
+		
+	    snap = dm.getSelectedSnapshot();
 		DataManager.SortSnapshot(snap);
 		dm.validateIntegrity();
 		dm.saveSnapshot(snap);
@@ -40,7 +44,12 @@ public class SettingsListActivity extends PreferenceActivity{
 		list=(ListView)findViewById(android.R.id.list);
 	
 		// Getting adapter by passing xml data ArrayList
-        adapter=new LazyAdapter(this, snap);        
+		if (isFixed) {
+			adapter=new LazyAdapter(this, snap);	
+		}else{
+			adapter=new LazyAdapterStatistics(this, snap);	
+		}
+                
         list.setAdapter(adapter);
         filterText = (EditText) findViewById(R.building_list.search_box);
         filterText.addTextChangedListener(filterTextWatcher);

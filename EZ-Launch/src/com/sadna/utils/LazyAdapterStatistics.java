@@ -13,13 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
+import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-public class LazyAdapter extends LazyAdapterBase {
+public class LazyAdapterStatistics extends LazyAdapterBase {
 
 	private Activity activity;
 	private List<IWidgetItemInfo> data;
@@ -28,7 +29,7 @@ public class LazyAdapter extends LazyAdapterBase {
 	private static LayoutInflater inflater=null;
 
 
-	public LazyAdapter(Activity a, List<IWidgetItemInfo> d) {
+	public LazyAdapterStatistics(Activity a, List<IWidgetItemInfo> d) {
 		activity = a;
 		data=originalData=d;
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -51,87 +52,30 @@ public class LazyAdapter extends LazyAdapterBase {
 		View vi=convertView;
 		
 		if(convertView==null)
-			vi = inflater.inflate(R.layout.list_row, null);
+			vi = inflater.inflate(R.layout.list_row_statistics, null);
 
 		final Context mContext = vi.getContext();
 		TextView title = (TextView)vi.findViewById(R.id.APPtitle); // title
 
 		ImageView thumb_image=(ImageView)vi.findViewById(R.id.APP_list_image); // thumb image
-		ImageButton leftBtn = (ImageButton)vi.findViewById(R.id.arrowLeft);
-		ImageButton rightBtn = (ImageButton)vi.findViewById(R.id.arrowRight);
-		final ViewFlipper vf = (ViewFlipper)vi.findViewById(R.id.viewFlipper1);
-		final TextView statusOff = (TextView)vi.findViewById(R.id.AppStatus1); // duration
-		final TextView statusAuto = (TextView)vi.findViewById(R.id.AppStatus2); // duration
-		final TextView statusAlways = (TextView)vi.findViewById(R.id.AppStatus3); // duration
+
+
+		final TextView scoreText = (TextView)vi.findViewById(R.id.AppScore); // duration
+		
 		
 		final IWidgetItemInfo wi = data.get(position);
 		
-		leftBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-
-				vf.setInAnimation(AnimationUtils.loadAnimation(mContext,
-						R.anim.right_in));
-				vf.setOutAnimation(AnimationUtils.loadAnimation(mContext,
-						R.anim.right_out));
-				vf.showPrevious();
-				wi.setItemState(getSelectedState(vf, statusOff, statusAuto, statusAlways));
-			}
-		});
-
-		rightBtn.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				
-				vf.setInAnimation(AnimationUtils.loadAnimation(mContext,
-						R.anim.left_in));
-				vf.setOutAnimation(AnimationUtils.loadAnimation(mContext,
-						R.anim.left_out));
-				vf.showNext();
-				wi.setItemState(getSelectedState(vf, statusOff, statusAuto, statusAlways));
-			}
-		});
 		
 		// Setting all values in listview
 		title.setText(wi.getLabel());
-		
-		switch (wi.getItemState()) {
-		case AUTO:
-			setFliperState(vf, statusAuto);
-			break;
-		case MUST:
-			setFliperState(vf, statusAlways);
-			break;
-		case NOT_ALLOWED:
-			setFliperState(vf, statusOff);
-			break;
+		scoreText.setText(String.format(mContext.getString(R.string.score_base), wi.getScore()));
 
-		default:
-			break;
-		}
 
 		thumb_image.setImageBitmap(wi.getBitmap(mContext));
 		return vi;
 	}
-	private void setFliperState(ViewFlipper vf, View v){
-		while (!(vf.getCurrentView() == v)) {
-			vf.showNext();
-		}
-	}
-	private ItemState getSelectedState(ViewFlipper vf, View statusOff, View statusAuto, View statusAlways){
-		View v = vf.getCurrentView();
-		if (v == statusOff) {
-			return ItemState.NOT_ALLOWED;
-		}
-		if (v == statusAuto) {
-			return ItemState.AUTO;
-		}
-		if (v == statusAlways) {
-			return ItemState.MUST;
-		}
-		
-		return null;		
-	}
+
+
 	
 	
     public Filter getFilter() {

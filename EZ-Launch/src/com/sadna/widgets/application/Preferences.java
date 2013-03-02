@@ -44,6 +44,7 @@ public class Preferences {
     public static final String DONATE = "donate";
     public static final String HELP = "help-%d";
     public static final String FIX = "fixApps-%d";
+    public static final String STATISTICS = "statistics-%d";
     public static final String ICONNUMBER = "iconNumber-%d";
     public static final String BGIMAGE = "BGImage-%d";
     public static final String PROF_ENABLE = "prof_enable";
