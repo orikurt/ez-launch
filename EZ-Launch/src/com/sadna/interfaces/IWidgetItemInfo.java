@@ -33,4 +33,3 @@ public interface IWidgetItemInfo extends Parcelable, Comparable<IWidgetItemInfo>
 	public double getScore();
 	public void setScore(double newScore);
 }
-

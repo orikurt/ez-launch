@@ -24,18 +24,15 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public int describeContents() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		// TODO Auto-generated method stub
 		}
 
 	@Override
 	public Drawable getImage(Context c) {
-		// TODO Auto-generated method stub
 		return c.getResources().getDrawable(R.drawable.icon);
 	}
 
@@ -49,9 +46,6 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 		Canvas canvas = new Canvas(bmp); 
 		image.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
 		image.draw(canvas);
-		//ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		//bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		//byte[] byteArray = stream.toByteArray();
 		return bmp;
 	}
 
@@ -62,8 +56,6 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public void setPackageName(String packageName) {
-		
-		
 	}
 
 	@Override
@@ -73,28 +65,20 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public void setLabel(String label) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Intent getLaunchIntent(Context c) {
-		// TODO Auto-generated method stub
 		return new Intent(c, SettingsActivity.class);
 	}
 
-
-
 	@Override
 	public double getScore() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setScore(double newScore) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -104,7 +88,6 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public void setItemState(ItemState iState) {
-		
 	}
 
 	@Override
@@ -119,14 +102,11 @@ public class ConfigurationItemInfo implements IWidgetItemInfo{
 
 	@Override
 	public void setLastUse(Date lastUse) {
-		
 	}
 
 	@Override
 	public String getLastUsedFormated() {
 		DateFormat df = new SimpleDateFormat(DataManager.DATE_FORMAT,Locale.getDefault());
-		// TODO Auto-generated method stub
 		return df.format(getLastUse());
 	}
-
 }

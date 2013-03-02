@@ -82,7 +82,6 @@ private String LOG_TAG = "ConfigurationActivity";
 		});
 		v.addFooterView(startButton);
 
-
 		// Get the starting Intent
 		Intent launchIntent = getIntent();
 		Bundle extras = launchIntent.getExtras();
@@ -136,10 +135,7 @@ private String LOG_TAG = "ConfigurationActivity";
 		
 		CharSequence[] Appnames;
 		CharSequence[] Values;
-		//		Context c = getApplicationContext();
 
-		//PackageManager pm = getPackageManager();
-		//List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		Snapshot Snapy = DM.getSelectedSnapshot();
 		if (Snapy != null)
 		{
@@ -159,87 +155,24 @@ private String LOG_TAG = "ConfigurationActivity";
 			Appnames = new CharSequence[]{};
 			Values = new CharSequence[]{};
 		}
-		//CharSequence[] Appnames = new CharSequence[] {"1", "2", "3"};
-		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
+
 		FixPreference.setDefaultValue(Values);
 		FixPreference.setEntries(Appnames);
 		FixPreference.setEntryValues(Values);
 		FixPreference.setOnPreferenceChangeListener(new OnFixPreferenceChangeListener());
 
-		/*
-		FixPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-	        public boolean onPreferenceChange(Preference preference, Object o) {
-
-	            HashSet hashSet = (HashSet) o;
-	            Iterator stringIterator = hashSet.iterator();
-	            boolean[] states = {false, false, false};
-	            String prefString;
-
-	            while (stringIterator.hasNext()) {
-
-	                prefString = (String) stringIterator.next();
-
-	                if (prefString == null)
-	                    continue;
-
-	                if (prefString.compareTo("1") == 0)
-	                    states[0] = true;
-	                else if (prefString.compareTo("2") == 0)
-	                    states[1] = true;
-	                else if (prefString.compareTo("3") == 0)
-	                    states[2] = true;
-
-	            }
-
-	            PreferenceManager
-	                    .getDefaultSharedPreferences(getApplicationContext())
-	                    .edit()
-	                    .putBoolean("1", states[0])
-	                    .putBoolean("2", states[1])
-	                    .putBoolean("3", states[2])
-	                    .commit();
-
-	            return true;
-	        }
-	    });
-
-		 */
 	}
 
 	private void prepareLoadScreenshotPref() {
-		// TODO Auto-generated method stub
 		loadSnapshot = (ListPreference)findPreference(Preferences.LOAD_SNAPSHOT);
 		loadSnapshot.setKey(String.format(Preferences.LOAD_SNAPSHOT, widgetID));
 		setListPreferenceData(loadSnapshot);
 		loadSnapshot.setOnPreferenceClickListener(new onLoadPreferenceClickListener());
-
-		/*
-		//Here you put the names of the screenshots
-		SnapShots = DM.loadAllSnapshots();
-		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
-
-		//Create the snapshot value arrays and fill them with data
-		CharSequence[] Titles= new CharSequence[SnapShotsLength];
-		CharSequence[] Values= new CharSequence[SnapShotsLength];
-
-		for (int i = 0; i < SnapShotsLength; i++) {
-			Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-			Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
-		}
-
-
-		//CharSequence[] Titles = new CharSequence[] {"1", "2", "3"};
-		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
-
-		loadSnapshot.setEntries(Titles);
-		loadSnapshot.setEntryValues(Values);
-		*/
 	}
 
 
 	private void setListPreferenceData(ListPreference loadSnapshot2) {
-		// TODO Auto-generated method stub
-		//Here you put the names of the screenshots
+		//Here you put the names of the snapshot
 		SnapShots = DM.loadAllSnapshots();
 		int SnapShotsLength = (SnapShots != null) ? SnapShots.size() : 0;
 
@@ -251,10 +184,6 @@ private String LOG_TAG = "ConfigurationActivity";
 			Values[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
 			Titles[i] = SnapShots.get(i).getSnapshotInfo().getSnapshotName();
 		}
-
-
-		//CharSequence[] Titles = new CharSequence[] {"1", "2", "3"};
-		//CharSequence[] Values = new CharSequence[] {"1", "2", "3"};
 
 		loadSnapshot.setEntries(Titles);
 		loadSnapshot.setEntryValues(Values);
@@ -262,22 +191,16 @@ private String LOG_TAG = "ConfigurationActivity";
 	}
 
 	private void prepareAboutBtn() {
-		// TODO Auto-generated method stub
 		AboutPref = findPreference("ABOUT");
-		//AboutPref.setKey(String.format(Preferences.ABOUT, widgetID));
 		AboutPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this, true));
 	}
-
 
 	private void prepareHelpBtn() {
 
 		HelpPref = findPreference(Preferences.HELP);
 		HelpPref.setKey(String.format(Preferences.HELP, widgetID));
-
 		HelpPref.setOnPreferenceClickListener(new HelpPreferenceClickListener(this));
-
 	}
-	
 
 	private void prepareSaveSnapshotPref() {
 
@@ -285,7 +208,6 @@ private String LOG_TAG = "ConfigurationActivity";
 		SaveSnapshotPref.setKey(String.format(Preferences.SAVE, widgetID));
 		SaveSnapshotPref.setOnPreferenceClickListener(new SavePreferenceClickListener(this));
 	}
-
 
 	public class HelpPreferenceClickListener implements OnPreferenceClickListener {
 
@@ -295,21 +217,12 @@ private String LOG_TAG = "ConfigurationActivity";
 		public HelpPreferenceClickListener(Context context) 
 		{
 			fContext = context;
-
-			/*
-	        setDialogLayoutResource(R.layout.numberpicker_dialog);
-	        setDialogIcon(null);
-			 */
 		}
 
 		public HelpPreferenceClickListener(Context context, Boolean about) 
 		{
 			fContext = context;
 			fAbout  = about;
-			/*
-	        setDialogLayoutResource(R.layout.numberpicker_dialog);
-	        setDialogIcon(null);
-			 */
 		}
 
 		@Override
@@ -361,7 +274,6 @@ private String LOG_TAG = "ConfigurationActivity";
 			return true;
 		}
 		
-		
 		@Override
 		public boolean onPreferenceClick(Preference preference) {
 			
@@ -382,36 +294,13 @@ private String LOG_TAG = "ConfigurationActivity";
 			  saveSnapshotProcess(value);
 				}
 			});
-			  // Do something with value!
 
 			alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				  public void onClick(DialogInterface dialog, int whichButton) {
-				    // Canceled.
 				  }
 				});
 
 			alert.show();
-
-			
-			
-			/*
-			AlertDialog alertDialog;
-			alertDialog = new AlertDialog.Builder(fContext).create();
-			alertDialog.setTitle(fContext.getString(R.string.save));
-			alertDialog.setMessage(fContext.getString(R.string.saveAsk));
-			alertDialog.setButton(fContext.getString(R.string.okbtn), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					
-					dialog.cancel();
-				}
-			});
-			alertDialog.setButton2(fContext.getString(R.string.cancelbtn), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.cancel();
-				}
-			});
-			alertDialog.show();
-			*/
 			return false;
 		}
 	}
@@ -435,9 +324,7 @@ private String LOG_TAG = "ConfigurationActivity";
 			
 			packNames = FixPreference.getValues();
 			Snapshot Snapy = DM.getSelectedSnapshot();
-			
-			//CharSequence[] Appnames = new CharSequence[numApps];
-			//CharSequence[] Values = new CharSequence[numApps]; 
+			 
 			for (IWidgetItemInfo wInfo : Snapy) 
 			{
 				if (packNames.contains(wInfo.getPackageName()))
@@ -451,6 +338,3 @@ private String LOG_TAG = "ConfigurationActivity";
 		
 	}
 }
-
-
-

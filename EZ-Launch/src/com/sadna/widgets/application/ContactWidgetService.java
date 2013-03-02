@@ -44,8 +44,6 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	private int mAppWidgetId;
 	private int[] mAppWidgetIds;
 	private Snapshot mData = null;
-	//private int mDefWidth;
-	//private Bitmap mFallbackImage;
 	private DataManager dm;
 
 	public ContactRemoteViewsFactory(Context context, Intent intent) {
@@ -59,26 +57,13 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		}
 		int id = getSnapshotID();
 		mData = dm.getSelectedSnapshotFiltered(id);
-
-
 	}
 	@Override
 	public void onCreate() {
 	}
 
 	@Override
-	public void onDestroy() {/*
-		if (mData != null) {
-			for (ContactData data : mData) {
-				if (data.Photo != mFallbackImage) 
-					data.Photo.recycle();
-			}
-			mData = null;
-		}
-		if (mFallbackImage != null) {
-			mFallbackImage.recycle();
-			mFallbackImage = null;
-		}*/
+	public void onDestroy() {
 	}
 
 	private int getSnapshotID() {
@@ -101,46 +86,23 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 		return mData.size();
 	}
 
-
 	@Override
 	public RemoteViews getViewAt(int position) {
-		//Log.d(TAG, "get item at position: "+ position);
 		// position will always range from 0 to getCount() - 1.
 		IWidgetItemInfo item = mData.get(position);
 
-//		boolean isICS = Preferences.getBGImage(mContext, mAppWidgetId) == Preferences.BG_ICS;
-//		int textVisibility = Preferences.getShowName(mContext, mAppWidgetId) ? View.VISIBLE : View.GONE;		
-//		int itemresid = R.layout.gridviewitem_hc;
-//		if (isICS) {
 		int itemresid = R.layout.gridviewitem_ics;
-//		} else {
-//			if (textVisibility == View.VISIBLE) {
-//				switch(Preferences.getTextAlign(mContext, mAppWidgetId)) {
-//				case Preferences.ALIGN_RIGHT:
-//					itemresid = R.layout.gridviewitem_txt_right; break;
-//				case Preferences.ALIGN_LEFT:
-//					itemresid = R.layout.gridviewitem_txt_left; break;
-//				}
-//			}
-//		}
 		// We construct a remote views item based on our widget item xml file, and set the
 		// text based on the position.
 		RemoteViews rv = new RemoteViews(mContext.getPackageName(), itemresid);
 
-//		if (textVisibility == View.VISIBLE) {
 			rv.setTextViewText(R.id.displayname, item.getLabel());			
-//		} else {
-//			rv.setViewVisibility(R.id.displayname, textVisibility);
-//			if (isICS) 
-//				rv.setViewVisibility(R.id.label_overlay, textVisibility);
-//		}
 
 		rv.setImageViewBitmap(R.id.photo, item.getBitmap(mContext.getApplicationContext()));
 
 		// Next, we set a fill-intent which will be used to fill-in the pending intent template
 		// which is set on the collection view in StackWidgetProvider.
 		Bundle extras = new Bundle();
-		//extras.putString(LauncherIntent.Extra.Scroll.EXTRA_ITEM_POS, item.getPackageName());
 		extras.putParcelable(com.sadna.data.WidgetItemInfo.LAUNCH_INTENT, item.getLaunchIntent(mContext.getApplicationContext()));
 		Intent fillInIntent = new Intent();
 		fillInIntent.putExtras(extras);
@@ -178,8 +140,6 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	private List<IWidgetItemInfo> getInstalledAppsInfo() {
 		List<IWidgetItemInfo> result = new ArrayList<IWidgetItemInfo>();
 
-
-
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		final List<ResolveInfo> pkgAppsList = mContext.getPackageManager().queryIntentActivities(mainIntent, 0);
@@ -198,12 +158,10 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 	public void onDataSetChanged() {
 		Log.d(TAG, "Start Query!");
 
-		//onDestroy();
 		if (dm == null) {
 			dm = new DataManager(mContext);
 		}
 
-		//mData = dm.getSelectedSnapshot();
 		int id = getSnapshotID();
 		mData = dm.getSelectedSnapshotFiltered(id);
 		Log.d(TAG, "id="+id);
@@ -211,63 +169,6 @@ class ContactRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory
 			Date currDate = new Date();
 			ISnapshotInfo snapshotInfo = new SnapshotInfo(currDate.toString(), currDate);
 			mData = dm.getSelectedSnapshotFiltered(new Snapshot(snapshotInfo, getInstalledAppsInfo()), id);
-//			mData.remove(mData.size()-1);
-//			mData.add(new ConfigurationItemInfo());
 		}
-
-		/*
-		Uri dataUri = DataProvider.CONTENT_URI_MESSAGES.buildUpon().appendEncodedPath(Integer.toString(mAppWidgetId)).build();
-
-		DataProvider prov = new DataProvider();
-		Cursor cursor = prov.query(dataUri, DataProvider.PROJECTION_APPWIDGETS, null, null, null);
-
-		Log.d(TAG, "Found: "+cursor.getCount());
-		final boolean isICS = Preferences.getBGImage(mContext, mAppWidgetId) == Preferences.BG_ICS;
-		boolean autosizeImages = !isICS;
-		if(autosizeImages && Preferences.getShowName(mContext, mAppWidgetId)) {
-			autosizeImages = false;
-			if (Preferences.getTextAlign(mContext, mAppWidgetId) == Preferences.ALIGN_CENTER)
-				autosizeImages = true;
-		}
-		Options options = new Options();
-        options.inPreferredConfig = Config.ARGB_8888;
-
-        mFallbackImage = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.no_image, options);
-		if (autosizeImages) {
-			final int width = ContactWidget.calcWidthPixel(mContext, mAppWidgetId, mDefWidth);
-			mFallbackImage = ThumbnailUtils.extractThumbnail(mFallbackImage, width, width, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-		}
-		else if (isICS) {
-			final int width = ContactWidget.getICSWidth(mContext);
-			mFallbackImage = ThumbnailUtils.extractThumbnail(mFallbackImage, width, width, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-		}
-
-        LinkedList<ContactData> contacts = new LinkedList<ContactData>();
-        if (cursor.moveToFirst()) {
-        	while(!cursor.isAfterLast()) {
-        		ContactData item = new ContactData();
-        		contacts.add(item);
-
-        		item.Name = cursor.getString(DataProvider.DataProviderColumns.name.ordinal());
-        		item.URI = cursor.getString(DataProvider.DataProviderColumns.contacturi.ordinal());
-
-				byte[] blob = cursor.getBlob(DataProvider.DataProviderColumns.photo.ordinal());
-
-				if (blob != null && blob.length > 0) {		
-					item.Photo = BitmapFactory.decodeByteArray(blob, 0, blob.length, options);
-				}
-				if (item.Photo == null) {
-					item.Photo = mFallbackImage;
-				} else if (autosizeImages || isICS) {
-					final int width = isICS ? ContactWidget.getICSWidth(mContext) : 
-						ContactWidget.calcWidthPixel(mContext, mAppWidgetId, mDefWidth);
-					item.Photo = ThumbnailUtils.extractThumbnail(item.Photo, width, width, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-				}
-				cursor.moveToNext();
-        	}
-        	mData = contacts; 
-        }
-        cursor.close();
-		 */
 	}
 }

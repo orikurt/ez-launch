@@ -37,7 +37,6 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable  {
 			collection = new ArrayList<IWidgetItemInfo>();
 			in.readList(collection, WidgetItemInfo.class.getClassLoader());
 		}
-
 	}
 	
 	public void removeDuplicateEntries()
@@ -225,6 +224,4 @@ public class Snapshot implements List<IWidgetItemInfo>, Parcelable  {
 		sb.append(" )");
 		return sb.toString();
 	}
-	
-
 }

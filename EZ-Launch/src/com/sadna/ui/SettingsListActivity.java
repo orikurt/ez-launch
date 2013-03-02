@@ -21,10 +21,8 @@ public class SettingsListActivity extends PreferenceActivity{
 	public ListView list;
     public LazyAdapter adapter;
 	private DataManager dm;
-	//private ArrayList<IWidgetItemInfo> appList;
 	private Snapshot snap;
 	private EditText filterText;
-    
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,14 +45,12 @@ public class SettingsListActivity extends PreferenceActivity{
         filterText = (EditText) findViewById(R.building_list.search_box);
         filterText.addTextChangedListener(filterTextWatcher);
 
-
         // Click event for single list row
         list.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
 			}
 		});		
         
@@ -70,14 +66,11 @@ public class SettingsListActivity extends PreferenceActivity{
 		// ok_button
 		final Button btnCancel = (Button) findViewById(R.id.ok_button);
 		btnCancel.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {  
-
-				//dm.setApplicationLimit(numberPK.getValue());
+			public void onClick(View v) {
 				dm.saveSnapshot(snap);
 				finish();
 			}
 		});
-
 	}
 	private TextWatcher filterTextWatcher = new TextWatcher() {
 

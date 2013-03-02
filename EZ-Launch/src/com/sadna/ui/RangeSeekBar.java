@@ -17,18 +17,6 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 
-/**
- * Widget that lets users select a minimum and maximum value on a given numerical range. The range value types can be one of Long, Double, Integer, Float, Short, Byte or BigDecimal.<br />
- * <br />
- * Improved {@link MotionEvent} handling for smoother use, anti-aliased painting for improved aesthetics.
- * 
- * @author Stephan Tittel (stephan.tittel@kom.tu-darmstadt.de)
- * @author Peter Sinnott (psinnott@gmail.com)
- * @author Thomas Barrasso (tbarrasso@sevenplusandroid.org)
- * 
- * @param <T>
- *            The Number type of the range values. One of Long, Double, Integer, Float, Short, Byte or BigDecimal.
- */
 public class RangeSeekBar<T extends Number> extends ImageView {
         private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Bitmap thumbImage = BitmapFactory.decodeResource(getResources(), R.drawable.seek_thumb_normal);
@@ -57,8 +45,6 @@ public class RangeSeekBar<T extends Number> extends ImageView {
          */
         public static final int INVALID_POINTER_ID = 255;
 
-        // Localized constants from MotionEvent for compatibility
-        // with API < 8 "Froyo".
         public static final int ACTION_POINTER_UP = 0x6, ACTION_POINTER_INDEX_MASK = 0x0000ff00, ACTION_POINTER_INDEX_SHIFT = 8;
 
         private float mDownMotionX;
@@ -541,11 +527,6 @@ public class RangeSeekBar<T extends Number> extends ImageView {
 
         /**
          * Callback listener interface to notify about changed range values.
-         * 
-         * @author Stephan Tittel (stephan.tittel@kom.tu-darmstadt.de)
-         * 
-         * @param <T>
-         *            The Number type the RangeSeekBar has been declared with.
          */
         public interface OnRangeSeekBarChangeListener<T> {
                 public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, T minValue, T maxValue);
@@ -560,9 +541,6 @@ public class RangeSeekBar<T extends Number> extends ImageView {
 
         /**
          * Utility enumaration used to convert between Numbers and doubles.
-         * 
-         * @author Stephan Tittel (stephan.tittel@kom.tu-darmstadt.de)
-         * 
          */
         private static enum NumberType {
                 LONG, DOUBLE, INTEGER, FLOAT, SHORT, BYTE, BIG_DECIMAL;

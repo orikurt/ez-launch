@@ -57,9 +57,7 @@ public class LazyAdapter extends BaseAdapter {
 		final Context mContext = vi.getContext();
 		TextView title = (TextView)vi.findViewById(R.id.APPtitle); // title
 
-		
 		ImageView thumb_image=(ImageView)vi.findViewById(R.id.APP_list_image); // thumb image
-		//Switch onOff = (Switch)vi.findViewById(R.id.switch1);
 		ImageButton leftBtn = (ImageButton)vi.findViewById(R.id.arrowLeft);
 		ImageButton rightBtn = (ImageButton)vi.findViewById(R.id.arrowRight);
 		final ViewFlipper vf = (ViewFlipper)vi.findViewById(R.id.viewFlipper1);
@@ -67,8 +65,6 @@ public class LazyAdapter extends BaseAdapter {
 		final TextView statusAuto = (TextView)vi.findViewById(R.id.AppStatus2); // duration
 		final TextView statusAlways = (TextView)vi.findViewById(R.id.AppStatus3); // duration
 		
-	
-
 		final IWidgetItemInfo wi = data.get(position);
 		
 		leftBtn.setOnClickListener(new OnClickListener() {
@@ -97,8 +93,6 @@ public class LazyAdapter extends BaseAdapter {
 			}
 		});
 		
-		
-
 		// Setting all values in listview
 		title.setText(wi.getLabel());
 		
@@ -116,8 +110,7 @@ public class LazyAdapter extends BaseAdapter {
 		default:
 			break;
 		}
-		//artist.setText(song.get(SettingsListActivity.KEY_ARTIST));
-		//status.setText(wi.getItemState().toString());
+
 		thumb_image.setImageBitmap(wi.getBitmap(mContext));
 		return vi;
 	}
@@ -138,25 +131,20 @@ public class LazyAdapter extends BaseAdapter {
 			return ItemState.MUST;
 		}
 		
-		return null;
-		
+		return null;		
 	}
 	
 	
     public Filter getFilter() {
-        // TODO Auto-generated method stub
         return filter ;
     }
-	
 	
 	public class filter_here extends Filter{
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            // TODO Auto-generated method stub
 
             FilterResults Result = new FilterResults();
-            // if constraint is empty return the original names
             if(constraint.length() == 0 ){
                 Result.values = originalData;
                 Result.count = originalData.size();
@@ -182,18 +170,9 @@ public class LazyAdapter extends BaseAdapter {
         @SuppressWarnings("unchecked")
 		@Override
         protected void publishResults(CharSequence constraint,FilterResults results) {
-            // TODO Auto-generated method stub
-//        	try {
         		data = ((List<IWidgetItemInfo>) results.values);	
-//			} catch (ClassCastException e) {
-//				e.printStackTrace();
-//				data = originalData;
-//			}
-//            
             notifyDataSetChanged();
         }
 
     }
-
-
 }

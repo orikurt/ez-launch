@@ -1,6 +1,5 @@
 package com.sadna.widgets.application;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
@@ -104,5 +103,4 @@ public class DialogSeekBarPreference extends DialogPreference implements
 
     public void onStopTrackingTouch(SeekBar seek) {
     }
-
 }

@@ -97,7 +97,6 @@ public class AdressFilter {
 			if (AdressFilter.this.fNameKind == Preferences.NAME_DISPLAY_NAME)
 				return;
 
-
 			ContentResolver resolver = context.getContentResolver();
 
 			String name = ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME;
@@ -116,7 +115,6 @@ public class AdressFilter {
 			fCursor = resolver.query(ContactsContract.Data.CONTENT_URI,
 							 new String[] { ContactsContract.CommonDataKinds.StructuredName.LOOKUP_KEY, name},
 							 filter, params, null);
-
 		}
 
 		public void close() {
@@ -146,5 +144,4 @@ public class AdressFilter {
 			}
 		}
 	}
-
 }
