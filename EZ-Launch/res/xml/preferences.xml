@@ -59,13 +59,15 @@
 
     <PreferenceCategory android:title="@string/pref_grp_general" >
         <Preference
-            android:key="help-%d"
-            android:title="@string/help" />
-        <Preference
             android:key="statistics-%d"
             android:persistent="true"
             android:summary="@string/StatistcsLabelDesc"
             android:title="@string/StatistcsLabel" />
+        
+        <Preference
+            android:key="help-%d"
+            android:title="@string/help" />
+
         <Preference
             android:key="ABOUT"
             android:title="@string/about" />
