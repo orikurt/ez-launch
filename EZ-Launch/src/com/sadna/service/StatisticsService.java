@@ -157,6 +157,9 @@ public class StatisticsService extends Service{
 	}
 	
 	private void scoreUpdate(){
+		if (packageManager == null) {
+			initFields();
+		}
 		List<RecentTaskInfo> recentTasksInfo = activityManager.getRecentTasks(MAX_TASKS, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
 		
 		if (recentTasksInfo == null) return;
